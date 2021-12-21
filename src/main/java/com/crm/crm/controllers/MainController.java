@@ -10,15 +10,10 @@ public class MainController {
 
     @GetMapping("/")
 //    (@RequestParam(name="name", required=false, defaultValue="World") String name)
-    public String home(Model model) {
+    public String priceMain(Model model) {
         model.addAttribute("title", "Главная страница");
-        return "home";
+        return "price-main";
     }
-    @GetMapping("/about")
-//    (@RequestParam(name="name", required=false, defaultValue="World") String name)
-    public String about(Model model) {
-        model.addAttribute("title", "Главная страница");
-        return "about";
-    }
+
 
 }
