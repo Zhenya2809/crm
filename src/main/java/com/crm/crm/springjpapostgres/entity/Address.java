@@ -1,9 +1,16 @@
 package com.crm.crm.springjpapostgres.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 import javax.persistence.*;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "address")
+@ToString
 public class Address {
 
     @Id
@@ -12,12 +19,11 @@ public class Address {
 
     @Column
     private String city;
-
     @Column
     private String street;
-
     @Column(name = "home_number")
     private String homeNumber;
+
 
 //getters and setters
 }
