@@ -15,18 +15,23 @@ import java.io.Serializable;
 @ToString
 @Table(name = "date")
 public class Date implements Serializable {
-
-    @Column(name = "date")
-    private String date;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
+    @Column(name = "date")
+    private String date;
     @Column(name = "time")
     private String time;
+    @Column(name = "personfio")
+    private String personFio;
+    @Column(name="client")
+    private String clientFullName;
 
-    public Date(String date, String time) {
+    public Date(String date, String time, String personFio,String clientFullName) {
         this.date = date;
         this.time = time;
+        this.personFio = personFio;
+        this.clientFullName=clientFullName;
     }
 }

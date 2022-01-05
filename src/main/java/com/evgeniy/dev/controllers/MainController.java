@@ -1,14 +1,10 @@
 package com.evgeniy.dev.controllers;
 
 import com.evgeniy.dev.date.Date;
-import com.evgeniy.dev.date.Day;
-import com.evgeniy.dev.date.Month;
-import com.evgeniy.dev.date.Time;
 import com.evgeniy.dev.dbFile.repository.AuthorizationRepository;
 import com.evgeniy.dev.dbFile.repository.ContactRepository;
 import com.evgeniy.dev.dbFile.repository.DateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,9 +21,7 @@ public class MainController {
     private AuthorizationRepository authorizationRepository;
 
     @GetMapping("/")
-//    (@RequestParam(name="name", required=false, defaultValue="World") String name)
-    public String home(@RequestParam(required = false) String time, Model model) {
-
+    public String home(Model model) {
         Iterable<Date> date = dateRepository.findAll();
         model.addAttribute("date", date);
         return "home";
@@ -37,6 +31,7 @@ public class MainController {
     public String price(Model model) {
         return "price-main";
     }
+
     @GetMapping("/test")
     public String test(Model model) {
         return "test";
@@ -52,17 +47,23 @@ public class MainController {
         return "function";
     }
 
-    @GetMapping("/login")
+    @GetMapping("/clinic")
     public String login(Model model) {
-        return "logg";
+        return "clinic";
     }
 
     //пример
     @PostMapping("/login")
-    public String postLogin(@RequestParam String date, @RequestParam String value, Model model) {
-        Date incoming=new Date(date,value);
+    public String postLogin(@RequestParam(value = "date") String date, @RequestParam(value = "time") String time, @RequestParam(value = "personfio") String personFio, @RequestParam(value = "client") String clientFullName, Model model) {
+        Date incoming = new Date(date, time, personFio, clientFullName);
         dateRepository.save(incoming);
         return "redirect:/";
     }
+//    @PostMapping("/test")
+//    public String postTest(@RequestParam(value="time") String time, @RequestParam(value="date") String date, Model model) {
+//        Date incoming=new Date(time,date);
+//        dateRepository.save(incoming);
+//        return "redirect:/";
+//    }
 
 }
