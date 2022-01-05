@@ -53,11 +53,12 @@
     <header th:insert="blocks/header :: header"></header>
 
     <div class="container mt-5">
-      <div th:each="el: ${contactData}" class="alert alert-info mt-2">
-        <h3 th:text="${el.fio}"></h3>
-        <p th:text="${el.phone_number}"></p>
-        <a th:href="'/users/' + ${el.id}">Детальнее</a>
-      </div>
+<!--      <div th:each="el: ${date}" class="alert alert-info mt-2">-->
+<!--        <h3 th:text="${el.day}"></h3>-->
+<!--        <p th:text="${el.month}"></p>-->
+<!--        <p th:text="${el.time}"></p>-->
+<!--        <a th:href="'/users/' + ${el.id}">Детальнее</a>-->
+<!--      </div>-->
       <div th:insert="blocks/login :: login"></div>
       <div th:insert="blocks/footer :: footer"></div>
     </div>

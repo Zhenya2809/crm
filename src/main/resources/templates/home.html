@@ -51,7 +51,11 @@
     </head>
     <div class="container py-3">
         <header th:insert="blocks/header :: header"></header>
-
+        <div class="container mt-5">
+            <div th:each="el: ${date}" class="alert alert-info mt-2">
+                <h3 th:text="${el.time}"></h3>
+                <p th:text="${el.date}"></p>
+            </div>
         <div class="container mt-5">
 
             <div th:insert="blocks/footer :: footer"></div>
