@@ -68,6 +68,19 @@ public class MainController {
     @PostMapping("/clinic")
     public String postLogin(@RequestParam(value = "date") String date, @RequestParam(value = "time") String time, @RequestParam(value = "personfio") String personFio, @RequestParam(value = "client") String clientFullName, Model model) {
         Date incoming = new Date(date, time, personFio, clientFullName);
+//        Iterable<Date> dateIterable = dateRepository.findAll();
+//        AtomicBoolean flag = new AtomicBoolean(false);
+//        dateIterable.forEach(xyi -> {
+//            if ((xyi.getDate().equals(incoming.getDate())) && (xyi.getTime().equals(incoming.getTime()))) {
+//                flag.set(true);
+//            }
+//            System.out.println("flag=" + flag);
+//
+////            dateRepository.save(incoming);
+//        });
+//        if (!flag.get()) {
+//            dateRepository.save(incoming);
+//        }
         try {
             dateRepository.save(incoming);
         } catch (DataIntegrityViolationException e) {
