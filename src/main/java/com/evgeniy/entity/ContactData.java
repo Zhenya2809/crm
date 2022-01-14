@@ -1,4 +1,4 @@
-package com.evgeniy.dev.dbFile.models;
+package com.evgeniy.entity;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

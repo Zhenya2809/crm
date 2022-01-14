@@ -1,6 +1,6 @@
-package com.evgeniy.dev.dbFile.repository;
+package com.evgeniy.repository;
 
-import com.evgeniy.dev.dbFile.models.ContactData;
+import com.evgeniy.entity.ContactData;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

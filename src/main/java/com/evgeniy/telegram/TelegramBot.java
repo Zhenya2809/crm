@@ -1,4 +1,4 @@
-package com.evgeniy.dev.telegram;
+package com.evgeniy.telegram;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

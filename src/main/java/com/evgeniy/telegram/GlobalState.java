@@ -1,4 +1,4 @@
-package com.evgeniy.dev.telegram;
+package com.evgeniy.telegram;
 
 public enum GlobalState {
     MAIN_MENU,

@@ -1,4 +1,4 @@
-package com.evgeniy.dev;
+package com.evgeniy;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

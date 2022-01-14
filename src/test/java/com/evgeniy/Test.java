@@ -1,7 +1,8 @@
-package com.evgeniy.dev;
+package com.evgeniy;
 
 public class Test {
     public static void main(String[] args) {
+
 
     }
 }
