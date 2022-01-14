@@ -14,10 +14,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Controller
 public class MainController {
+    HashMap<String,String> baseAccount = new HashMap<>();
+
     @Autowired
     private ContactRepository contactRepository;
     @Autowired
@@ -67,6 +70,11 @@ public class MainController {
         return "clinic";
     }
 
+    @GetMapping("/login")
+    public String login(Model model) {
+        return "login";
+    }
+
     @GetMapping("/registration")
     public String registration(Model model) {
         return "registration";
@@ -87,8 +95,41 @@ public class MainController {
         return "redirect:/";
     }
 
+
     @PostMapping("/registration")
     public String postRegistration(@RequestParam(value = "email") String email,
+                                   @RequestParam(value = "password") String password,
+                                   @RequestParam(value = "re-password") String rePassword,
+                                   @RequestParam(value = "firstname") String firstname,
+                                   @RequestParam(value = "lastname") String lastName,
+                                   @RequestParam(value = "login") String login, Model model) {
+        try {
+            Users incomingUserData = new Users(email, password, firstname, lastName, login);
+            AtomicBoolean flag = new AtomicBoolean(false);
+            Iterable<Users> users = userRepository.findAll();
+            users.forEach(element -> {
+                if (element.getLogin().equals(incomingUserData.getLogin())) {
+                    flag.set(true);
+                }
+            });
+
+            if (!password.equals(rePassword)) {
+                return "registration-password-error";
+            }
+            if (!flag.get()) {
+                userRepository.save(incomingUserData);
+            }
+            if (flag.get()) {
+                return "registration-login-error";
+            }
+        } catch (DataIntegrityViolationException e) {
+            return "registration-password-error";
+        }
+        return "redirect:/";
+    }
+    //--------------------------------------------
+    @PostMapping("/login")
+    public String checkLogin(@RequestParam(value = "email") String email,
                                    @RequestParam(value = "password") String password,
                                    @RequestParam(value = "re-password") String rePassword,
                                    @RequestParam(value = "firstname") String firstname,
