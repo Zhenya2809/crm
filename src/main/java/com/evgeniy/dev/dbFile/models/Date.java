@@ -1,4 +1,4 @@
-package com.evgeniy.dev.date;
+package com.evgeniy.dev.dbFile.models;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -25,13 +25,13 @@ public class Date implements Serializable {
     private String time;
     @Column(name = "personfio")
     private String personFio;
-    @Column(name="client")
+    @Column(name = "client")
     private String clientFullName;
 
-    public Date(String date, String time, String personFio,String clientFullName) {
+    public Date(String date, String time, String personFio, String clientFullName) {
         this.date = date;
         this.time = time;
         this.personFio = personFio;
-        this.clientFullName=clientFullName;
+        this.clientFullName = clientFullName;
     }
 }

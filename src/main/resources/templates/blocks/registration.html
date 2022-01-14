@@ -1,0 +1,33 @@
+<div th:fragment="registration">
+    <form action="/registration" method="post">
+
+        <div class="container mt-5">
+            <div>
+                <input type="text" name="login" aria-label="login" placeholder="login" class="form-control">
+            </div>
+            <div>
+                <input type="password" name="password" aria-label="password" placeholder="password"
+                       class="form-control">
+            </div>
+            <div>
+                <input type="password" name="re-password" aria-label="re-password" placeholder="re-password"
+                       class="form-control">
+            </div>
+            <div class="input-group">
+                <span class="input-group-text">First and last name</span>
+                <input type="text" name="firstname" aria-label="firstname" placeholder="firstname"
+                       class="form-control">
+                <input type="text" name="lastname" aria-label="lastname" placeholder="lastname"
+                       class="form-control">
+            </div>
+            <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping">@</span>
+                <input type="email" name="email" class="form-control" placeholder="Email" aria-label="Username"
+                       aria-describedby="addon-wrapping">
+            </div>
+            <div> &nbsp</div>
+            <button type="submit" class="btn btn-primary">Записаться</button>
+        </div>
+
+</form>
+</div>

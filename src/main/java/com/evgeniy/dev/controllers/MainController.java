@@ -1,10 +1,11 @@
 package com.evgeniy.dev.controllers;
 
-import com.evgeniy.dev.date.Date;
+import com.evgeniy.dev.dbFile.models.Date;
+import com.evgeniy.dev.dbFile.models.Users;
 import com.evgeniy.dev.dbFile.repository.AuthorizationRepository;
 import com.evgeniy.dev.dbFile.repository.ContactRepository;
 import com.evgeniy.dev.dbFile.repository.DateRepository;
-import org.postgresql.util.PSQLException;
+import com.evgeniy.dev.dbFile.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,8 @@ public class MainController {
     private DateRepository dateRepository;
     @Autowired
     private AuthorizationRepository authorizationRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping("/")
     public String home(@RequestParam(required = false) String time, Model model) {
@@ -60,36 +63,59 @@ public class MainController {
     }
 
     @GetMapping("/clinic")
-    public String login(Model model) {
+    public String clinic(Model model) {
         return "clinic";
+    }
+
+    @GetMapping("/registration")
+    public String registration(Model model) {
+        return "registration";
     }
 
     //POST
     @PostMapping("/clinic")
-    public String postLogin(@RequestParam(value = "date") String date, @RequestParam(value = "time") String time, @RequestParam(value = "personfio") String personFio, @RequestParam(value = "client") String clientFullName, Model model) {
+    public String postClinic(@RequestParam(value = "date") String date,
+                             @RequestParam(value = "time") String time,
+                             @RequestParam(value = "personfio") String personFio,
+                             @RequestParam(value = "client") String clientFullName, Model model) {
         Date incoming = new Date(date, time, personFio, clientFullName);
-//        Iterable<Date> dateIterable = dateRepository.findAll();
-//        AtomicBoolean flag = new AtomicBoolean(false);
-//        dateIterable.forEach(xyi -> {
-//            if ((xyi.getDate().equals(incoming.getDate())) && (xyi.getTime().equals(incoming.getTime()))) {
-//                flag.set(true);
-//            }
-//            System.out.println("flag=" + flag);
-//
-////            dateRepository.save(incoming);
-//        });
-//        if (!flag.get()) {
-//            dateRepository.save(incoming);
-//        }
         try {
             dateRepository.save(incoming);
         } catch (DataIntegrityViolationException e) {
-
-            return "test";
+            return "time-reserved";
         }
-
         return "redirect:/";
     }
 
+    @PostMapping("/registration")
+    public String postRegistration(@RequestParam(value = "email") String email,
+                                   @RequestParam(value = "password") String password,
+                                   @RequestParam(value = "re-password") String rePassword,
+                                   @RequestParam(value = "firstname") String firstname,
+                                   @RequestParam(value = "lastname") String lastName,
+                                   @RequestParam(value = "login") String login, Model model) {
+        try {
+            Users incomingUserData = new Users(email, password, firstname, lastName, login);
+            AtomicBoolean flag = new AtomicBoolean(false);
+            Iterable<Users> users = userRepository.findAll();
+            users.forEach(element -> {
+                if (element.getLogin().equals(incomingUserData.getLogin())) {
+                    flag.set(true);
+                }
+            });
 
+            if (!password.equals(rePassword)) {
+                return "registration-password-error";
+            }
+            if (!flag.get()) {
+                userRepository.save(incomingUserData);
+            }
+            if (flag.get()) {
+                return "registration-login-error";
+            }
+        } catch (DataIntegrityViolationException e) {
+            return "registration-password-error";
+        }
+        return "redirect:/";
+    }
 }
