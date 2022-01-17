@@ -1,4 +1,4 @@
-<div th:fragment="header">
+<div th:fragment="header" xmlns:sec="http://www.w3.org/1999/xhtml">
     <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
         <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" class="me-2" viewBox="0 0 118 94"
@@ -11,14 +11,22 @@
         </a>
 
         <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
-            <a class="me-3 py-2 text-dark text-decoration-none" href="/">Главная</a>
-            <a class="me-3 py-2 text-dark text-decoration-none" href="/price">Цены</a>
-            <a class="me-3 py-2 text-dark text-decoration-none" href="/function">Функции</a>
-            <a class="me-3 py-2 text-dark text-decoration-none" href="/clinic">Клиника</a>
-            <a class="me-3 py-2 text-dark text-decoration-none" href="/registration">Регистрация</a>
-            <a class="me-3 py-2 text-dark text-decoration-none" href="/login">Авторизация</a>
-            <a class="py-2 text-dark text-decoration-none" href="/about">О нас</a>
 
+
+
+            <a class="me-3 py-2 text-dark text-decoration-none" href="/">Главная</a>
+            <a sec:authorize="isAuthenticated()" class="me-3 py-2 text-dark text-decoration-none" href="/price">Цены</a>
+            <a sec:authorize="isAuthenticated()" class="me-3 py-2 text-dark text-decoration-none" href="/function">Функции</a>
+            <a sec:authorize="isAuthenticated()" class="me-3 py-2 text-dark text-decoration-none" href="/clinic">Клиника</a>
+            <a sec:authorize="isAuthenticated()" class="me-3 py-2 text-dark text-decoration-none" href="/clinic">О нас</a>
+            <a sec:authorize="!isAuthenticated()" class="me-3 py-2 text-dark text-decoration-none" href="/registration">Регистрация</a>
+            <a sec:authorize="!isAuthenticated()" class="me-3 py-2 text-dark text-decoration-none" href="/login">Авторизация</a>
+            &nbsp
+            <a sec:authorize="isAuthenticated()" >Hello &nbsp <a  sec:authorize="isAuthenticated()" sec:authentication="name">&nbsp &nbsp &nbsp</a>
+                &nbsp
+            <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post">
+                <input type="submit" value="logout"/>
+            </form>
 
         </nav>
     </div>

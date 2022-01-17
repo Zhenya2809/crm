@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="auth">
 <head>
     <title> Мейн сайта</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -40,15 +40,11 @@
     </head>
     <div class="container py-3">
         <header th:insert="blocks/header :: header"></header>
-        <div class="container mt-5">
-
-                <div th:insert="blocks/registration :: registration"></div>
-
-            <div class="container mt-5">
-
-                <div th:insert="blocks/footer :: footer"></div>
-            </div>
-        </div> </div>
+        <header th:insert="blocks/registration :: registration"></header>
+        <div th:each="element:${usernameError}" class="alert alert-info mt-2" style="align-content: center; color: #1d47a2">--> </div>
+        <div th:each="element:${passwordError}" class="alert alert-info mt-2" style="align-content: center; color: #1d47a2">--> </div>
+        <div th:insert="blocks/footer :: footer"></div>
+    </div>
     </html>
 
 </html>

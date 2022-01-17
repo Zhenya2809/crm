@@ -16,7 +16,7 @@ import java.util.*;
 
 @Controller
 public class MainController {
-    HashMap<String, String> usersMap = new HashMap<>();
+
     @Autowired
     private ContactRepository contactRepository;
     @Autowired
@@ -40,6 +40,11 @@ public class MainController {
         return "price-main";
     }
 
+    @GetMapping("/news")
+    public String news(Model model) {
+        return "news";
+    }
+
     @GetMapping("/test")
     public String test(Model model) {
         return "test";
@@ -60,15 +65,6 @@ public class MainController {
         return "clinic";
     }
 
-    @GetMapping("/login")
-    public String login(Model model) {
-        return "login";
-    }
-
-    @GetMapping("/registration")
-    public String registration(Model model) {
-        return "registration";
-    }
 
     //POST
     @PostMapping("/clinic")
@@ -87,26 +83,5 @@ public class MainController {
         return "redirect:/";
     }
 
-
-    @PostMapping("/registration")
-    public String postRegistration(@RequestParam(value = "email") String email,
-                                   @RequestParam(value = "password") String password,
-                                   @RequestParam(value = "re-password") String rePassword,
-                                   @RequestParam(value = "firstname") String firstname,
-                                   @RequestParam(value = "lastname") String lastName,
-                                   @RequestParam(value = "login") String login, Model model) {
-
-        return "redirect:/";
-    }
-
-    //--------------------------------------------
-    @PostMapping("/login")
-    public String login(@RequestParam(value = "login") String login,
-                        @RequestParam(value = "password") String password,
-                        Model model) {
-
-
-        return "redirect:/";
-    }
 
 }

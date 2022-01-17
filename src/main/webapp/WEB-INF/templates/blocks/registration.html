@@ -1,0 +1,20 @@
+<div th:fragment="registration">
+    <form action="/registration" method="post">
+        <h2>Регистрация</h2>
+        <div>
+            <input type="text" name="username" aria-label="login" placeholder="Username" class="form-control">
+        </div>
+
+        <div>
+            <input type="password" name="password" aria-label="password" placeholder="Password"
+                   class="form-control">
+        </div>
+        <div>
+            <input type="password" name="passwordConfirm" path="passwordConfirm" aria-label="password"
+                   placeholder="Confirm your password"
+                   class="form-control">
+        </div>
+        <button type="submit">Зарегистрироваться</button>
+        <a href="/">Главная</a>
+    </form>
+</div>

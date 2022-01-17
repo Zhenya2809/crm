@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="auth">
 <head>
     <title> Мейн сайта</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -41,12 +41,19 @@
     <div class="container py-3">
         <header th:insert="blocks/header :: header"></header>
         <div class="container mt-5">
-            <div th:each="el: ${date}" class="alert alert-info mt-2" style="align-content: center; color: #1d47a2">
+            <div th:each="el: ${date}" sec:authorize="hasRole('ADMIN')" class="alert alert-info mt-2"
+                 style="align-content: center; color: #1d47a2">
                 <h3 style="text-align: center" th:text="${el.clientFullName}"></h3>
                 <p style="text-align: center" th:text="${el.date}"></p>
                 <p style="text-align: center" th:text="${el.time}"></p>
                 <p style="text-align: center" th:text="${el.personFio}"></p>
             </div>
+
+            <h4><a sec:authorize="!isAuthenticated()" href="/login">Войти</a></h4>
+            <h4><a sec:authorize="!isAuthenticated()" href="/registration">Зарегистрироваться</a></h4>
+<!--            <div sec:authorize="isAuthenticated()">-->
+<!--                This content is only shown to authenticated users.-->
+<!--            </div>-->
             <div class="container mt-5">
 
                 <div th:insert="blocks/footer :: footer"></div>

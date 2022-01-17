@@ -1,4 +1,4 @@
-package com.evgeniy.serivce;
+package com.evgeniy.service;
 
 import com.evgeniy.entity.Role;
 import com.evgeniy.entity.User;
@@ -73,5 +73,4 @@ public class UserService implements UserDetailsService {
         return em.createQuery("SELECT u FROM User u WHERE u.id > :paramId", User.class)
                 .setParameter("paramId", idMin).getResultList();
     }
-
 }
