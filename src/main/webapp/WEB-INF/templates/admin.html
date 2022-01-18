@@ -1,41 +1,32 @@
-<!DOCTYPE html>
-<html xmlns:c="">
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="auth">
 <head>
-  <meta charset="utf-8">
-  <title>Log in with your account</title>
-  <link rel="stylesheet" type="text/css" href="${contextPath}/resources/css/style.css">
-</head>
+    <title> Мейн сайта</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <html lang="en">
 
-<body>
-<div>
-  <table>
-    <thead>
-    <th>ID</th>
-    <th>UserName</th>
-    <th>Password</th>
-    <th>Roles</th>
-    </thead>
-    <c:forEach items="${allUsers}" var="user">
-      <tr>
-        <td>${user.id}</td>
-        <td>${user.username}</td>
-        <td>${user.password}</td>
-        <td>
-          <c:forEach items="${user.roles}" var="role">${role.name}; </c:forEach>
-        </td>
-        <td>
-          <form action="${pageContext.request.contextPath}/admin" method="post">
-            <input type="hidden" name="userId" value="${user.id}"/>
-            <input type="hidden" name="action" value="delete"/>
-            <button type="submit">Delete</button>
-          </form>
+    <div class="container py-3">
+        <header th:insert="blocks/header :: header"></header>
 
-        </td>
+        <div th:insert="blocks/deleteUser :: deleteUser"></div>
+        <div th:each="el: ${allUsers}" sec:authorize="hasRole('ADMIN')" class="alert alert-success"
+             style="align-content: center; color: #1d47a2">
 
-      </tr>
-    </c:forEach>
-  </table>
-  <a href="/">Главная</a>
-</div>
-</body>
+            <div class="container" >
+                <div class="row">
+                    <div class="col" th:text="${el.id}">
+                    </div>
+                    <div class="col" th:text="${el.username}">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container mt-5">
+
+            <div th:insert="blocks/footer :: footer"></div>
+        </div>
+    </div>
+    </html>
+
 </html>

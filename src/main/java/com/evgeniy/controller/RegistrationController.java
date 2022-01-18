@@ -26,6 +26,15 @@ public class RegistrationController {
 
         return "registration";
     }
+
+    @GetMapping("/account-registred")
+    public String accountRegistred(Model model) {
+        return "account-registred";
+    }
+    @GetMapping("/error")
+    public String error(Model model) {
+        return "error";
+    }
     //POST
 
     @PostMapping("/registration")
@@ -41,20 +50,23 @@ public class RegistrationController {
         user.setUsername(username);
         user.setPassword(password);
         user.setPasswordConfirm(passwordConfirm);
-        userService.saveUser(user);
+        if ((password.equals(passwordConfirm)) && (!userService.loadUserByUsername(username).getUsername().equals(user.getUsername()))) {
 
+            userService.saveUser(user);
+            return "redirect:/";
+        }
 
         if (bindingResult.hasErrors()) {
-            return "registration";
+            return "error";
         }
         if (!user.getPassword().equals(user.getPasswordConfirm())) {
             model.addAttribute("passwordError", "Пароли не совпадают");
-            return "registration";
+            return "error";
         }
         if (!userService.saveUser(user)) {
 
             model.addAttribute("usernameError", "Пользователь с таким именем уже существует");
-            return "registration";
+            return "error";
         }
 
         return "redirect:/";

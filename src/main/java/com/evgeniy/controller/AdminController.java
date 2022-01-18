@@ -1,5 +1,6 @@
 package com.evgeniy.controller;
 
+import com.evgeniy.entity.User;
 import com.evgeniy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Iterator;
+
 @Controller
 public class AdminController {
     @Autowired
@@ -16,22 +19,22 @@ public class AdminController {
 
     @GetMapping("/admin")
     public String userList(Model model) {
-        model.addAttribute("allUsers", userService.allUsers());
+        Iterator<User> allUsers = userService.allUsers().stream().iterator();
+        model.addAttribute("allUsers", allUsers);
         return "admin";
     }
 
     @PostMapping("/admin")
-    public String  deleteUser(@RequestParam(required = true, defaultValue = "" ) Long userId,
-                              @RequestParam(required = true, defaultValue = "" ) String action,
-                              Model model) {
-        if (action.equals("delete")){
-            userService.deleteUser(userId);
+    public String deleteUser(@RequestParam(value = "userID") Long userID,
+                             Model model) {
+        if (userID > 1) {
+            userService.deleteUser(userID);
         }
         return "redirect:/admin";
     }
 
     @GetMapping("/admin/gt/{userId}")
-    public String  gtUser(@PathVariable("userId") Long userId, Model model) {
+    public String gtUser(@PathVariable("userId") Long userId, Model model) {
         model.addAttribute("allUsers", userService.usergtList(userId));
         return "admin";
     }

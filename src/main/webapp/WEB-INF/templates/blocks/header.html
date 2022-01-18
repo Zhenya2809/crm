@@ -13,20 +13,23 @@
         <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
 
 
-
             <a class="me-3 py-2 text-dark text-decoration-none" href="/">Главная</a>
             <a sec:authorize="isAuthenticated()" class="me-3 py-2 text-dark text-decoration-none" href="/price">Цены</a>
             <a sec:authorize="isAuthenticated()" class="me-3 py-2 text-dark text-decoration-none" href="/function">Функции</a>
-            <a sec:authorize="isAuthenticated()" class="me-3 py-2 text-dark text-decoration-none" href="/clinic">Клиника</a>
-            <a sec:authorize="isAuthenticated()" class="me-3 py-2 text-dark text-decoration-none" href="/clinic">О нас</a>
+            <a sec:authorize="isAuthenticated()" class="me-3 py-2 text-dark text-decoration-none"
+               href="/clinic">Клиника</a>
+            <a sec:authorize="hasRole('ADMIN')" class="me-3 py-2 text-dark text-decoration-none"
+               href="/admin">Админка</a>
+
             <a sec:authorize="!isAuthenticated()" class="me-3 py-2 text-dark text-decoration-none" href="/registration">Регистрация</a>
             <a sec:authorize="!isAuthenticated()" class="me-3 py-2 text-dark text-decoration-none" href="/login">Авторизация</a>
             &nbsp
-            <a sec:authorize="isAuthenticated()" >Hello &nbsp <a  sec:authorize="isAuthenticated()" sec:authentication="name">&nbsp &nbsp &nbsp</a>
+            <a sec:authorize="isAuthenticated()"> &nbsp <a sec:authorize="isAuthenticated()" sec:authentication="name">&nbsp
+                &nbsp &nbsp</a>
                 &nbsp
-            <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post">
-                <input type="submit" value="logout"/>
-            </form>
+                <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post">
+                    <input type="submit" value="Выйти"/>
+                </form>
 
         </nav>
     </div>
