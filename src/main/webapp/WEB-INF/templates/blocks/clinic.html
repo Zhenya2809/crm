@@ -1,8 +1,10 @@
-<div th:fragment="clinic">
+<div th:fragment="clinic" xmlns:sec="http://www.w3.org/1999/xhtml">
     <form action="/clinic" method="post">
 
         <div class="mb-3">
             <label id="clientlabel" style="text-align: center; width:350px"> &nbsp; </label>
+
+            <div sec:authorize="isAuthenticated()" name="username">text</div>
             <input type="text" name="client" class="form-control" id="exampleInputClient"
                    style="text-align: center; width:350px" aria-describedby="clientHelp">
             <div id="clientHelp" class="form-text">Выберите свои данные (ФИО)</div>

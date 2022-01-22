@@ -24,7 +24,7 @@
             <a sec:authorize="!isAuthenticated()" class="me-3 py-2 text-dark text-decoration-none" href="/registration">Регистрация</a>
             <a sec:authorize="!isAuthenticated()" class="me-3 py-2 text-dark text-decoration-none" href="/login">Авторизация</a>
             &nbsp
-            <a sec:authorize="isAuthenticated()"> &nbsp <a sec:authorize="isAuthenticated()" sec:authentication="name">&nbsp
+            <a sec:authorize="isAuthenticated()"> &nbsp <a sec:authorize="isAuthenticated()" sec:authentication="name">&nbsp &nbsp;
                 &nbsp &nbsp</a>
                 &nbsp
                 <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post">
