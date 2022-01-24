@@ -1,0 +1,41 @@
+<div th:fragment="profile" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+
+
+    <div class="container mt-5">
+        <div th:each="el: ${patientCard}" class="alert alert-info mt-2"
+             style="align-content: center; color: #1d47a2">
+            <h3 style="text-align: center" th:text="${el.fio}"></h3>
+            <p style="text-align: center" th:text="${el.email}"></p>
+            <p style="text-align: center" th:text="${el.sex}"></p>
+            <p style="text-align: center" th:text="${el.insurancePolicy}"></p>
+            <p style="text-align: center" th:text="${el.placeOfResidence}"></p>
+        </div>
+    </div>
+
+    &nbsp;
+    <form action="/profile" method="post">
+        <div>
+            <input type="text" name="fio" aria-label="fio" placeholder="fio" class="form-control">
+        </div>
+        <div>
+            <input type="date" name="birthday" aria-label="birthday" placeholder="birthday"
+                   class="form-control">
+        </div>
+        <select name="sex" id="sex" style="text-align: center; height: 25px; width: 350px; color: black">
+            <option value="male"> male </option>
+            <option value="female"> female </option>
+            <option value="trans"> trans </option>
+        </select>
+        <div>
+            <input type="text" name="placeOfResidence" aria-label="placeOfResidence" placeholder="placeOfResidence"
+                   class="form-control">
+        </div>
+        <div>
+            <input type="text" name="insurancePolicy" aria-label="insurancePolicy" placeholder="insurancePolicy"
+                   class="form-control">
+        </div>
+        <div> &nbsp</div>
+        <button type="submit" class="btn btn-primary"> сохранить </button>
+    </form>
+</div>

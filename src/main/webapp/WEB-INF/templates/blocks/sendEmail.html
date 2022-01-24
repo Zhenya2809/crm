@@ -1,0 +1,11 @@
+<div th:fragment="sendEmail">
+    <form action="/adminreminder" method="post">
+        <div>
+            <select name="sendEmail" id="sendEmail" style="text-align: center; height: 25px; width: 350px; color: black">
+                <option value="1"> Отправить напоминания </option>
+            </select>
+        </div>
+        <div> &nbsp</div>
+        <button type="submit" class="btn btn-primary"> Отправить емейл юзерам </button>
+    </form>
+</div>

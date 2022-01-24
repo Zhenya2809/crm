@@ -15,17 +15,18 @@
                 <p style="text-align: center" th:text="${el.time}"></p>
                 <p style="text-align: center" th:text="${el.personFio}"></p>
             </div>
-
-            <h4><a sec:authorize="!isAuthenticated()" href="/login">Войти</a></h4>
-            <h4><a sec:authorize="!isAuthenticated()" href="/registration">Зарегистрироваться</a></h4>
-<!--            <div sec:authorize="isAuthenticated()">-->
-<!--                This content is only shown to authenticated users.-->
-<!--            </div>-->
-            <div class="container mt-5">
-
-                <div th:insert="blocks/footer :: footer"></div>
-            </div>
         </div>
+
+        <h4><a sec:authorize="!isAuthenticated()" href="/login">Войти</a></h4>
+        <h4><a sec:authorize="!isAuthenticated()" href="/registration">Зарегистрироваться</a></h4>
+        <!--            <div sec:authorize="isAuthenticated()">-->
+        <!--                This content is only shown to authenticated users.-->
+        <!--            </div>-->
+        <div class="container mt-5">
+
+            <div th:insert="blocks/footer :: footer"></div>
+        </div>
+    </div>
     </html>
 
 </html>

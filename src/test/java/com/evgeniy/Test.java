@@ -12,28 +12,12 @@ import java.util.Date;
 import java.util.List;
 
 public class Test {
-    @Autowired
-    static
-    AppointmentRepository appointmentRepository;
-    @Autowired
-    AppointmentService appointmentService = new AppointmentService();
-    AppointmentMapper appointmentMapper;
 
     public static void main(String[] args) {
-        Iterable<AppointmentToDoctors> date = appointmentRepository.findAll();
-        date.forEach(System.out::println);
+        Date date = new Date();
+        System.out.println(date);
+
+        SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy-MM-dd");
+        System.out.println(formatForDateNow.format(date));
     }
-//    public void printList(){
-//
-//        Date date = new Date();
-//        System.out.println(date);
-//
-//        SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
-//        System.out.println("Текущая дата " + formatForDateNow.format(date));
-//
-//        List<AppointmentToDoctors> appointmentToDoctorsList = appointmentService.toDoctorsList();
-//        List<AppointmentDTO> appointmentDTOS = appointmentMapper.infoToInfoDTO(appointmentToDoctorsList);
-//        appointmentDTOS.forEach(System.out::println);
-//
-//    }
 }

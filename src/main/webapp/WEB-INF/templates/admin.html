@@ -8,12 +8,13 @@
 
     <div class="container py-3">
         <header th:insert="blocks/header :: header"></header>
-
+        <div th:insert="blocks/adminNAV :: adminNAV"></div>
         <div th:insert="blocks/deleteUser :: deleteUser"></div>
+
         <div th:each="el: ${allUsers}" sec:authorize="hasRole('ADMIN')" class="alert alert-success"
              style="align-content: center; color: #1d47a2">
 
-            <div class="container" >
+            <div class="container">
                 <div class="row">
                     <div class="col" th:text="${el.id}">
                     </div>

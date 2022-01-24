@@ -1,10 +1,13 @@
 package com.evgeniy.controller;
 
+import com.evgeniy.dev.AppointmentDTO;
+import com.evgeniy.dev.AppointmentMapper;
 import com.evgeniy.entity.AppointmentToDoctors;
 import com.evgeniy.entity.User;
 import com.evgeniy.repository.ContactRepository;
 import com.evgeniy.repository.AppointmentRepository;
 import com.evgeniy.repository.UserRepository;
+import com.evgeniy.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.Authentication;
@@ -16,6 +19,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+
 @Controller
 public class MainController {
 
@@ -26,13 +33,14 @@ public class MainController {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private AppointmentService appointmentService;
 
     @GetMapping("/")
     public String home(@RequestParam(required = false) String time, Model model) {
 
-        Iterable<AppointmentToDoctors> date = appointmentRepository.findAll();
-        model.addAttribute("date", date);
-
+        Iterable<AppointmentToDoctors> infoAppointmentToDoctor = appointmentRepository.findAll();
+        model.addAttribute("date", infoAppointmentToDoctor);
 
         return "home";
     }
@@ -52,6 +60,8 @@ public class MainController {
         return "test";
     }
 
+
+
     @GetMapping("/about")
     public String about(Model model) {
         return "aboutUs";
@@ -59,6 +69,7 @@ public class MainController {
 
     @GetMapping("/function")
     public String function(Model model) {
+
         return "function";
     }
 
@@ -77,16 +88,16 @@ public class MainController {
                              Model model) {
 
 
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        AppointmentToDoctors incoming = new AppointmentToDoctors();
-//        incoming.setDate(date);
-//        incoming.setTime(time);
-//        incoming.setPersonFio(personFio);
-//        incoming.setClientFullName(clientFullName);
-//        incoming.setEmail(auth.getName());
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        AppointmentToDoctors incoming = new AppointmentToDoctors();
+        incoming.setDate(date);
+        incoming.setTime(time);
+        incoming.setPersonFio(personFio);
+        incoming.setClientFullName(clientFullName);
+        incoming.setEmail(auth.getName());
         try {
 
-            appointmentRepository.save(null);
+            appointmentRepository.save(incoming);
         } catch (DataIntegrityViolationException e) {
             return "time-reserved";
         }
