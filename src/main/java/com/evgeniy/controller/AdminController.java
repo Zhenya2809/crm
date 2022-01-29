@@ -57,6 +57,10 @@ public class AdminController {
         model.addAttribute("allUsers", userService.usergtList(userId));
         return "admin";
     }
-
+    @GetMapping("/styled-page")
+    public String getStyledPage(Model model) {
+        model.addAttribute("name", "Baeldung Reader");
+        return "cssandjs/styledPage";
+    }
 
 }
