@@ -224,7 +224,7 @@
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>libs/</classpathPrefix>
                             <mainClass>
-                                CrmApplication
+                                Application
                             </mainClass>
                         </manifest>
                     </archive>
