@@ -224,7 +224,7 @@
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>libs/</classpathPrefix>
                             <mainClass>
-                                Application
+                                com.evgeniy.Application
                             </mainClass>
                         </manifest>
                     </archive>
