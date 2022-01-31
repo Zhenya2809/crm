@@ -73,7 +73,7 @@ public class DoctorsController {
         patient.setEmail(auth.getName());
         patientCardRepository.save(patient);
 
-        return "/profile";
+        return "profile";
     }
 
     @GetMapping("/profile")
@@ -82,7 +82,7 @@ public class DoctorsController {
         Iterable<PatientCard> patientCards = patientCardRepository.findAll().stream().filter(card -> card.getEmail().equals(auth.getName())).toList();
 
         model.addAttribute("patientCard", patientCards);
-        return "/profile";
+        return "profile";
     }
 
 
@@ -91,7 +91,7 @@ public class DoctorsController {
         Iterable<PatientCard> patientCard = patientCardRepository.findAll();
         model.addAttribute("patientCard", patientCard);
 
-        return "/doctor1";
+        return "doctor1";
     }
 
     @PostMapping("/doctor1")
@@ -99,7 +99,7 @@ public class DoctorsController {
                               Model model) {
         patientCardRepository.findById(id);
 
-        return "/doctor1";
+        return "doctor1";
     }
 
 
@@ -108,7 +108,7 @@ public class DoctorsController {
         Iterable<PatientCard> patientCard = patientCardRepository.findAll();
         model.addAttribute("patientCard", patientCard);
 
-        return "/doctor1/patientmenu";
+        return "doctor1/patientmenu";
     }
 
     @PostMapping("/doctor1/patientmenu")
@@ -125,7 +125,7 @@ public class DoctorsController {
         patientCard.setDiagnosis(diagnosis);
         patientCardRepository.save(patientCard);
         patientCardRepository.deleteById(id);
-        return "/doctor1/patientmenu";
+        return "doctor1/patientmenu";
     }
 
     @PostMapping("/doctor1/patient")
@@ -133,6 +133,6 @@ public class DoctorsController {
                               Model model) {
         PatientCard patientCard = patientCardService.findPatientCard(id);
         model.addAttribute("patientCard", patientCard);
-        return "/doctor1/patient";
+        return "doctor1/patient";
     }
 }
