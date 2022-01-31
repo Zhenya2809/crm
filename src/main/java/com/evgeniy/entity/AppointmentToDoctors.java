@@ -21,6 +21,9 @@ public class AppointmentToDoctors implements Serializable {
     private int id;
     @Column(name = "date")
     private String date;
+    @Column(name = "hyi")
+    private String hyi;
+
 
     public AppointmentToDoctors(int id, String date, String time, String personFio, String clientFullName, String email) {
         this.id = id;
