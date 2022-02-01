@@ -1,16 +1,13 @@
 package com.evgeniy.entity;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Getter
-@RequiredArgsConstructor
+@NoArgsConstructor
 @Setter
 @ToString
 @Table(name = "date")
@@ -21,19 +18,6 @@ public class AppointmentToDoctors implements Serializable {
     private int id;
     @Column(name = "date")
     private String date;
-    @Column(name = "hyi")
-    private String hyi;
-
-
-    public AppointmentToDoctors(int id, String date, String time, String personFio, String clientFullName, String email) {
-        this.id = id;
-        this.date = date;
-        this.time = time;
-        this.personFio = personFio;
-        this.clientFullName = clientFullName;
-        this.email = email;
-    }
-
     @Column(name = "time")
     private String time;
     @Column(name = "personfio")
@@ -43,11 +27,4 @@ public class AppointmentToDoctors implements Serializable {
     @Column(name = "email")
     private String email;
 
-//    public AppointmentToDoctors(String date, String time, String personFio, String clientFullName, String email) {
-//        this.date = date;
-//        this.time = time;
-//        this.personFio = personFio;
-//        this.clientFullName = clientFullName;
-//        this.email = email;
-//    }
 }

@@ -9,5 +9,6 @@ import java.util.List;
 @Mapper
 public interface AppointmentMapper {
     AppointmentMapper INSTANCE = Mappers.getMapper(AppointmentMapper.class);
+
     List<AppointmentDTO> infoToInfoDTO(List<AppointmentToDoctors> appointmentToDoctorsList);
 }
