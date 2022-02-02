@@ -1,14 +1,12 @@
 package com.evgeniy.entity;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+
 import javax.persistence.*;
 
 @Entity
 @Getter
-@RequiredArgsConstructor
+@NoArgsConstructor
 @Setter
 @ToString
 @Table(name = "t_patientInfo")

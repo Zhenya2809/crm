@@ -1,9 +1,10 @@
 package com.evgeniy.controller;
 
 import com.evgeniy.entity.Patient;
-import com.evgeniy.repository.PatientInfoRepository;
+import com.evgeniy.entity.PatientCard;
+import com.evgeniy.repository.PatientCardRepository;
+import com.evgeniy.repository.PatientRepository;
 import com.evgeniy.service.AppointmentService;
-import com.evgeniy.service.PatientCardService;
 import com.evgeniy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Optional;
+
 
 @Controller
 public class DoctorsController {
@@ -22,9 +25,9 @@ public class DoctorsController {
     @Autowired
     private UserService userService;
     @Autowired
-    PatientCardService patientCardService;
+    private PatientCardRepository patientCardRepository;
     @Autowired
-    private PatientInfoRepository patientInfoRepository;
+    private PatientRepository patientRepository;
 
 
     @PostMapping("/profile")
@@ -37,12 +40,12 @@ public class DoctorsController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Patient patient = new Patient();
         patient.setFio(fio);
-        patient.setSex(sex);
         patient.setBirthday(birthday);
+        patient.setSex(sex);
         patient.setPlaceOfResidence(placeOfResidence);
         patient.setInsurancePolicy(insurancePolicy);
         patient.setEmail(auth.getName());
-        patientInfoRepository.save(patient);
+        patientRepository.save(patient);
 
         return "profile";
     }
@@ -50,8 +53,7 @@ public class DoctorsController {
     @GetMapping("/profile")
     public String getProfile(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Iterable<Patient> patientCards = patientInfoRepository.findAll().stream().filter(card -> card.getEmail().equals(auth.getName())).toList();
-
+        Iterable<Patient> patientCards = patientRepository.findAllByEmail(auth.getName());
         model.addAttribute("patientCard", patientCards);
         return "profile";
     }
@@ -59,7 +61,7 @@ public class DoctorsController {
 
     @GetMapping("/doctor1")
     public String doctor1(Model model) {
-        Iterable<Patient> patientCard = patientInfoRepository.findAll();
+        Iterable<Patient> patientCard = patientRepository.findAll();
         model.addAttribute("patientCard", patientCard);
 
         return "doctor1";
@@ -68,7 +70,7 @@ public class DoctorsController {
     @PostMapping("/doctor1")
     public String postDoctor1(@RequestParam(value = "id") Long id,
                               Model model) {
-        patientInfoRepository.findById(id);
+        patientRepository.findById(id);
 
         return "doctor1";
     }
@@ -76,7 +78,7 @@ public class DoctorsController {
 
     @GetMapping("/doctor1/patientmenu")
     public String getPatientMenu(Model model) {
-        Iterable<Patient> patientCard = patientInfoRepository.findAll();
+        Iterable<Patient> patientCard = patientRepository.findAll();
         model.addAttribute("patientCard", patientCard);
 
         return "doctor1/patientmenu";
@@ -90,7 +92,7 @@ public class DoctorsController {
                                   Model model) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Patient patient = patientCardService.findPatientCard(id);
+
 
         Patient patient1 = new Patient();
 
@@ -100,16 +102,15 @@ public class DoctorsController {
 //        patientInfo1.setFinishDate(finishDate);
 
 
-
-        patientInfoRepository.save(patient1);
+        patientRepository.save(patient1);
         return "doctor1/patientmenu";
     }
 
     @PostMapping("/doctor1/patient")
     public String postPatient(@RequestParam(value = "id") Long id,
                               Model model) {
-        Patient patient = patientCardService.findPatientCard(id);
-        model.addAttribute("patientCard", patient);
+        PatientCard patientCard = patientCardRepository.findPatientCardById(id);
+        model.addAttribute("patientCard", patientCard);
         return "doctor1/patient";
     }
 }

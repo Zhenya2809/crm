@@ -1,6 +1,8 @@
 package com.evgeniy.controller;
 
+import com.evgeniy.entity.Doctor;
 import com.evgeniy.entity.User;
+import com.evgeniy.repository.DoctorRepository;
 import com.evgeniy.service.AppointmentService;
 import com.evgeniy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,18 +21,15 @@ public class AdminController {
     private AppointmentService appointmentService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private DoctorRepository doctorRepository;
 
+    //admin
     @GetMapping("/admin")
     public String userList(Model model) {
         Iterator<User> allUsers = userService.allUsers().stream().iterator();
         model.addAttribute("allUsers", allUsers);
         return "admin";
-    }
-
-    @GetMapping("/adminreminder")
-    public String adminReminder(Model model) {
-
-        return "adminreminder";
     }
 
     @PostMapping("/admin")
@@ -43,6 +42,13 @@ public class AdminController {
     }
 
 
+    //adminreminder
+    @GetMapping("/adminreminder")
+    public String adminReminder(Model model) {
+
+        return "adminreminder";
+    }
+
     @PostMapping("/adminreminder")
     public String deleteUser(@RequestParam(value = "sendEmail") String sendEmail,
                              Model model) {
@@ -52,11 +58,32 @@ public class AdminController {
         return "redirect:/adminreminder";
     }
 
-    @GetMapping("/admin/gt/{userId}")
-    public String gtUser(@PathVariable("userId") Long userId, Model model) {
-        model.addAttribute("allUsers", userService.usergtList(userId));
-        return "admin";
+    //newdoctor
+    @GetMapping("/admin/newdoctor")
+    public String getNewDoctor(Model model) {
+        Iterator<Doctor> allDoctors = doctorRepository.findAll().iterator();
+        model.addAttribute("allDoctors", allDoctors);
+        return "admin/newdoctor";
     }
+
+    @PostMapping("/admin/newdoctor")
+    public String postNewDoctor(@RequestParam(value = "doctorfio") String doctorfio,
+                                @RequestParam(value = "speciality") String speciality,
+                                Model model) {
+        Doctor doctor = new Doctor();
+        doctor.setFio(doctorfio);
+        doctor.setSpeciality(speciality);
+        doctorRepository.save(doctor);
+        return "redirect:/admin";
+    }
+
+    //
+//    @GetMapping("/admin/gt/{userId}")
+//    public String gtUser(@PathVariable("userId") Long userId, Model model) {
+//        model.addAttribute("allUsers", userService.usergtList(userId));
+//        return "admin";
+//    }
+                 //test css and scripts
     @GetMapping("/styled-page")
     public String getStyledPage(Model model) {
         model.addAttribute("name", "Baeldung Reader");

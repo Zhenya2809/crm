@@ -20,9 +20,7 @@ public class AppointmentService {
     @Autowired
     AppointmentRepository appointmentRepository;
 
-    public List<AppointmentToDoctors> toDoctorsList() {
-        return appointmentRepository.findAll();
-    }
+
 
     public void sendEmailReminder() {
         List<AppointmentToDoctors> appointmentToDoctorsList = appointmentRepository.findAll().stream().toList();
