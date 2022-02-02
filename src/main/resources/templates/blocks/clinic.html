@@ -5,8 +5,7 @@
             <label id="clientlabel" style="text-align: center; width:350px"> &nbsp; </label>
 
             <div sec:authorize="isAuthenticated()" name="username"></div>
-            <input type="text" name="client" class="form-control" id="exampleInputClient"
-                   style="text-align: center; width:350px" aria-describedby="clientHelp">
+
             <div id="clientHelp" class="form-text">Выберите свои данные (ФИО)</div>
         </div>
         <div class="mb-3">
@@ -33,7 +32,7 @@
         </select>
         <div id="timeHelp" class="form-text">Выберите время записи</div>
         <div>&nbsp;</div>
-        <select name="personfio" id="personfio" style="text-align: center; height: 25px; width: 350px; color: black">
+        <select name="doctorFio" id="doctorFio" style="text-align: center; height: 25px; width: 350px; color: black">
             <option value="Иванов Иван Иванович"> Иванов Иван Иванович</option>
             <option value="Петров Петр Петрович"> Петров Петр Петрович</option>
             <option value="Дмитриев Дмитрий Дмитриевич"> Дмитриев Дмитрий Дмитриевич</option>

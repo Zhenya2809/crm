@@ -30,32 +30,6 @@ public class DoctorsController {
     private PatientCardRepository patientCardRepository;
 
 
-    @GetMapping("/admin/doctor2")
-    public String doctor2(Model model) {
-        return "/admin/doctor2";
-    }
-
-    @GetMapping("/admin/doctor3")
-    public String doctor3(Model model) {
-        return "/admin/doctor3";
-    }
-
-    @GetMapping("/admin/doctor4")
-    public String doctor4(Model model) {
-        return "/admin/doctor4";
-    }
-
-    @GetMapping("/admin/doctor5")
-    public String doctor5(Model model) {
-        return "/admin/doctor5";
-    }
-
-    @GetMapping("/admin/doctor6")
-    public String doctor6(Model model) {
-        return "/admin/doctor6";
-    }
-
-
     @PostMapping("/profile")
     public String postProfile(@RequestParam(value = "fio") String fio,
                               @RequestParam(value = "sex") String sex,
@@ -118,13 +92,19 @@ public class DoctorsController {
                                   @RequestParam(value = "diagnosis") String diagnosis,
                                   Model model) {
 
-
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         PatientCard patientCard = patientCardService.findPatientCard(id);
-        patientCard.setStartDate(startDate);
-        patientCard.setFinishDate(finishDate);
-        patientCard.setDiagnosis(diagnosis);
-        patientCardRepository.save(patientCard);
-        patientCardRepository.deleteById(id);
+
+        PatientCard patientCard1 = new PatientCard();
+
+        patientCard1.setDoctor(auth.getName());
+        patientCard1.setDiagnosis(diagnosis);
+        patientCard1.setStartDate(startDate);
+        patientCard1.setFinishDate(finishDate);
+
+
+
+        patientCardRepository.save(patientCard1);
         return "doctor1/patientmenu";
     }
 

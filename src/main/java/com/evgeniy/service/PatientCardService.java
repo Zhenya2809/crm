@@ -15,17 +15,18 @@ public class PatientCardService {
     public PatientCard findPatientCard(Long id) {
         PatientCard patientCard = new PatientCard();
         Optional<PatientCard> byId = patientCardRepository.findById(id);
-        byId.stream().forEach(e -> {
-
+        byId.ifPresent(e -> {
+            Long idd = e.getId();
             String email = e.getEmail();
             String fio = e.getFio();
             String sex = e.getSex();
             String birthday = e.getBirthday();
-            String placeOfResidence= e.getPlaceOfResidence();
+            String placeOfResidence = e.getPlaceOfResidence();
             String insurancePolicy = e.getInsurancePolicy();
             String diagnosis = e.getDiagnosis();
             String startDate = e.getStartDate();
-            String finishDate= e.getFinishDate();
+            String finishDate = e.getFinishDate();
+            patientCard.setId(idd);
             patientCard.setEmail(email);
             patientCard.setBirthday(birthday);
             patientCard.setFio(fio);

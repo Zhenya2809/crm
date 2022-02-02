@@ -33,8 +33,8 @@ public class PatientCard {
     private String finishDate;
     @Column(name = "diagnosis")
     private String diagnosis;
-    @Column(name = "IDdoctor")
-    private String IDdoctor;
+    @Column(name = "doctor")
+    private String doctor;
     @Column(name = "email")
     private String email;
 }

@@ -1,27 +1,21 @@
 package com.evgeniy.controller;
 
-import com.evgeniy.dev.AppointmentDTO;
-import com.evgeniy.dev.AppointmentMapper;
 import com.evgeniy.entity.AppointmentToDoctors;
-import com.evgeniy.entity.User;
+import com.evgeniy.entity.PatientCard;
 import com.evgeniy.repository.ContactRepository;
 import com.evgeniy.repository.AppointmentRepository;
+import com.evgeniy.repository.PatientCardRepository;
 import com.evgeniy.repository.UserRepository;
 import com.evgeniy.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.AuthenticationEntryPointFailureHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 
 @Controller
 public class MainController {
@@ -30,7 +24,8 @@ public class MainController {
     private ContactRepository contactRepository;
     @Autowired
     private AppointmentRepository appointmentRepository;
-
+    @Autowired
+    PatientCardRepository patientCardRepository;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -61,7 +56,6 @@ public class MainController {
     }
 
 
-
     @GetMapping("/about")
     public String about(Model model) {
         return "aboutUs";
@@ -83,17 +77,20 @@ public class MainController {
     @PostMapping("/clinic")
     public String postClinic(@RequestParam(value = "date") String date,
                              @RequestParam(value = "time") String time,
-                             @RequestParam(value = "personfio") String personFio,
-                             @RequestParam(value = "client") String clientFullName,
+                             @RequestParam(value = "doctorFio") String doctorFio,
                              Model model) {
 
-
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        PatientCard patientCard = patientCardRepository.findByEmail(auth.getName());
+
+
+
         AppointmentToDoctors incoming = new AppointmentToDoctors();
         incoming.setDate(date);
         incoming.setTime(time);
-        incoming.setPersonFio(personFio);
-        incoming.setClientFullName(clientFullName);
+        incoming.setDoctorFIO(doctorFio);
+        incoming.setClientFullName(patientCard.getFio());
         incoming.setEmail(auth.getName());
         try {
 
