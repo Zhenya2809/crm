@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,30 +12,24 @@ import javax.persistence.*;
 @RequiredArgsConstructor
 @Setter
 @ToString
-@Table(name = "patientCard")
+@Table(name = "t_patientCard")
+
 public class PatientCard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "fio")
-    private String fio;
-    @Column(name = "sex")
-    private String sex;
-    @Column(name = "birthday")
-    private String birthday;
-    @Column(name = "placeOfResidence")
-    private String placeOfResidence;
-    @Column(name = "insurancePolicy")
-    private String insurancePolicy;
-    @Column(name = "startDate")
-    private String startDate;
-    @Column(name = "finishDate")
-    private String finishDate;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    @JoinColumn(name = "clientID")
+    private Patient patient;
+
     @Column(name = "diagnosis")
     private String diagnosis;
-    @Column(name = "doctor")
-    private String doctor;
-    @Column(name = "email")
-    private String email;
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    @JoinColumn(name = "doctorID")
+    private Doctor doctor;
+
 }

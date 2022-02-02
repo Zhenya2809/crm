@@ -1,10 +1,9 @@
 package com.evgeniy.controller;
 
 import com.evgeniy.entity.AppointmentToDoctors;
-import com.evgeniy.entity.PatientCard;
-import com.evgeniy.repository.ContactRepository;
+import com.evgeniy.entity.Patient;
 import com.evgeniy.repository.AppointmentRepository;
-import com.evgeniy.repository.PatientCardRepository;
+import com.evgeniy.repository.PatientInfoRepository;
 import com.evgeniy.repository.UserRepository;
 import com.evgeniy.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,7 @@ public class MainController {
     @Autowired
     private AppointmentRepository appointmentRepository;
     @Autowired
-    PatientCardRepository patientCardRepository;
+    PatientInfoRepository patientInfoRepository;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -82,7 +81,7 @@ public class MainController {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        PatientCard patientCard = patientCardRepository.findByEmail(auth.getName());
+        Patient patient = patientInfoRepository.findByEmail(auth.getName());
 
 
 
@@ -90,8 +89,7 @@ public class MainController {
         incoming.setDate(date);
         incoming.setTime(time);
         incoming.setDoctorFIO(doctorFio);
-        incoming.setClientFullName(patientCard.getFio());
-        incoming.setEmail(auth.getName());
+        incoming.setClientFullName(patient.getFio());
         try {
 
             appointmentRepository.save(incoming);

@@ -20,11 +20,16 @@ public class AppointmentToDoctors implements Serializable {
     private String date;
     @Column(name = "time")
     private String time;
-    @Column(name = "doctorfio")
-    private String doctorFIO;
-    @Column(name = "clientfio")
-    private String clientFullName;
-    @Column(name = "email")
-    private String email;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    @JoinColumn(name = "doctorID")
+    private Doctor doctor;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    @JoinColumn(name = "clientID")
+    private Patient patient;
+
 
 }

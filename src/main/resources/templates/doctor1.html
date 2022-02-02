@@ -17,7 +17,7 @@
             <button type="submit" class="btn btn-primary"> найти </button>
         </form>
         <div class="container mt-5">
-            <div th:each="el: ${patientCard}"  class="alert alert-info mt-2"
+            <div th:each="el: ${patient}"  class="alert alert-info mt-2"
                  style="align-content: center; color: #1d47a2">
                 <h3 style="text-align: center" th:text="${el.id}"></h3>
                 <p style="text-align: center" th:text="${el.fio}"></p>

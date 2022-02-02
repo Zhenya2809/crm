@@ -1,7 +1,7 @@
 package com.evgeniy.service;
 
-import com.evgeniy.entity.PatientCard;
-import com.evgeniy.repository.PatientCardRepository;
+import com.evgeniy.entity.Patient;
+import com.evgeniy.repository.PatientInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,11 +10,11 @@ import java.util.Optional;
 @Service
 public class PatientCardService {
     @Autowired
-    PatientCardRepository patientCardRepository;
+    PatientInfoRepository patientInfoRepository;
 
-    public PatientCard findPatientCard(Long id) {
-        PatientCard patientCard = new PatientCard();
-        Optional<PatientCard> byId = patientCardRepository.findById(id);
+    public Patient findPatientCard(Long id) {
+        Patient patient = new Patient();
+        Optional<Patient> byId = patientInfoRepository.findById(id);
         byId.ifPresent(e -> {
             Long idd = e.getId();
             String email = e.getEmail();
@@ -26,17 +26,17 @@ public class PatientCardService {
             String diagnosis = e.getDiagnosis();
             String startDate = e.getStartDate();
             String finishDate = e.getFinishDate();
-            patientCard.setId(idd);
-            patientCard.setEmail(email);
-            patientCard.setBirthday(birthday);
-            patientCard.setFio(fio);
-            patientCard.setSex(sex);
-            patientCard.setPlaceOfResidence(placeOfResidence);
-            patientCard.setInsurancePolicy(insurancePolicy);
-            patientCard.setDiagnosis(diagnosis);
-            patientCard.setStartDate(startDate);
-            patientCard.setFinishDate(finishDate);
+            patient.setId(idd);
+            patient.setEmail(email);
+            patient.setBirthday(birthday);
+            patient.setFio(fio);
+            patient.setSex(sex);
+            patient.setPlaceOfResidence(placeOfResidence);
+            patient.setInsurancePolicy(insurancePolicy);
+            patient.setDiagnosis(diagnosis);
+            patient.setStartDate(startDate);
+            patient.setFinishDate(finishDate);
         });
-        return patientCard;
+        return patient;
     }
 }
