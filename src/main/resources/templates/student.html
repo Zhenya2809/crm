@@ -7,6 +7,11 @@
   <html lang="en">
   <div class="container py-3">
     <header th:insert="blocks/header :: header"></header>
+      <li class="nav-item">
+          <a href="/create-random-student" style="background: green" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">создать рандом студента</a>
+      </li>
+
+      <div>&nbsp;</div>
 
 Введите id студента которому хотите  добавить фото
     <form action="/student" method="post">
@@ -40,7 +45,7 @@
 
           </div>
       </div>
-    <a sec:authorize="hasRole('USER')" class="me-3 py-2 text-dark text-decoration-none" href="/create-random-student">создать рандом студента</a>
+
 
     <div th:insert="blocks/footer :: footer"></div>
   </div>
