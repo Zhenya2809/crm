@@ -26,7 +26,7 @@
       <button type="submit" class="btn btn-primary"> добавить фото студенту </button>
     </form>
 
-
+      <h1 style="text-align: center">Список студентов</h1>
     <div class="container mt-5">
       <div th:each="el: ${students}" class="alert alert-info mt-2"
            style="align-content: center; color: #1d47a2">
@@ -35,7 +35,9 @@
         <p style="text-align: center" th:text="${el.email}"></p>
       </div>
     </div>
-
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <h1 style="text-align: center">Альбом студентов</h1>
       <div class="container mt-5">
           <div th:each="el: ${photo}" class="alert alert-info mt-2"
                style="align-content: center; color: #1d47a2">
