@@ -10,10 +10,11 @@
         <div class="container mt-5">
             <div th:each="el: ${date}" sec:authorize="hasRole('ADMIN')" class="alert alert-info mt-2"
                  style="align-content: center; color: #1d47a2">
-                <h3 style="text-align: center" th:text="${el.clientFullName}"></h3>
+                <h3 style="text-align: center" th:text="${el.getPatient().getFio()}"></h3>
+<!--                <h3 style="text-align: center" th:text="${el.getDoctor().getSpeciality()}"></h3>-->
                 <p style="text-align: center" th:text="${el.date}"></p>
                 <p style="text-align: center" th:text="${el.time}"></p>
-                <p style="text-align: center" th:text="${el.getDoctorFIO}"></p>
+
             </div>
         </div>
 

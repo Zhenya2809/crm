@@ -8,14 +8,39 @@
   <div class="container py-3">
     <header th:insert="blocks/header :: header"></header>
 
+Введите id студента которому хотите  добавить фото
+    <form action="/student" method="post">
+      <div>
+        <input type="text" name="id" aria-label="id" placeholder="id" class="form-control">
+      </div>
+      <div>
+        <input type="text" name="url" aria-label="url" placeholder="url"
+               class="form-control">
+      </div>
+      <div> &nbsp</div>
+      <button type="submit" class="btn btn-primary"> добавить фото студенту </button>
+    </form>
+
 
     <div class="container mt-5">
       <div th:each="el: ${students}" class="alert alert-info mt-2"
            style="align-content: center; color: #1d47a2">
+          <h3 style="text-align: center" th:text="${el.id}"></h3>
         <h3 style="text-align: center" th:text="${el.name}"></h3>
         <p style="text-align: center" th:text="${el.email}"></p>
       </div>
     </div>
+
+      <div class="container mt-5">
+          <div th:each="el: ${photo}" class="alert alert-info mt-2"
+               style="align-content: center; color: #1d47a2">
+
+              <h3 style="text-align: center" th:text="${el.student.getName()}"></h3>
+              <p><img  th:src="${el.url}"  alt="фото" width="320" height="179"></p>
+
+          </div>
+      </div>
+    <a sec:authorize="hasRole('USER')" class="me-3 py-2 text-dark text-decoration-none" href="/create-random-student">создать рандом студента</a>
 
     <div th:insert="blocks/footer :: footer"></div>
   </div>

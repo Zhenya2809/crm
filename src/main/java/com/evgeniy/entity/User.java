@@ -24,6 +24,9 @@ public class User implements UserDetails {
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "doctorID")
+    private Doctor doctor;
     public User() {
     }
 
@@ -67,6 +70,10 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
+    }
+
+    public Doctor getDoctor() {
+        return doctor;
     }
 
     @Override

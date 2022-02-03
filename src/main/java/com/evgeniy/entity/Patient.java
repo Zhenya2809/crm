@@ -1,7 +1,6 @@
 package com.evgeniy.entity;
 
 import lombok.*;
-
 import javax.persistence.*;
 
 @Entity

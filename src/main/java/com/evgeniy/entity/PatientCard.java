@@ -21,14 +21,11 @@ public class PatientCard {
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
     @JoinColumn(name = "clientID")
     private Patient patient;
-
     @Column(name = "diagnosis")
     private String diagnosis;
     @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
     @JoinColumn(name = "doctorID")
     private Doctor doctor;
 

@@ -1,12 +1,17 @@
 package com.evgeniy.controller;
 
+import com.evgeniy.entity.Doctor;
 import com.evgeniy.entity.Patient;
 import com.evgeniy.entity.PatientCard;
+import com.evgeniy.entity.User;
+import com.evgeniy.repository.DoctorRepository;
 import com.evgeniy.repository.PatientCardRepository;
 import com.evgeniy.repository.PatientRepository;
+import com.evgeniy.repository.UserRepository;
 import com.evgeniy.service.AppointmentService;
 import com.evgeniy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -25,10 +30,13 @@ public class DoctorsController {
     @Autowired
     private UserService userService;
     @Autowired
+    private DoctorRepository doctorRepository;
+    @Autowired
     private PatientCardRepository patientCardRepository;
     @Autowired
     private PatientRepository patientRepository;
-
+    @Autowired
+    private UserRepository userRepository;
 
     @PostMapping("/profile")
     public String postProfile(@RequestParam(value = "fio") String fio,
@@ -61,9 +69,8 @@ public class DoctorsController {
 
     @GetMapping("/doctor1")
     public String doctor1(Model model) {
-        Iterable<Patient> patientCard = patientRepository.findAll();
-        model.addAttribute("patientCard", patientCard);
-
+        Iterable<Patient> patient = patientRepository.findAll();
+        model.addAttribute("patient", patient);
         return "doctor1";
     }
 
@@ -86,23 +93,23 @@ public class DoctorsController {
 
     @PostMapping("/doctor1/patientmenu")
     public String postPatientmenu(@RequestParam(value = "id") Long id,
-                                  @RequestParam(value = "startDate") String startDate,
-                                  @RequestParam(value = "finishDate") String finishDate,
                                   @RequestParam(value = "diagnosis") String diagnosis,
                                   Model model) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
+        Doctor doctor = userRepository.findByUsername(auth.getName()).getDoctor();
+        Patient patient = patientRepository.findPatientById(id);
 
-        Patient patient1 = new Patient();
-
-//        patientInfo1.setDoctor(auth.getName());
-//        patientInfo1.setDiagnosis(diagnosis);
-//        patientInfo1.setStartDate(startDate);
-//        patientInfo1.setFinishDate(finishDate);
+        PatientCard patientCard = new PatientCard();
+        patientCard.setPatient(patient);
+        patientCard.setDiagnosis(diagnosis);
+        patientCard.setDoctor(doctor);
 
 
-        patientRepository.save(patient1);
+        patientCardRepository.save(patientCard);
+
+
         return "doctor1/patientmenu";
     }
 

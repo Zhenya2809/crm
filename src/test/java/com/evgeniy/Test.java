@@ -1,17 +1,5 @@
 package com.evgeniy;
 
-import com.evgeniy.dev.AppointmentDTO;
-import com.evgeniy.dev.AppointmentMapper;
-import com.evgeniy.entity.AppointmentToDoctors;
-import com.evgeniy.repository.AppointmentRepository;
-import com.evgeniy.service.AppointmentService;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.lang.reflect.Array;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
 import java.util.Random;
 
 public class Test {

@@ -39,6 +39,7 @@ public class MainController {
     public String home(@RequestParam(required = false) String time, Model model) {
 
         Iterable<AppointmentToDoctors> infoAppointmentToDoctor = appointmentRepository.findAll();
+
         model.addAttribute("date", infoAppointmentToDoctor);
 
         return "home";
