@@ -1,16 +1,20 @@
 package com.evgeniy.entity;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.util.Set;
 
-@Getter
-@Setter
 @Entity
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
 @Table(name = "t_role")
 public class Role implements GrantedAuthority {
     @Id
@@ -19,9 +23,6 @@ public class Role implements GrantedAuthority {
     @Transient
     @ManyToMany(mappedBy = "roles")
     private Set<User> users;
-
-    public Role() {
-    }
 
     public Role(Long id) {
         this.id = id;

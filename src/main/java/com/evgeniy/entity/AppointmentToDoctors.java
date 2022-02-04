@@ -6,6 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Table(name = "t_doctorsappointments")
@@ -19,11 +20,11 @@ public class AppointmentToDoctors {
     @Column(name = "time")
     private String time;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "doctorID")
     private Doctor doctor;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "clientID")
     private Patient patient;
 

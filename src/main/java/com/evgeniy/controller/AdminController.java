@@ -4,6 +4,7 @@ import com.evgeniy.entity.Doctor;
 import com.evgeniy.entity.User;
 import com.evgeniy.repository.DoctorRepository;
 import com.evgeniy.service.AppointmentService;
+import com.evgeniy.service.DoctorService;
 import com.evgeniy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,8 @@ public class AdminController {
     private UserService userService;
     @Autowired
     private DoctorRepository doctorRepository;
+    @Autowired
+    private DoctorService doctorService;
 
     //admin
     @GetMapping("/admin")
@@ -70,10 +73,8 @@ public class AdminController {
     public String postNewDoctor(@RequestParam(value = "doctorfio") String doctorfio,
                                 @RequestParam(value = "speciality") String speciality,
                                 Model model) {
-        Doctor doctor = new Doctor();
-        doctor.setFio(doctorfio);
-        doctor.setSpeciality(speciality);
-        doctorRepository.save(doctor);
+
+        doctorService.createrDoctor(doctorfio, speciality);
         return "redirect:/admin";
     }
 
@@ -83,7 +84,7 @@ public class AdminController {
 //        model.addAttribute("allUsers", userService.usergtList(userId));
 //        return "admin";
 //    }
-                 //test css and scripts
+    //test css and scripts
     @GetMapping("/styled-page")
     public String getStyledPage(Model model) {
         model.addAttribute("name", "Baeldung Reader");

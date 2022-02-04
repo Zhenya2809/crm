@@ -8,6 +8,7 @@ import com.evgeniy.repository.DoctorRepository;
 import com.evgeniy.repository.PatientRepository;
 import com.evgeniy.repository.UserRepository;
 import com.evgeniy.service.AppointmentService;
+import com.evgeniy.service.AppointmentToDoctorsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.Authentication;
@@ -18,27 +19,23 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Controller
 public class MainController {
 
 
     @Autowired
-    private AppointmentRepository appointmentRepository;
-    @Autowired
-    PatientRepository patientRepository;
-    @Autowired
-    private UserRepository userRepository;
+    private AppointmentToDoctorsService appointmentToDoctorsService;
     @Autowired
     private AppointmentService appointmentService;
-    @Autowired
-    private DoctorRepository doctorRepository;
 
     @GetMapping("/")
     public String home(@RequestParam(required = false) String time, Model model) {
 
-        Iterable<AppointmentToDoctors> infoAppointmentToDoctor = appointmentRepository.findAll();
+        Iterable<AppointmentToDoctors> infoAppointmentToDoctor = appointmentService.findAll();
 
         model.addAttribute("date", infoAppointmentToDoctor);
 
@@ -77,30 +74,14 @@ public class MainController {
         return "clinic";
     }
 
-
     //POST
     @PostMapping("/clinic")
     public String postClinic(@RequestParam(value = "date") String date,
                              @RequestParam(value = "time") String time,
                              @RequestParam(value = "doctorID") String doctorID,
                              Model model) {
-
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        Patient patient = patientRepository.findByEmail(auth.getName());
-        Doctor doctor = doctorRepository.findDoctorById(Long.valueOf(doctorID));
-
-
-        AppointmentToDoctors incoming = new AppointmentToDoctors();
-        incoming.setDate(date);
-        incoming.setTime(time);
-        incoming.setDoctor(doctor);
-        incoming.setPatient(patient);
-
-
         try {
-
-            appointmentRepository.save(incoming);
+            appointmentToDoctorsService.CreateAppointmentToDoctors(date, time, doctorID);
         } catch (DataIntegrityViolationException e) {
             return "time-reserved";
         }

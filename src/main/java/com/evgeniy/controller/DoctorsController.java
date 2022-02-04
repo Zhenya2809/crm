@@ -1,15 +1,11 @@
 package com.evgeniy.controller;
 
-import com.evgeniy.entity.Doctor;
-import com.evgeniy.entity.Patient;
-import com.evgeniy.entity.PatientCard;
-import com.evgeniy.entity.User;
+import com.evgeniy.entity.*;
 import com.evgeniy.repository.DoctorRepository;
 import com.evgeniy.repository.PatientCardRepository;
 import com.evgeniy.repository.PatientRepository;
 import com.evgeniy.repository.UserRepository;
-import com.evgeniy.service.AppointmentService;
-import com.evgeniy.service.UserService;
+import com.evgeniy.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.security.core.Authentication;
@@ -20,23 +16,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Optional;
 
 
 @Controller
 public class DoctorsController {
     @Autowired
-    private AppointmentService appointmentService;
+    private PatientService patientService;
     @Autowired
-    private UserService userService;
+    private PatientCardService patientCardService;
     @Autowired
-    private DoctorRepository doctorRepository;
-    @Autowired
-    private PatientCardRepository patientCardRepository;
-    @Autowired
-    private PatientRepository patientRepository;
-    @Autowired
-    private UserRepository userRepository;
+    private TreatmentInformationService treatmentInformationService;
 
     @PostMapping("/profile")
     public String postProfile(@RequestParam(value = "fio") String fio,
@@ -45,23 +37,15 @@ public class DoctorsController {
                               @RequestParam(value = "placeOfResidence") String placeOfResidence,
                               @RequestParam(value = "insurancePolicy") String insurancePolicy,
                               Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Patient patient = new Patient();
-        patient.setFio(fio);
-        patient.setBirthday(birthday);
-        patient.setSex(sex);
-        patient.setPlaceOfResidence(placeOfResidence);
-        patient.setInsurancePolicy(insurancePolicy);
-        patient.setEmail(auth.getName());
-        patientRepository.save(patient);
 
+        patientService.CreatePatient(fio, birthday, sex, placeOfResidence, insurancePolicy);
         return "profile";
     }
 
     @GetMapping("/profile")
     public String getProfile(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Iterable<Patient> patientCards = patientRepository.findAllByEmail(auth.getName());
+        Iterable<Patient> patientCards = patientService.findAllByEmail(auth.getName());
         model.addAttribute("patientCard", patientCards);
         return "profile";
     }
@@ -69,7 +53,7 @@ public class DoctorsController {
 
     @GetMapping("/doctor1")
     public String doctor1(Model model) {
-        Iterable<Patient> patient = patientRepository.findAll();
+        Iterable<Patient> patient = patientService.findAll();
         model.addAttribute("patient", patient);
         return "doctor1";
     }
@@ -77,7 +61,7 @@ public class DoctorsController {
     @PostMapping("/doctor1")
     public String postDoctor1(@RequestParam(value = "id") Long id,
                               Model model) {
-        patientRepository.findById(id);
+        patientService.findById(id);
 
         return "doctor1";
     }
@@ -85,7 +69,7 @@ public class DoctorsController {
 
     @GetMapping("/doctor1/patientmenu")
     public String getPatientMenu(Model model) {
-        Iterable<Patient> patientCard = patientRepository.findAll();
+        Iterable<Patient> patientCard = patientService.findAll();
         model.addAttribute("patientCard", patientCard);
 
         return "doctor1/patientmenu";
@@ -94,21 +78,12 @@ public class DoctorsController {
     @PostMapping("/doctor1/patientmenu")
     public String postPatientmenu(@RequestParam(value = "id") Long id,
                                   @RequestParam(value = "diagnosis") String diagnosis,
+                                  @RequestParam(value = "recommendations") String recommendations,
+                                  @RequestParam(value = "symptoms") String symptoms,
+                                  @RequestParam(value = "treatment") String treatment,
                                   Model model) {
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        Doctor doctor = userRepository.findByUsername(auth.getName()).getDoctor();
-        Patient patient = patientRepository.findPatientById(id);
-
-        PatientCard patientCard = new PatientCard();
-        patientCard.setPatient(patient);
-        patientCard.setDiagnosis(diagnosis);
-        patientCard.setDoctor(doctor);
-
-
-        patientCardRepository.save(patientCard);
-
+        treatmentInformationService.CreateTreatmentInformation(id, diagnosis, recommendations, symptoms, treatment);
 
         return "doctor1/patientmenu";
     }
@@ -116,7 +91,7 @@ public class DoctorsController {
     @PostMapping("/doctor1/patient")
     public String postPatient(@RequestParam(value = "id") Long id,
                               Model model) {
-        PatientCard patientCard = patientCardRepository.findPatientCardById(id);
+        PatientCard patientCard = patientCardService.findPatientCardById(id);
         model.addAttribute("patientCard", patientCard);
         return "doctor1/patient";
     }

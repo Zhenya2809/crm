@@ -26,7 +26,6 @@ public class AppointmentService {
             String date = e.getDate();
             String time= e.getTime();
             String email = e.getPatient().getEmail();
-
             Date todayDate = new Date();
             SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy-MM-dd");
             System.out.println("Текущая дата " + formatForDateNow.format(todayDate));
@@ -40,6 +39,9 @@ public class AppointmentService {
             }
         });
 
+    }
+    public Iterable<AppointmentToDoctors> findAll(){
+        return appointmentRepository.findAll();
     }
 
 

@@ -73,4 +73,11 @@ public class UserService implements UserDetailsService {
         return em.createQuery("SELECT u FROM User u WHERE u.id > :paramId", User.class)
                 .setParameter("paramId", idMin).getResultList();
     }
+    public User createUser(String username, String password, String passwordConfirm){
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setPasswordConfirm(passwordConfirm);
+        return user;
+    }
 }

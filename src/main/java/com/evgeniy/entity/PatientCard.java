@@ -1,17 +1,15 @@
 package com.evgeniy.entity;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Getter
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @Setter
-@ToString
 @Table(name = "t_patientCard")
 
 public class PatientCard {
@@ -21,12 +19,12 @@ public class PatientCard {
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "clientID")
+    @JoinColumn(name = "client_id")
     private Patient patient;
-    @Column(name = "diagnosis")
-    private String diagnosis;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "doctorID")
-    private Doctor doctor;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @Column(name = "treatment_information")
+    private Set<TreatmentInformation> treatmentInformation;
+
 
 }

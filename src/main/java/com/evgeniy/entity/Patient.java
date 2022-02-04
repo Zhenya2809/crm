@@ -2,12 +2,13 @@ package com.evgeniy.entity;
 
 import lombok.*;
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor
 @Setter
-@ToString
 @Table(name = "t_patientInfo")
 public class Patient {
     @Id
@@ -26,4 +27,7 @@ public class Patient {
     private String insurancePolicy;
     @Column(name = "email")
     private String email;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    private Set<AppointmentToDoctors> appointmentToDoctors;
 }

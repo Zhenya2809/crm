@@ -34,12 +34,12 @@ public class RegistrationController {
         return "error";
     }
 
-@RequestMapping("/login")
-    public String getLogin(@RequestParam(value = "error",required = false) String error,
-                           @RequestParam(value = "logout",required = false) String logout,
+    @RequestMapping("/login")
+    public String getLogin(@RequestParam(value = "error", required = false) String error,
+                           @RequestParam(value = "logout", required = false) String logout,
                            Model model) {
-        model.addAttribute("error",error !=null);
-        model.addAttribute("logout",logout !=null);
+        model.addAttribute("error", error != null);
+        model.addAttribute("logout", logout != null);
         return "login";
     }
     //POST
@@ -49,14 +49,8 @@ public class RegistrationController {
                           @RequestParam(value = "password") String password,
                           @RequestParam(value = "passwordConfirm") String passwordConfirm,
                           @ModelAttribute("userForm") @Valid User userForm, BindingResult bindingResult, Model model) {
-//        List<User> userList = userService.allUsers();
-//        boolean usernameError = userList.stream().anyMatch(user -> user.getUsername().equals(username));
-//
 
-        User user = new User();
-        user.setUsername(username);
-        user.setPassword(password);
-        user.setPasswordConfirm(passwordConfirm);
+        User user = userService.createUser(username, password, passwordConfirm);
 
         if (bindingResult.hasErrors()) {
             return "error";

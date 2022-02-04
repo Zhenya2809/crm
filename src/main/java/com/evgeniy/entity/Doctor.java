@@ -1,17 +1,15 @@
 package com.evgeniy.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor
 @Setter
-@ToString
 @Table(name = "t_doctor")
 public class Doctor {
     @Id
@@ -22,5 +20,8 @@ public class Doctor {
     private String fio;
     @Column(name = "speciality")
     private String speciality;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    private Set<AppointmentToDoctors> appointmentToDoctors;
 
 }
