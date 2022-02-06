@@ -24,4 +24,13 @@ public class Doctor {
     @OneToMany(fetch = FetchType.LAZY)
     private Set<AppointmentToDoctors> appointmentToDoctors;
 
+    @Override
+    public String toString() {
+        return "Doctor{" +
+                "id=" + id +
+                ", fio='" + fio + '\'' +
+                ", speciality='" + speciality + '\'' +
+                ", appointmentToDoctors=" + appointmentToDoctors +
+                '}';
+    }
 }

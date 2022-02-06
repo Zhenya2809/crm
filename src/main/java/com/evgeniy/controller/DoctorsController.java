@@ -1,10 +1,7 @@
 package com.evgeniy.controller;
 
 import com.evgeniy.entity.*;
-import com.evgeniy.repository.DoctorRepository;
-import com.evgeniy.repository.PatientCardRepository;
-import com.evgeniy.repository.PatientRepository;
-import com.evgeniy.repository.UserRepository;
+import com.evgeniy.repository.*;
 import com.evgeniy.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
@@ -18,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -29,8 +28,11 @@ public class DoctorsController {
     private PatientCardService patientCardService;
     @Autowired
     private TreatmentInformationService treatmentInformationService;
+    @Autowired
+    private AppointmentService appointmentService;
 
     @PostMapping("/profile")
+
     public String postProfile(@RequestParam(value = "fio") String fio,
                               @RequestParam(value = "sex") String sex,
                               @RequestParam(value = "birthday") String birthday,
@@ -51,31 +53,32 @@ public class DoctorsController {
     }
 
 
-    @GetMapping("/doctor1")
+    @GetMapping("/doctor")
     public String doctor1(Model model) {
         Iterable<Patient> patient = patientService.findAll();
         model.addAttribute("patient", patient);
-        return "doctor1";
+        return "doctor";
     }
 
-    @PostMapping("/doctor1")
+    @PostMapping("/doctor")
     public String postDoctor1(@RequestParam(value = "id") Long id,
                               Model model) {
-        patientService.findById(id);
+        Iterable<Patient> patient = patientService.findAll();
+        model.addAttribute("patient", patient);
 
-        return "doctor1";
+        return "doctor";
     }
 
 
-    @GetMapping("/doctor1/patientmenu")
+    @GetMapping("/doctor/patientmenu")
     public String getPatientMenu(Model model) {
-        Iterable<Patient> patientCard = patientService.findAll();
-        model.addAttribute("patientCard", patientCard);
+        Iterable<Patient> patient = patientService.findAll();
+        model.addAttribute("patient", patient);
 
-        return "doctor1/patientmenu";
+        return "doctor/patientmenu";
     }
 
-    @PostMapping("/doctor1/patientmenu")
+    @PostMapping("/doctor/patientmenu")
     public String postPatientmenu(@RequestParam(value = "id") Long id,
                                   @RequestParam(value = "diagnosis") String diagnosis,
                                   @RequestParam(value = "recommendations") String recommendations,
@@ -85,14 +88,38 @@ public class DoctorsController {
 
         treatmentInformationService.CreateTreatmentInformation(id, diagnosis, recommendations, symptoms, treatment);
 
-        return "doctor1/patientmenu";
+        return "doctor/patientmenu";
     }
 
-    @PostMapping("/doctor1/patient")
-    public String postPatient(@RequestParam(value = "id") Long id,
-                              Model model) {
-        PatientCard patientCard = patientCardService.findPatientCardById(id);
-        model.addAttribute("patientCard", patientCard);
-        return "doctor1/patient";
+    @PostMapping("/doctor/patient")
+    public String postPatient(Model model) {
+
+        return "doctor/patient";
     }
+
+    @GetMapping("/doctor/patient")
+    public String getPatient(@RequestParam(value = "id") Long id,
+                             Model model) {
+        Patient patient = patientService.findPatientById(id);
+        model.addAttribute("patient", patient);
+        return "doctor/patient";
+    }
+
+    @PostMapping("/doctor/patientAppointment")
+    public String postPatientAppointment(Model model) {
+
+        return "doctor/patientAppointment";
+    }
+
+    @GetMapping("/doctor/patientAppointment")
+    public String getPatientAppointment(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Iterable<AppointmentToDoctors> appointmentToDoctors = appointmentService.findAllByDoctor_Id(((User) auth.getPrincipal()).getDoctor().getId());
+        model.addAttribute("appointmentToDoctors", appointmentToDoctors);
+
+
+        return "doctor/patientAppointment";
+    }
+
+
 }

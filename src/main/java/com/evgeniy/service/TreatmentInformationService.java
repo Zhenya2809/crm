@@ -33,7 +33,7 @@ public class TreatmentInformationService {
 
         Date todayDate = new Date();
         SimpleDateFormat formatForDate = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat formatForTime = new SimpleDateFormat("HH-mm");
+        SimpleDateFormat formatForTime = new SimpleDateFormat("HH.mm");
 
         Doctor doctor = userRepository.findByUsername(auth.getName()).getDoctor();
         Patient patient = patientRepository.findPatientById(id);
@@ -49,5 +49,6 @@ public class TreatmentInformationService {
         treatmentInformation.setSymptoms(symptoms);
         treatmentInformation.setTreatment(treatment);
         treatmentInformation.setPatientCard(patientCard);
+        treatmentInformationRepository.save(treatmentInformation);
     }
 }

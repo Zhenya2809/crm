@@ -1,20 +1,23 @@
 <div th:fragment="registration">
-    <form action="/registration" method="post">
-        <h2>Регистрация</h2>
-        <div>
-            <input type="email" name="username" aria-label="login" placeholder="Email" class="form-control">
-        </div>
+    <link th:href="@{/static/css/signin.css}" rel="stylesheet"/>
+    <main class="form-signin">
+        <form action="/registration" method="post">
+            <img src="/static/logo/registration.png" class="center-img">
+            <div>
+                <input type="email" name="username" aria-label="login" placeholder="Email" class="form-control">
+            </div>
 
-        <div>
-            <input type="password" name="password" aria-label="password" placeholder="Password"
-                   class="form-control">
-        </div>
-        <div>
-            <input type="password" name="passwordConfirm" path="passwordConfirm" aria-label="password"
-                   placeholder="Confirm your password"
-                   class="form-control">
-        </div>
-        <button type="submit">Зарегистрироваться</button>
-        <a href="/">Главная</a>
-    </form>
+            <div>
+                <input type="password" name="password" aria-label="password" placeholder="Password"
+                       class="form-control">
+            </div>
+            <div>
+                <input type="password" name="passwordConfirm" path="passwordConfirm" aria-label="password"
+                       placeholder="Confirm your password"
+                       class="form-control">
+            </div>
+            <button type="submit" class="btn btn-warning">Зарегистрироваться</button>
+
+        </form>
+    </main>
 </div>

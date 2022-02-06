@@ -1,0 +1,13 @@
+.social-svg a {
+    text-decoration: none;
+}
+
+.social-svg svg[role="img"] {
+    width: 100px;
+    height: 100px;
+    border-radius: 5%;
+    fill: white;
+    margin: 2rem;
+}
+svg[aria-label="Flickr"], svg[aria-label="Xing"], svg[aria-label="Instagram"] { background: #eee; }
+#instagram circle, #instagram path { fill: #000; }

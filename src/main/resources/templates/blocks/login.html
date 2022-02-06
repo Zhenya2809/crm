@@ -1,13 +1,32 @@
 <div th:fragment="login">
-    <form action="/login" method="post">
-        <div>
-            <input type="text" name="username" aria-label="login" placeholder="login" class="form-control">
-        </div>
-        <div>
-            <input type="password" name="password" aria-label="password" placeholder="password"
-                   class="form-control">
-        </div>
-        <div> &nbsp</div>
-        <button type="submit" class="btn btn-primary"> Войти </button>
-    </form>
+    <title> Мейн сайта</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link th:href="@{/static/css/signin.css}" rel="stylesheet"/>
+    <main class="form-signin">
+        <form action="/login" method="post">
+
+            <img src="/static/logo/login.jpg" class="center-img">
+            <h1 class="h3 mb-3 fw-normal" style="text-align: center">Please sign in</h1>
+
+            <div class="form-floating">
+                <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com"
+                       name="username">
+                <label for="floatingInput">Email address</label>
+            </div>
+            <div class="form-floating">
+                <input type="password" class="form-control" id="floatingPassword" placeholder="Password"
+                       name="password">
+                <label for="floatingPassword">Password</label>
+            </div>
+
+            <div class="checkbox mb-3">
+                <label>
+                    <input type="checkbox" value="remember-me"> Remember me
+                </label>
+            </div>
+            <button class="btn btn-warning" type="submit">Sign in</button>
+            <p class="mt-5 mb-3 text-muted">&copy; 2022</p>
+        </form>
+
+    </main>
 </div>

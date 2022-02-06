@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="auth">
+<head>
+    <title> Мейн сайта</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" th:href="@{/static/css/bootstrap.css}">
+    <html lang="en">
+    <div class="container py-3">
+        <header th:insert="blocks/header :: header"></header>
+        <form  style="display:flex;justify-content:center;align-items:center;" action="/doctor/patient" method="post">
+            <div> &nbsp</div>
+            <button  type="submit" class="btn btn-primary"> перейти к пациенту </button>
+        </form>
+        <div th:each="el: ${appointmentToDoctors}" sec:authorize="hasRole('DOCTOR')" class="alert alert-info mt-2"
+             style="align-content: center; color: #1d47a2">
+            <h3 style="text-align: center" th:text="${el.getPatient().getId()}"></h3>
+            <h3 style="text-align: center" th:text="${el.getTime()}"></h3>
+            <h3 style="text-align: center" th:text="${el.getPatient().getFio()}"></h3>
+
+
+        </div>
+
+        <div th:insert="blocks/footer :: footer"></div>
+    </div>
+    </div>
+    </html>

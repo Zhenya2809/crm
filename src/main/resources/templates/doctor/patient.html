@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="auth">
+<head>
+    <title> Мейн сайта</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" th:href="@{/static/css/bootstrap.css}">
+    <html lang="en">
+    <div class="container py-3">
+        <header th:insert="blocks/header :: header"></header>
+
+
+        <div th:each="el: ${patient}" sec:authorize="hasRole('DOCTOR')" class="alert alert-info mt-2"
+             style="align-content: center; color: #1d47a2">
+            <h3 style="text-align: center" th:text="${patient.getFio()}"></h3>
+            <h3 style="text-align: center" th:text="${patient.getId()}"></h3>
+        </div>
+
+        <form action="/doctor/patientmenu" method="post">
+            <div>
+                <input type="text" name="id" aria-label="id" placeholder="id" class="form-control">
+            </div>
+            <div>
+                <input type="text" name="diagnosis" aria-label="diagnosis" placeholder="diagnosis"
+                       class="form-control">
+            </div>
+            <div> &nbsp</div>
+            <div>
+                <input type="text" name="recommendations" aria-label="recommendations" placeholder="recommendations"
+                       class="form-control">
+            </div>
+            <div> &nbsp</div>
+            <div>
+                <input type="text" name="symptoms" aria-label="symptoms" placeholder="symptoms"
+                       class="form-control">
+            </div>
+            <div> &nbsp</div>
+            <div>
+                <input type="text" name="treatment" aria-label="treatment" placeholder="treatment"
+                       class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary"> Сохранить</button>
+        </form>
+
+        <div class="container mt-5">
+
+            <div th:insert="blocks/footer :: footer"></div>
+        </div>
+    </div>
+    </html>

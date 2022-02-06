@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="auth">
+<head>
+    <title> Мейн сайта</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" th:href="@{/static/css/bootstrap.css}">
+    <html lang="en">
+    <div class="container py-3">
+        <header th:insert="blocks/header :: header"></header>
+
+        <div class="container mt-5">
+            <div th:each="el: ${patient}" sec:authorize="hasRole('DOCTOR')" class="alert alert-info mt-2"
+                 style="align-content: center; color: #1d47a2">
+
+                <h6 style="text-align: center">ID</h6> <h5 style="text-align: center" th:text="${el.getId()}"></h5>
+                <h6 style="text-align: center">ФИО</h6> <h5 style="text-align: center" th:text="${el.getFio()}"></h5>
+                <h6 style="text-align: center">___________________________________</h6>
+                <h6 style="text-align: center">ПОЛ</h6> <h5 style="text-align: center" th:text="${el.getSex()}"></h5>
+                <h6 style="text-align: center">Дата рождения</h6> <h5 style="text-align: center" th:text="${el.getBirthday()}"></h5>
+                <h6 style="text-align: center">Место проживания</h6> <h5 style="text-align: center" th:text="${el.getPlaceOfResidence()}"></h5>
+                <h6 style="text-align: center">Страховой полис </h6><h5 style="text-align: center" th:text="${el.getInsurancePolicy()}"></h5>
+                <h6 style="text-align: center">Email</h6> <h5 style="text-align: center" th:text="${el.getEmail()}"></h5>
+
+            </div>
+        </div>
+        <div class="container mt-5">
+
+            <div th:insert="blocks/footer :: footer"></div>
+        </div>
+    </div>
+    </html>
