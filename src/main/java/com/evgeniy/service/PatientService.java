@@ -14,7 +14,7 @@ public class PatientService {
     @Autowired
     private PatientRepository patientRepository;
 
-    public void CreatePatient(String fio,String birthday,String sex,String placeOfResidence, String insurancePolicy){
+    public void CreatePatient(String fio, String birthday, String sex, String placeOfResidence, String insurancePolicy) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Patient patient = new Patient();
         patient.setFio(fio);
@@ -25,16 +25,24 @@ public class PatientService {
         patient.setEmail(auth.getName());
         patientRepository.save(patient);
     }
-    public Iterable<Patient> findAllByEmail(String email){
-       return patientRepository.findAllByEmail(email);
+
+    public Iterable<Patient> findAllByEmail(String email) {
+        return patientRepository.findAllByEmail(email);
     }
-    public Iterable<Patient> findAll(){
+
+    public Iterable<Patient> findAll() {
         return patientRepository.findAll();
     }
-    public Optional<Patient> findById(Long id){
-         return patientRepository.findById(id);
+
+    public Optional<Patient> findById(Long id) {
+        return patientRepository.findById(id);
     }
-    public Patient findPatientById(Long id){
+
+    public Patient findPatientById(Long id) {
         return patientRepository.findPatientById(id);
+    }
+
+    public Optional<Patient> findPatientByFio(String name) {
+        return patientRepository.findPatientByFio(name);
     }
 }

@@ -14,10 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Consumer;
 
 
 @Controller
@@ -55,18 +53,37 @@ public class DoctorsController {
 
     @GetMapping("/doctor")
     public String doctor1(Model model) {
-        Iterable<Patient> patient = patientService.findAll();
-        model.addAttribute("patient", patient);
-        return "doctor";
+//        Iterable<Patient> patient = patientService.findAll();
+//        model.addAttribute("patient", patient);
+        return "doctor/doctor";
     }
 
     @PostMapping("/doctor")
-    public String postDoctor1(@RequestParam(value = "id") Long id,
-                              Model model) {
-        Iterable<Patient> patient = patientService.findAll();
-        model.addAttribute("patient", patient);
+    public String postDoctor1(
+            @RequestParam(value = "id", required = false) Long id,
+            @RequestParam(value = "name", required = false) String name,
+            Model model) {
 
-        return "doctor";
+
+        if (name != null) {
+            Optional<Patient> patientByFio = patientService.findPatientByFio(name); //findall
+            if (patientByFio.isPresent()) {
+                Iterator<Patient> iteratorByName = patientByFio.stream().filter(patient -> patient.getFio().contains(name)).iterator();
+                model.addAttribute("patient", iteratorByName);
+            }
+        }
+        if (id != 0) {
+            Optional<Patient> patientOptional = patientService.findById(id);
+                if (patientOptional.isPresent()) {
+                    List<AppointmentToDoctors> appointments = appointmentService.findAllByPatientId(id);
+                    Patient patient = patientOptional.get();
+
+                model.addAttribute("appointments",appointments);
+
+                model.addAttribute("patient", patient);
+            }
+        }
+        return "doctor/doctor";
     }
 
 

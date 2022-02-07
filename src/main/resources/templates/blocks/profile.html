@@ -4,7 +4,7 @@
 
     <div class="container mt-5">
         <div th:each="el: ${patientCard}" class="alert alert-info mt-2 "
-             style="align-content: center; color: #1d47a2">
+             style="align-content: center; color: white">
             <h3 style="text-align: center" th:text="${el.id}"></h3>
             <h3 style="text-align: center" th:text="${el.fio}"></h3>
             <p style="text-align: center" th:text="${el.email}"></p>
@@ -12,7 +12,7 @@
             <p style="text-align: center" th:text="${el.insurancePolicy}"></p>
             <p style="text-align: center" th:text="${el.placeOfResidence}"></p>
         </div>
-    </div>
+
 
     &nbsp;
     <form action="/profile" method="post">
@@ -39,4 +39,5 @@
         <div> &nbsp</div>
         <button type="submit" class="btn btn-primary"> сохранить </button>
     </form>
+    </div>
 </div>

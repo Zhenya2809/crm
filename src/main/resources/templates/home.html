@@ -6,8 +6,11 @@
     <link rel="stylesheet" th:href="@{/static/css/bootstrap.css}">
     <html lang="en">
     <div class="p-3 bg-dark text-white">
+
         <header th:insert="blocks/header :: header"></header>
         <div class="container mt-5">
+            <h4><a sec:authorize="!isAuthenticated()" href="/login">Войти</a></h4>
+            <h4><a sec:authorize="!isAuthenticated()" href="/registration">Зарегистрироваться</a></h4>
             <div th:each="el: ${date}" sec:authorize="hasRole('ADMIN')" class="alert alert-info mt-2"
                  style="align-content: center; color: #1d47a2">
                 <h3 style="text-align: center" th:text="${el.getPatient().getFio()}"></h3>
@@ -17,8 +20,7 @@
             </div>
         </div>
 
-        <h4><a sec:authorize="!isAuthenticated()" href="/login">Войти</a></h4>
-        <h4><a sec:authorize="!isAuthenticated()" href="/registration">Зарегистрироваться</a></h4>
+
         <div class="container mt-5">
 
             <div th:insert="blocks/footer :: footer"></div>

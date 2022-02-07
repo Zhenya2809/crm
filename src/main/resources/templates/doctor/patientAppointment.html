@@ -12,7 +12,7 @@
             <button  type="submit" class="btn btn-primary"> перейти к пациенту </button>
         </form>
         <div th:each="el: ${appointmentToDoctors}" sec:authorize="hasRole('DOCTOR')" class="alert alert-info mt-2"
-             style="align-content: center; color: #1d47a2">
+             style="align-content: center; color: white">
             <h3 style="text-align: center" th:text="${el.getPatient().getId()}"></h3>
             <h3 style="text-align: center" th:text="${el.getTime()}"></h3>
             <h3 style="text-align: center" th:text="${el.getPatient().getFio()}"></h3>

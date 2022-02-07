@@ -53,6 +53,10 @@ public class AppointmentService {
 
         Date date = new Date();
         SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy-MM-dd");
-        return appointmentRepository.findAllByDoctor_Id(id).stream().filter(e->e.getDate().equals(formatForDateNow.format(date))).toList();
+        return appointmentRepository.findAllByDoctor_Id(id).stream().filter(e -> e.getDate().equals(formatForDateNow.format(date))).toList();
+    }
+
+    public List<AppointmentToDoctors> findAllByPatientId(Long id) {
+        return appointmentRepository.findAllByPatientId(id);
     }
 }

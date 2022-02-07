@@ -10,7 +10,7 @@
 
         <div class="container mt-5">
             <div th:each="el: ${patient}" sec:authorize="hasRole('DOCTOR')" class="alert alert-info mt-2"
-                 style="align-content: center; color: #1d47a2">
+                 style="align-content: center; color: white">
 
                 <h6 style="text-align: center">ID</h6> <h5 style="text-align: center" th:text="${el.getId()}"></h5>
                 <h6 style="text-align: center">ФИО</h6> <h5 style="text-align: center" th:text="${el.getFio()}"></h5>

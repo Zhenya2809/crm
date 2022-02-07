@@ -2108,7 +2108,7 @@ progress {
     font-weight: 400;
     line-height: 1.5;
     color: #212529;
-    background-color: #fff;
+    background-color: #151515;
     background-clip: padding-box;
     border: 1px solid #ced4da;
     -webkit-appearance: none;
@@ -2134,7 +2134,7 @@ progress {
 
 .form-control:focus {
     color: #212529;
-    background-color: #fff;
+    background-color: #181515;
     border-color: #86b7fe;
     outline: 0;
     box-shadow: 0 0 0 .25rem rgba(13, 110, 253, .25)
@@ -2155,7 +2155,7 @@ progress {
 }
 
 .form-control:disabled, .form-control[readonly] {
-    background-color: #e9ecef;
+    background-color: #181515;
     opacity: 1
 }
 
@@ -2165,7 +2165,7 @@ progress {
     -webkit-margin-end: .75rem;
     margin-inline-end: .75rem;
     color: #212529;
-    background-color: #e9ecef;
+    background-color: #181515;
     pointer-events: none;
     border-color: inherit;
     border-style: solid;
@@ -3003,26 +3003,26 @@ textarea.form-control-lg {
 
 .btn-primary {
     color: #fff;
-    background-color: #0d6efd;
-    border-color: #0d6efd
+    background-color: #171717;
+    border-color: #464d4f
 }
 
 .btn-primary:hover {
     color: #fff;
-    background-color: #0b5ed7;
+    background-color: yellow;
     border-color: #0a58ca
 }
 
 .btn-check:focus + .btn-primary, .btn-primary:focus {
     color: #fff;
-    background-color: #0b5ed7;
-    border-color: #0a58ca;
+    background-color: #98081e;
+    border-color: #7a0606;
     box-shadow: 0 0 0 .25rem rgba(49, 132, 253, .5)
 }
 
 .btn-check:active + .btn-primary, .btn-check:checked + .btn-primary, .btn-primary.active, .btn-primary:active, .show > .btn-primary.dropdown-toggle {
     color: #fff;
-    background-color: #0a58ca;
+    background-color: #0aca0d;
     border-color: #0a53be
 }
 
@@ -5165,13 +5165,13 @@ textarea.form-control-lg {
 }
 
 .alert-info {
-    color: #055160;
-    background-color: #cff4fc;
-    border-color: #b6effb
+    color: #ffffff;
+    background-color: #2a2929;
+    border-color: #ffffff
 }
 
 .alert-info .alert-link {
-    color: #04414d
+    color: #98083a
 }
 
 .alert-warning {
