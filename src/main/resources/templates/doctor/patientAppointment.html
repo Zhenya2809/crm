@@ -7,16 +7,19 @@
     <html lang="en">
     <div class="container py-3">
         <header th:insert="blocks/header :: header"></header>
-        <form  style="display:flex;justify-content:center;align-items:center;" action="/doctor/patient" method="post">
+        <form style="display:flex;justify-content:center;align-items:center;" action="/doctor/patient" method="post">
             <div> &nbsp</div>
-            <button  type="submit" class="btn btn-primary"> перейти к пациенту </button>
+            <button type="submit" class="btn btn-primary"> перейти к пациенту</button>
         </form>
         <div th:each="el: ${appointmentToDoctors}" sec:authorize="hasRole('DOCTOR')" class="alert alert-info mt-2"
              style="align-content: center; color: white">
+
+            <h3 style="text-align: center" th:text="${el.getDoctorsappointmentsID()}"></h3>
             <h3 style="text-align: center" th:text="${el.getPatient().getId()}"></h3>
             <h3 style="text-align: center" th:text="${el.getTime()}"></h3>
             <h3 style="text-align: center" th:text="${el.getPatient().getFio()}"></h3>
-
+            <a th:href="'/doctor/patientAppointment/'+ ${el.getPatient().getId()} +'/edit'" class="btn btn-warning">Перейти</a>
+            <a th:href="'/doctor/patientAppointment/'+ ${el.getDoctorsappointmentsID()} +'/delete'" class="btn btn-warning">Удалить</a>
 
         </div>
 

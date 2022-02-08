@@ -3,20 +3,47 @@ package com.evgeniy.service;
 import com.evgeniy.email.SendEmailTLS;
 import com.evgeniy.entity.AppointmentToDoctors;
 import com.evgeniy.entity.Doctor;
+import com.evgeniy.entity.Patient;
 import com.evgeniy.entity.User;
 import com.evgeniy.repository.AppointmentRepository;
+import com.evgeniy.repository.DoctorRepository;
+import com.evgeniy.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AppointmentService {
     @Autowired
     AppointmentRepository appointmentRepository;
+    @Autowired
+    private PatientRepository patientRepository;
+    @Autowired
+    private DoctorRepository doctorRepository;
 
+
+
+    public void CreateAppointmentToDoctors(String date, String time, String doctorID) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        Patient patient = patientRepository.findByEmail(auth.getName());
+        Doctor doctor = doctorRepository.findDoctorById(Long.valueOf(doctorID));
+
+        AppointmentToDoctors incoming = new AppointmentToDoctors();
+        incoming.setDate(date);
+        incoming.setTime(time);
+        incoming.setDoctor(doctor);
+        incoming.setPatient(patient);
+
+        appointmentRepository.save(incoming);
+    }
 
     public void sendEmailReminder() {
 
@@ -59,4 +86,10 @@ public class AppointmentService {
     public List<AppointmentToDoctors> findAllByPatientId(Long id) {
         return appointmentRepository.findAllByPatientId(id);
     }
+
+    public void deleteAppointment(Long id) {
+        AppointmentToDoctors appointmentToDoctorsByDoctorsappointmentsID = appointmentRepository.findAppointmentToDoctorsByDoctorsappointmentsID(id);
+        appointmentRepository.delete(appointmentToDoctorsByDoctorsappointmentsID);
+    }
 }
+

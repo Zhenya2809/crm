@@ -45,4 +45,8 @@ public class PatientService {
     public Optional<Patient> findPatientByFio(String name) {
         return patientRepository.findPatientByFio(name);
     }
+
+    public Patient findPatientByFioContains(String fio) {
+        return patientRepository.findPatientByFioContains(fio);
+    }
 }

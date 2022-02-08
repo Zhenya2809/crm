@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -28,6 +29,9 @@ public class DoctorsController {
     private TreatmentInformationService treatmentInformationService;
     @Autowired
     private AppointmentService appointmentService;
+    @Autowired
+    private TreatmentInformationRepository treatmentInformationRepository;
+
 
     @PostMapping("/profile")
 
@@ -52,38 +56,33 @@ public class DoctorsController {
 
 
     @GetMapping("/doctor")
-    public String doctor1(Model model) {
-//        Iterable<Patient> patient = patientService.findAll();
-//        model.addAttribute("patient", patient);
+    public String getDoctor(Model model) {
         return "doctor/doctor";
     }
 
     @PostMapping("/doctor")
-    public String postDoctor1(
-            @RequestParam(value = "id", required = false) Long id,
-            @RequestParam(value = "name", required = false) String name,
-            Model model) {
+    public String postDoctor(@RequestParam(value = "id", required = false) Long id,
+                             @RequestParam(value = "name", required = false) String name,
+                             Model model) {
 
 
-        if (name != null) {
-            Optional<Patient> patientByFio = patientService.findPatientByFio(name); //findall
-            if (patientByFio.isPresent()) {
-                Iterator<Patient> iteratorByName = patientByFio.stream().filter(patient -> patient.getFio().contains(name)).iterator();
-                model.addAttribute("patient", iteratorByName);
-            }
-        }
-        if (id != 0) {
+        if (id != null) {
             Optional<Patient> patientOptional = patientService.findById(id);
-                if (patientOptional.isPresent()) {
-                    List<AppointmentToDoctors> appointments = appointmentService.findAllByPatientId(id);
-                    Patient patient = patientOptional.get();
-
-                model.addAttribute("appointments",appointments);
+            if (patientOptional.isPresent()) {
+                Patient patient = patientOptional.get();
+                List<AppointmentToDoctors> appointmentToDoctors = patient.getAppointmentToDoctors();
+                model.addAttribute("appointments", appointmentToDoctors);
 
                 model.addAttribute("patient", patient);
             }
         }
+        if (name != null) {
+
+            Patient patientByFioContains = patientService.findPatientByFioContains(name);
+            model.addAttribute("patient", patientByFioContains);
+        }
         return "doctor/doctor";
+
     }
 
 
@@ -132,11 +131,39 @@ public class DoctorsController {
     public String getPatientAppointment(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Iterable<AppointmentToDoctors> appointmentToDoctors = appointmentService.findAllByDoctor_Id(((User) auth.getPrincipal()).getDoctor().getId());
+        appointmentToDoctors.forEach(e -> e.getPatient().getId());
         model.addAttribute("appointmentToDoctors", appointmentToDoctors);
-
-
         return "doctor/patientAppointment";
     }
 
+    @PostMapping("/doctor/patientAppointment/{id}/edit")
+    public String postAppointmentPatientEdit(@PathVariable(value = "id") long id,
+                                             @RequestParam String diagnosis,
+                                             @RequestParam String recommendations,
+                                             @RequestParam String symptoms,
+                                             @RequestParam String treatment,
+                                             Model mode) {
 
+
+        treatmentInformationService.CreateTreatmentInformation(id, diagnosis, recommendations, symptoms, treatment);
+
+        return "redirect:/doctor/patientAppointment";
+
+    }
+
+    @GetMapping("/doctor/patientAppointment/{id}/delete")
+    public String getAppointmentPatientDelete(@PathVariable(value = "id") long id,
+                                              Model mode) {
+
+        appointmentService.deleteAppointment(id);
+        return "redirect:/doctor/patientAppointment";
+
+    }
+
+    @GetMapping("/doctor/patientAppointment/{id}/edit")
+    public String getAppointmentPatientEdit(@PathVariable(value = "id") long id,
+                                            Model mode) {
+        return "doctor/appointmentEdit";
+
+    }
 }

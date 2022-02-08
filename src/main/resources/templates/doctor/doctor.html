@@ -1,14 +1,14 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="auth">
 <head>
-    <title> Мейн сайта</title>
+    <title> Доктор </title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" th:href="@{/static/css/bootstrap.css}">
-    <html lang="en">
+
     <div class="p-3 bg-dark text-white">
 
         <header th:insert="blocks/header :: header"></header>
-        <div class="container mt-5">
+        <div sec:authorize="hasRole('DOCTOR')" class="container mt-5">
             <form action="/doctor" method="post">
                 <div>
                     <input type="text" name="id" aria-label="id" placeholder="id" class="form-control">
@@ -17,7 +17,8 @@
                 <button type="submit" class="btn btn-primary"> поиск</button>
             </form>
             <div>&nbsp;</div>
-            <form action="/doctor" method="post">
+
+            <form method="post">
                 <div>
                     <input type="text" name="name" aria-label="name" placeholder="name" class="form-control">
                 </div>
@@ -34,24 +35,16 @@
                 <p style="text-align: center" th:text="${patient.getInsurancePolicy()}"></p>
                 <p style="text-align: center" th:text="${patient.getPlaceOfResidence()}"></p>
             </div>
-            <div th:each="el: ${appointments}" class="alert alert-info mt-2" style="align-content: center; color: white">
+            <div th:each="el: ${appointments}" class="alert alert-info mt-2"
+                 style="align-content: center; color: white">
                 <p style="text-align: center" th:text="${el.getDate()}"></p>
                 <p style="text-align: center" th:text="${el.getTime()}"></p>
 
             </div>
 
 
-
-
-
-        </div>
-        <div class="container mt-5">
-
-
             <div th:insert="blocks/footer :: footer"></div>
+
         </div>
     </div>
-
-    </html>
-
 </html>
