@@ -11,8 +11,6 @@ public class Application {
 
     public static void main(String[] args) throws IOException {
         SpringApplication.run(Application.class, args);
-//        SendEmailTLS sendEmailTLS = new SendEmailTLS();
-//        sendEmailTLS.SendEmail("testsubject", "zhenya.gricyk@gmail.com", "testTextofMessage");
 
     }
 
