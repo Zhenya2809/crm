@@ -1,8 +1,8 @@
 <div th:fragment="profile" xmlns:sec="http://www.w3.org/1999/xhtml">
 
-
-
     <div class="container mt-5">
+    <a th:href="'/profileEdit'" class="btn btn-warning">Заполнить профиль </a>
+
         <div th:each="el: ${patientCard}" class="alert alert-info mt-2 "
              style="align-content: center; color: white">
             <h3 style="text-align: center" th:text="${el.id}"></h3>
@@ -11,33 +11,13 @@
             <p style="text-align: center" th:text="${el.sex}"></p>
             <p style="text-align: center" th:text="${el.insurancePolicy}"></p>
             <p style="text-align: center" th:text="${el.placeOfResidence}"></p>
+
+
+            <a th:href="'/patient/'+ ${el.id} +'/edit'" class="btn btn-warning">Редактировать профиль </a>
         </div>
 
 
     &nbsp;
-    <form action="/profile" method="post">
-        <div>
-            <input type="text" name="fio" aria-label="fio" placeholder="fio" class="form-control">
-        </div>
-        <div>
-            <input type="date" name="birthday" aria-label="birthday" placeholder="birthday"
-                   class="form-control">
-        </div>
-        <select name="sex" id="sex" style="text-align: center; height: 25px; width: 350px; color: white; background: #151515">
-            <option value="male"> male </option>
-            <option value="female"> female </option>
-            <option value="trans"> trans </option>
-        </select>
-        <div>
-            <input type="text" name="placeOfResidence" aria-label="placeOfResidence" placeholder="placeOfResidence"
-                   class="form-control">
-        </div>
-        <div>
-            <input type="text" name="insurancePolicy" aria-label="insurancePolicy" placeholder="insurancePolicy"
-                   class="form-control">
-        </div>
-        <div> &nbsp</div>
-        <button type="submit" class="btn btn-warning"> сохранить </button>
-    </form>
+
     </div>
 </div>

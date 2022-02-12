@@ -2145,7 +2145,7 @@ progress {
 }
 
 .form-control::-moz-placeholder {
-    color: #6c757d;
+    color: #ffffff;
     opacity: 1
 }
 
@@ -2182,7 +2182,7 @@ progress {
     -webkit-margin-end: .75rem;
     margin-inline-end: .75rem;
     color: #212529;
-    background-color: #e9ecef;
+    background-color: #212529;
     pointer-events: none;
     border-color: inherit;
     border-style: solid;
@@ -2204,11 +2204,11 @@ progress {
 }
 
 .form-control:hover:not(:disabled):not([readonly])::-webkit-file-upload-button {
-    background-color: #dde0e3
+    background-color: #212529
 }
 
 .form-control:hover:not(:disabled):not([readonly])::file-selector-button {
-    background-color: #dde0e3
+    background-color: #212529
 }
 
 .form-control::-webkit-file-upload-button {
@@ -2217,7 +2217,7 @@ progress {
     -webkit-margin-end: .75rem;
     margin-inline-end: .75rem;
     color: #212529;
-    background-color: #e9ecef;
+    background-color: #212529;
     pointer-events: none;
     border-color: inherit;
     border-style: solid;
@@ -2236,7 +2236,7 @@ progress {
 }
 
 .form-control:hover:not(:disabled):not([readonly])::-webkit-file-upload-button {
-    background-color: #dde0e3
+    background-color: #212529
 }
 
 .form-control-plaintext {

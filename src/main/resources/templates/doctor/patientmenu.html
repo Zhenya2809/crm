@@ -13,28 +13,22 @@
             <div class="limiter">
 
 
+                <div th:each="el: ${patient}" sec:authorize="hasRole('DOCTOR')" class="alert alert-info mt-2"
+                     style="align-content: center; color: white">
 
-
-
-            <div th:each="el: ${patient}" sec:authorize="hasRole('DOCTOR')" class="alert alert-info mt-2"
-                 style="align-content: center; color: white">
-
-                <h5 style="text-align: center" th:text="${el.getId()}"></h5>
-                <h5 style="text-align: center" th:text="${el.getFio()}"></h5>
-
-                <h5 style="text-align: center" th:text="${el.getSex()}"></h5>
-                <h5 style="text-align: center" th:text="${el.getBirthday()}"></h5>
-                <h5 style="text-align: center" th:text="${el.getPlaceOfResidence()}"></h5>
-                <h5 style="text-align: center" th:text="${el.getInsurancePolicy()}"></h5>
-                <h5 style="text-align: center" th:text="${el.getEmail()}"></h5>
-
-            </div>
+                    <h5 style="text-align: center" th:text="${el.getId()}"></h5>
+                    <h5 style="text-align: center" th:text="${el.getFio()}"></h5>
+                    <h5 style="text-align: center" th:text="${el.getSex()}"></h5>
+                    <h5 style="text-align: center" th:text="${el.getBirthday()}"></h5>
+                    <h5 style="text-align: center" th:text="${el.getPlaceOfResidence()}"></h5>
+                    <h5 style="text-align: center" th:text="${el.getInsurancePolicy()}"></h5>
+                    <h5 style="text-align: center" th:text="${el.getEmail()}"></h5>
+                </div>
 
                 <div class="bottom"></div>
             </div>
             <label for="read-more-checker" class="read-more-button"></label>
-        </div>
-        <div class="container mt-5">
+
 
             <div th:insert="blocks/footer :: footer"></div>
         </div>

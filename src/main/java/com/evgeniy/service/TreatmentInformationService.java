@@ -27,7 +27,7 @@ public class TreatmentInformationService {
     @Autowired
     private PatientCardRepository patientCardRepository;
 
-    public void CreateTreatmentInformation(Long id, String diagnosis, String recommendations, String symptoms, String treatment) {
+    public void editTreatmentInformation(Long id, String diagnosis, String recommendations, String symptoms, String treatment) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -37,8 +37,9 @@ public class TreatmentInformationService {
 
         Doctor doctor = userRepository.findByUsername(auth.getName()).getDoctor();
         Patient patient = patientRepository.findPatientById(id);
-        PatientCard patientCard = patientCardRepository.findPatientCardByPatient(patient);
 
+        PatientCard patientCard = patientCardRepository.findPatientCardByPatient(patient);
+        patientCardRepository.save(patientCard);
         TreatmentInformation treatmentInformation = new TreatmentInformation();
         treatmentInformation.setDoctor(doctor);
         treatmentInformation.setDiagnosis(diagnosis);
@@ -50,5 +51,12 @@ public class TreatmentInformationService {
         treatmentInformation.setTreatment(treatment);
         treatmentInformation.setPatientCard(patientCard);
         treatmentInformationRepository.save(treatmentInformation);
+
+
+
     }
+
+//    public Optional<TreatmentInformation> findTreatmentByPatient(Patient patient) {
+//        return treatmentInformationRepository.findTreatmentInformationByPatient(patient);
+//    }
 }

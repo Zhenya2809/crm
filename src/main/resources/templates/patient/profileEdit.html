@@ -1,0 +1,17 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <title> Мейн сайта</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" th:href="@{/static/css/bootstrap.css}">
+    <html lang="en">
+    <div class="p-3 bg-dark text-white">
+        <header th:insert="blocks/header :: header"></header>
+
+        <div th:insert="blocks/addProfileInfo :: addProfileInfo"></div>
+
+        <div th:insert="blocks/footer :: footer"></div>
+    </div>
+    </html>
+
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="auth">
+
+<title> Мейн сайта</title>
+<link rel="stylesheet" th:href="@{/static/css/bootstrap.css}">
+
+
+<header th:insert="blocks/header :: header"></header>
+<div class="container mt-5">
+    <div th:each="el: ${treatmentInformation}" sec:authorize="hasRole('DOCTOR')" class="alert alert-info mt-2"
+         style="align-content: center; color: white">
+
+        <h3 style="text-align: center" th:text="${el.getDate()}"></h3>
+        <h3 style="text-align: center" th:text="${el.getTime()}"></h3>
+        <h3 style="text-align: center" th:text="${el.getDoctor().getFio()}"></h3>
+        <h3 style="text-align: center" th:text="${el.getDoctor().getSpeciality()}"></h3>
+        <h3 style="text-align: center" th:text="${el.getSymptoms()}"></h3>
+        <h3 style="text-align: center" th:text="${el.getDiagnosis()}"></h3>
+        <h3 style="text-align: center" th:text="${el.getTreatment()}"></h3>
+        <h3 style="text-align: center" th:text="${el.getRecommendations()}"></h3>
+
+    </div>
+</div>
+
+<div th:insert="blocks/footer :: footer"></div>
+
+
+</html>

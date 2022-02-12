@@ -1,21 +1,18 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="auth">
 <head>
-    <title> Мейн сайта</title>
+    <title> Reminder menu </title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" th:href="@{/static/css/bootstrap.css}">
-    <html lang="en">
-
     <div class="p-3 bg-dark text-white">
-        <header th:insert="blocks/header :: header"></header>
+        <div class="container mt-5">
 
-        &nbsp;<div class="container mt-5"  >
-        <div th:insert="blocks/sendEmail :: sendEmail"></div>
-        &nbsp;
-
+            <header th:insert="blocks/header :: header"></header>
+            <div th:insert="blocks/sendEmail :: sendEmail"></div>
+            &nbsp;
             <div th:insert="blocks/footer :: footer"></div>
         </div>
     </div>
-    </html>
+
 
 </html>

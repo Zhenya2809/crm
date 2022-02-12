@@ -26,7 +26,7 @@ public class AppointmentService {
     private DoctorRepository doctorRepository;
 
 
-    public void CreateAppointmentToDoctors(String date, String time, String doctorID) {
+    public void createAppointmentToDoctors(String date, String time, String doctorID) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 

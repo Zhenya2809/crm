@@ -14,9 +14,9 @@
 <!--                    <li><a sec:authorize="hasRole('ADMIN')" href="/function" class="nav-link px-2 text-white">Function</a></li>-->
                     <li><a sec:authorize="!isAuthenticated()" href="/registration" class="nav-link px-2 text-white">Registration</a></li>
                     <li><a sec:authorize="hasRole('USER')" href="/clinic" class="nav-link px-2 text-white">Clinic</a></li>
-                    <li><a sec:authorize="hasRole('ADMIN')" href="/admin" class="nav-link px-2 text-white">Admin menu</a></li>
-                    <li><a sec:authorize="hasRole('ADMIN')" href="/admin/newdoctor" class="nav-link px-2 text-white">Добавить доктора</a></li>
-                    <li><a sec:authorize="hasRole('ADMIN')" href="/admin/adminreminder" class="nav-link px-2 text-white">Отправить уведомления</a></li>
+                    <li><a sec:authorize="hasRole('ADMIN')" href="/admin" class="nav-link px-2 text-white">Users menu</a></li>
+                    <li><a sec:authorize="hasRole('ADMIN')" href="/admin/newdoctor" class="nav-link px-2 text-white">Doctors menu</a></li>
+                    <li><a sec:authorize="hasRole('ADMIN')" href="/admin/adminreminder" class="nav-link px-2 text-white">Reminder</a></li>
                 </ul>
 
                 <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">

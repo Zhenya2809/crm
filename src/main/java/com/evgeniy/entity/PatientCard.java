@@ -22,7 +22,7 @@ public class PatientCard {
     @JoinColumn(name = "client_id")
     private Patient patient;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "patientCard")
     @Column(name = "treatment_information")
     private Set<TreatmentInformation> treatmentInformation;
 

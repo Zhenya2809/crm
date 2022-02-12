@@ -46,10 +46,27 @@ public class PatientService {
         return patientRepository.findPatientByFio(name);
     }
 
-    public Patient findPatientByFioContains(String fio) {
+    public Optional<Patient> findPatientByFioContains(String fio) {
         return patientRepository.findPatientByFioContains(fio);
     }
-    public Patient findPatienByAuthEmail(){
+
+    public Patient findPatienByAuthEmail() {
         return patientRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+    }
+
+
+
+    public void editPatient(Long id,String birthday,String insurancePolicy,String placeOfResidence,String sex, String fio){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Patient patient = patientRepository.findPatientById(id);
+
+        patient.setBirthday(birthday);
+        patient.setEmail(auth.getName());
+        patient.setInsurancePolicy(insurancePolicy);
+        patient.setPlaceOfResidence(placeOfResidence);
+        patient.setSex(sex);
+        patient.setFio(fio);
+        patientRepository.save(patient);
+
     }
 }

@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <title> Мейн сайта</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" th:href="@{/static/css/bootstrap.css}">
+    <html lang="en">
+    <div class="p-3 bg-dark text-white">
+        <header th:insert="blocks/header :: header"></header>
+<!--//edit-->
+
+        <div class="container mt-5">
+            <form  method="post">
+                <div>
+                    <input type="text" name="fio" aria-label="fio" placeholder="fio" class="form-control">
+                </div>
+                <div>
+                    <input type="date" name="birthday" aria-label="birthday" placeholder="birthday"
+                           class="form-control">
+                </div>
+                <select name="sex" id="sex"
+                        style="text-align: center; height: 25px; width: 350px; color: white; background: #151515">
+                    <option value="male"> male</option>
+                    <option value="female"> female</option>
+                    <option value="trans"> trans</option>
+                </select>
+                <div>
+                    <input type="text" name="placeOfResidence" aria-label="placeOfResidence" placeholder="placeOfResidence"
+                           class="form-control">
+                </div>
+                <div>
+                    <input type="text" name="insurancePolicy" aria-label="insurancePolicy" placeholder="insurancePolicy"
+                           class="form-control">
+                </div>
+                <div> &nbsp</div>
+                <button type="submit" class="btn btn-warning"> сохранить</button>
+            </form>
+        </div>
+<!--//edit-->
+        <div th:insert="blocks/footer :: footer"></div>
+    </div>
+    </html>
+
+</html>
+
+
+

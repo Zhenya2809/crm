@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -28,7 +29,7 @@ public class AdminController {
 
     //admin
     @GetMapping("/admin")
-    public String userList(Model model) {
+    public String userMenu(Model model) {
         Iterator<User> allUsers = userService.allUsers().stream().iterator();
         model.addAttribute("allUsers", allUsers);
         return "admin/admin";
@@ -44,17 +45,16 @@ public class AdminController {
     }
 
     @GetMapping("/admin/adminreminder")
-    public String adminReminder(Model model) {
+    public String getSendReminder(Model model) {
 
         return "admin/adminreminder";
     }
 
     @PostMapping("/admin/adminreminder")
-    public String deleteUser(@RequestParam(value = "sendEmail") String sendEmail,
-                             Model model) {
-        if (sendEmail.equals("1")) {
+    public String postSendReminder(Model model) {
+
             appointmentService.sendEmailReminder();
-        }
+
         return "admin/adminreminder";
     }
 
@@ -72,9 +72,16 @@ public class AdminController {
                                 Model model) {
 
         doctorService.createrDoctor(doctorfio, speciality);
-        return "admin/newdoctor";
+        return "redirect:/admin/newdoctor";
     }
+    @GetMapping("admin/doctor/{id}/delete")
+    public String getDoctorDelete(@PathVariable(value = "id") long id,
+                                  Model mode) {
 
+        doctorService.deleteDoctor(id);
+        return "redirect:/admin/newdoctor";
+
+    }
     //
 //    @GetMapping("/admin/gt/{userId}")
 //    public String gtUser(@PathVariable("userId") Long userId, Model model) {

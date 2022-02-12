@@ -1,18 +1,30 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
+
     <title> Мейн сайта</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" th:href="@{/static/css/bootstrap.css}">
-    <div class="container mt-5">
 
-        <div class="p-3 bg-dark text-white">
+
+    <div class="p-3 bg-dark text-white">
+        <div class="container mt-5">
             <header th:insert="blocks/header :: header"></header>
 
-            <h1>Функции</h1></div>
+            начало
+            <input type="checkbox" class="read-more-checker" id="read-more-checker"/>
+            <div class="limiter">
+                тут то что сварачивать
 
-        <div th:insert="blocks/footer :: footer"></div>
+                <div class="bottom"></div>
+            </div>
+            <label for="read-more-checker" class="read-more-button"></label>
 
+            конец
+
+            <div th:insert="blocks/footer :: footer"></div>
+
+        </div>
     </div>
+
 
 </html>

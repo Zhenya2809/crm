@@ -1,0 +1,29 @@
+<div th:fragment="addProfileInfo" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <div class="container mt-5">
+        <form action="/profileEdit" method="post">
+            <div>
+                <input type="text" name="fio" aria-label="fio" placeholder="fio" class="form-control">
+            </div>
+            <div>
+                <input type="date" name="birthday" aria-label="birthday" placeholder="birthday"
+                       class="form-control">
+            </div>
+            <select name="sex" id="sex"
+                    style="text-align: center; height: 25px; width: 350px; color: white; background: #151515">
+                <option value="male"> male</option>
+                <option value="female"> female</option>
+                <option value="trans"> trans</option>
+            </select>
+            <div>
+                <input type="text" name="placeOfResidence" aria-label="placeOfResidence" placeholder="placeOfResidence"
+                       class="form-control">
+            </div>
+            <div>
+                <input type="text" name="insurancePolicy" aria-label="insurancePolicy" placeholder="insurancePolicy"
+                       class="form-control">
+            </div>
+            <div> &nbsp</div>
+            <button type="submit" class="btn btn-warning"> сохранить</button>
+        </form>
+    </div>
+</div>

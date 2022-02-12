@@ -1,7 +1,6 @@
 package com.evgeniy.controller;
 
 import com.evgeniy.entity.AppointmentToDoctors;
-import com.evgeniy.entity.Doctor;
 import com.evgeniy.entity.Patient;
 import com.evgeniy.service.AppointmentService;
 import com.evgeniy.service.DoctorService;
@@ -91,7 +90,7 @@ public class MainController {
                              Model model) {
         try {
             if (!date.equals("")) {
-                appointmentService.CreateAppointmentToDoctors(date, time, doctorID);
+                appointmentService.createAppointmentToDoctors(date, time, doctorID);
             }
         } catch (DataIntegrityViolationException e) {
             return "time-reserved";

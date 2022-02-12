@@ -29,26 +29,33 @@ public class DoctorsController {
     @Autowired
     private TreatmentInformationRepository treatmentInformationRepository;
 
+    @PostMapping("/profileEdit")
 
-    @PostMapping("/profile")
-
-    public String postProfile(@RequestParam(value = "fio") String fio,
-                              @RequestParam(value = "sex") String sex,
-                              @RequestParam(value = "birthday") String birthday,
-                              @RequestParam(value = "placeOfResidence") String placeOfResidence,
-                              @RequestParam(value = "insurancePolicy") String insurancePolicy,
-                              Model model) {
+    public String postProfileEdit(@RequestParam(value = "fio") String fio,
+                                  @RequestParam(value = "sex") String sex,
+                                  @RequestParam(value = "birthday") String birthday,
+                                  @RequestParam(value = "placeOfResidence") String placeOfResidence,
+                                  @RequestParam(value = "insurancePolicy") String insurancePolicy,
+                                  Model model) {
 
         patientService.CreatePatient(fio, birthday, sex, placeOfResidence, insurancePolicy);
-        return "profile";
+        return "patient/profileEdit";
     }
 
-    @GetMapping("/profile")
-    public String getProfile(Model model) {
+    @GetMapping("/profileEdit")
+    public String getProfileEdit(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Iterable<Patient> patientCards = patientService.findAllByEmail(auth.getName());
         model.addAttribute("patientCard", patientCards);
-        return "profile";
+        return "patient/profileEdit";
+    }
+
+    @GetMapping("/profile")
+    public String getMyProfile(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Iterable<Patient> patientCards = patientService.findAllByEmail(auth.getName());
+        model.addAttribute("patientCard", patientCards);
+        return "patient/myProfile";
     }
 
 
@@ -69,14 +76,18 @@ public class DoctorsController {
                 Patient patient = patientOptional.get();
                 List<AppointmentToDoctors> appointmentToDoctors = patient.getAppointmentToDoctors();
                 model.addAttribute("appointments", appointmentToDoctors);
-
                 model.addAttribute("patient", patient);
             }
         }
         if (name != null) {
 
-            Patient patientByFioContains = patientService.findPatientByFioContains(name);
-            model.addAttribute("patient", patientByFioContains);
+            Optional<Patient> patientOptional = patientService.findPatientByFioContains(name);
+            if (patientOptional.isPresent()) {
+                Patient patient = patientOptional.get();
+                List<AppointmentToDoctors> appointmentToDoctors = patient.getAppointmentToDoctors();
+                model.addAttribute("appointments", appointmentToDoctors);
+                model.addAttribute("patient", patient);
+            }
         }
         return "doctor/doctor";
 
@@ -99,7 +110,7 @@ public class DoctorsController {
                                   @RequestParam(value = "treatment") String treatment,
                                   Model model) {
 
-        treatmentInformationService.CreateTreatmentInformation(id, diagnosis, recommendations, symptoms, treatment);
+        treatmentInformationService.editTreatmentInformation(id, diagnosis, recommendations, symptoms, treatment);
 
         return "doctor/patientmenu";
     }
@@ -116,6 +127,26 @@ public class DoctorsController {
         Patient patient = patientService.findPatientById(id);
         model.addAttribute("patient", patient);
         return "doctor/patient";
+    }
+
+    @GetMapping("/patient/{id}/edit")
+    public String getPatientInfoEdit(@PathVariable(value = "id") long id,
+                                     Model mode) {
+        return "patient/changePatientProfile";
+
+    }
+
+    @PostMapping("/patient/{id}/edit")
+    public String postPatientInfoEdit(@PathVariable(value = "id") long id,
+                                      @RequestParam(value = "fio") String fio,
+                                      @RequestParam(value = "sex") String sex,
+                                      @RequestParam(value = "birthday") String birthday,
+                                      @RequestParam(value = "placeOfResidence") String placeOfResidence,
+                                      @RequestParam(value = "insurancePolicy") String insurancePolicy,
+                                      Model mode) {
+        patientService.editPatient(id, birthday, insurancePolicy, placeOfResidence, sex, fio);
+        return "redirect:/profile";
+
     }
 
     @PostMapping("/doctor/patientAppointment")
@@ -142,7 +173,7 @@ public class DoctorsController {
                                              Model mode) {
 
 
-        treatmentInformationService.CreateTreatmentInformation(id, diagnosis, recommendations, symptoms, treatment);
+        treatmentInformationService.editTreatmentInformation(id, diagnosis, recommendations, symptoms, treatment);
 
         return "redirect:/doctor/patientAppointment";
 
@@ -161,6 +192,20 @@ public class DoctorsController {
     public String getAppointmentPatientEdit(@PathVariable(value = "id") long id,
                                             Model mode) {
         return "doctor/appointmentEdit";
+
+    }
+
+    @GetMapping("/doctor/patientTreatment/{id}/check")
+    public String getPatientTreatmentCheck(@PathVariable(value = "id") long id,
+                                           Model model) {
+
+//        Patient patient = patientService.findPatientById(id);
+//        Optional<TreatmentInformation> treatment = treatmentInformationRepository.findTreatmentInformationByPatient(patient);
+//        if (treatment.isPresent()) {
+//            TreatmentInformation treatmentInformation = treatment.get();
+//            model.addAttribute("treatmentInformation", treatmentInformation);
+//        }
+        return "doctor/patientTreatment";
 
     }
 }

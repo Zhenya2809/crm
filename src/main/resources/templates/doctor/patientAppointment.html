@@ -19,6 +19,7 @@
             <h3 style="text-align: center" th:text="${el.getTime()}"></h3>
             <h3 style="text-align: center" th:text="${el.getPatient().getFio()}"></h3>
             <a th:href="'/doctor/patientAppointment/'+ ${el.getPatient().getId()} +'/edit'" class="btn btn-warning">Перейти</a>
+            <a th:href="'/doctor/patientTreatment/'+ ${el.getPatient().getId()} +'/check'" class="btn btn-warning">Информация о лечении</a>
             <a th:href="'/doctor/patientAppointment/'+ ${el.getDoctorsappointmentsID()} +'/delete'" class="btn btn-warning">Удалить</a>
 
         </div>
