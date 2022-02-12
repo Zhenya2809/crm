@@ -17,15 +17,15 @@
                        class="form-control">
             </div>
             <div> &nbsp</div>
-            <button type="submit" class="btn btn-primary"> Добавить доктора</button>
+            <button type="submit" class="btn btn-warning"> Добавить доктора</button>
         </form>
         &nbsp;
         <div style="text-align: center">ALL doctors</div>
         <div th:each="el: ${allDoctors}" sec:authorize="hasRole('ADMIN')" class="alert alert-success"
-             style="align-content: center; color: #1d47a2">
+             style="align-content: center; background: black; color: white">
 
 
-            <div class="container">
+            <div class="container" >
                 <div class="row">
                     <div class="col" th:text="${el.id}">
                     </div>

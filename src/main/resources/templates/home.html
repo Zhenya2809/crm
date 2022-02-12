@@ -8,14 +8,10 @@
 
     <header th:insert="blocks/header :: header"></header>
     <div class="container mt-5">
-        <h4><a sec:authorize="!isAuthenticated()" href="/login">Войти</a></h4>
-        <h4><a sec:authorize="!isAuthenticated()" href="/registration">Зарегистрироваться</a></h4>
-        <div th:each="el: ${date}" sec:authorize="hasRole('ADMIN')" class="alert alert-info mt-2"
-             style="align-content: center; color: #1d47a2">
-            <h3 style="text-align: center" th:text="${el.getPatient().getFio()}"></h3>
-            <p style="text-align: center" th:text="${el.date}"></p>
-            <p style="text-align: center" th:text="${el.time}"></p>
-        </div>
+
+        <div sec:authorize="hasRole('ADMIN')" th:insert="blocks/homeForAdmin :: homeForAdmin"></div>
+        <div sec:authorize="hasRole('USER')" th:insert="blocks/homeForUsers :: homeForUsers"></div>
+        <div sec:authorize="hasRole('DOCTOR')" th:insert="blocks/homeForDoctor :: homeForDoctor"></div>
         <div th:insert="blocks/footer :: footer"></div>
     </div>
 </div>

@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="auth">
+<head>
+    <title> Мейн сайта</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" th:href="@{/static/css/bootstrap.css}">
+    <div class="p-3 bg-dark text-white">
+        <div class="container mt-5"  >
+            <header th:insert="blocks/header :: header"></header>
+            <div th:insert="blocks/deleteUser :: deleteUser"></div>
+
+            <div th:each="el: ${allUsers}" sec:authorize="hasRole('ADMIN')" class="alert alert-success"
+                 style="align-content: center; color: white; background: black">
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col" th:text="${el.id}">
+                        </div>
+                        <div class="col" th:text="${el.username}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:insert="blocks/footer :: footer"></div>
+        </div>
+    </div>
+
+
+</html>

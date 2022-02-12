@@ -4,11 +4,6 @@
     <header class="p-3 bg-dark text-white">
         <div class="container">
             <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-                    <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
-                        <use xlink:href="#bootstrap"/>
-                    </svg>
-                </a>
 
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li><a href="/" class="nav-link px-2 text-secondary">Home</a></li>
@@ -16,22 +11,28 @@
                     <li><a sec:authorize="hasRole('DOCTOR')" href="/doctor" class="nav-link px-2 text-white">Doctor menu</a></li>
                     <li><a sec:authorize="hasRole('DOCTOR')" href="/doctor/patientmenu" class="nav-link px-2 text-white">Все пациенты</a></li>
                     <li><a sec:authorize="hasRole('DOCTOR')" href="/doctor/patientAppointment" class="nav-link px-2 text-white">запись на СЕГОДНЯ</a></li>
-                    <li><a sec:authorize="hasRole('ADMIN')" href="/function" class="nav-link px-2 text-white">Function</a></li>
+<!--                    <li><a sec:authorize="hasRole('ADMIN')" href="/function" class="nav-link px-2 text-white">Function</a></li>-->
                     <li><a sec:authorize="!isAuthenticated()" href="/registration" class="nav-link px-2 text-white">Registration</a></li>
                     <li><a sec:authorize="hasRole('USER')" href="/clinic" class="nav-link px-2 text-white">Clinic</a></li>
                     <li><a sec:authorize="hasRole('ADMIN')" href="/admin" class="nav-link px-2 text-white">Admin menu</a></li>
+                    <li><a sec:authorize="hasRole('ADMIN')" href="/admin/newdoctor" class="nav-link px-2 text-white">Добавить доктора</a></li>
+                    <li><a sec:authorize="hasRole('ADMIN')" href="/admin/adminreminder" class="nav-link px-2 text-white">Отправить уведомления</a></li>
                 </ul>
 
                 <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
                     <input type="search" class="form-control form-control-dark" placeholder="Search..."
                            aria-label="Search">
                 </form>
+                <a sec:authorize="!isAuthenticated()" href="/registration" class="nav-link px-2 text-white">Registration</a>
+                &nbsp
 
                 <div class="text-end">
 
                     <form  action="/login" method="post">
                     <button sec:authorize="!isAuthenticated()" type="submit" class="btn btn-warning">Sign-up</button>
                     </form>
+
+
                     <form  th:action="@{/logout}" method="post">
                         <button  sec:authorize="isAuthenticated()" type="submit" class="btn btn-warning">Log-out</button>
                     </form>

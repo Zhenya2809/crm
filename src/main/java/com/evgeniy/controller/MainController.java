@@ -1,30 +1,46 @@
 package com.evgeniy.controller;
 
 import com.evgeniy.entity.AppointmentToDoctors;
+import com.evgeniy.entity.Doctor;
 import com.evgeniy.entity.Patient;
-import com.evgeniy.repository.PatientRepository;
 import com.evgeniy.service.AppointmentService;
+import com.evgeniy.service.DoctorService;
+import com.evgeniy.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 @Controller
 public class MainController {
 
     @Autowired
     private AppointmentService appointmentService;
+    @Autowired
+    private PatientService patientService;
+    @Autowired
+    private DoctorService doctorService;
 
     @GetMapping("/")
-    public String getHome(@RequestParam(required = false) String name, Model model) {
+    public String getHome(Model model) {
+//ForUsers
+        Patient patient = patientService.findPatienByAuthEmail();
+        if (patient != null) {
+            List<AppointmentToDoctors> userAppointmentToDoctor = appointmentService.findAllByPatientId(patient.getId());
+            model.addAttribute("userAppointmentToDoctor", userAppointmentToDoctor);
 
-        Iterable<AppointmentToDoctors> infoAppointmentToDoctor = appointmentService.findAll();
 
-        model.addAttribute("date", infoAppointmentToDoctor);
-
+//ForAdmins
+            Iterable<AppointmentToDoctors> infoAppointmentToDoctor = appointmentService.findAll();
+            model.addAttribute("date", infoAppointmentToDoctor);
+//ForDoctors
+        }
         return "home";
     }
 
@@ -74,12 +90,46 @@ public class MainController {
                              @RequestParam(value = "doctorID") String doctorID,
                              Model model) {
         try {
-            appointmentService.CreateAppointmentToDoctors(date, time, doctorID);
+            if (!date.equals("")) {
+                appointmentService.CreateAppointmentToDoctors(date, time, doctorID);
+            }
         } catch (DataIntegrityViolationException e) {
             return "time-reserved";
         }
         return "redirect:/";
     }
 
+    @GetMapping("/user/appointment/{id}/delete")
+    public String getAppointmentDelete(@PathVariable(value = "id") long id,
+                                       Model mode) {
+
+        appointmentService.deleteAppointmentByDoctorId(id);
+        return "redirect:/";
+
+    }
+
+    @GetMapping("/user/appointment/{id}/edit")
+    public String getAppointmentEdit(@PathVariable(value = "id") long id,
+                                     Model mode) {
+        return "patient/appointmentEdit";
+
+    }
+
+    @PostMapping("/user/appointment/{id}/edit")
+    public String postAppointmentPatientEdit(@PathVariable(value = "id") long id,
+                                             @RequestParam(value = "date") String date,
+                                             @RequestParam(value = "time") String time,
+                                             @RequestParam(value = "doctorID") String doctorID,
+                                             Model mode) {
+        try {
+            appointmentService.saveAppointments(id, date, time, doctorID);
+        } catch (DataIntegrityViolationException e) {
+            return "time-reserved";
+        }
+
+
+        return "redirect:/";
+
+    }
 
 }

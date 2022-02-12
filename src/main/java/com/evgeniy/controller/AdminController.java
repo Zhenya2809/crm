@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -32,7 +31,7 @@ public class AdminController {
     public String userList(Model model) {
         Iterator<User> allUsers = userService.allUsers().stream().iterator();
         model.addAttribute("allUsers", allUsers);
-        return "admin";
+        return "admin/admin";
     }
 
     @PostMapping("/admin")
@@ -41,24 +40,22 @@ public class AdminController {
         if (userID > 1) {
             userService.deleteUser(userID);
         }
-        return "redirect:/admin";
+        return "admin/admin";
     }
 
-
-    //adminreminder
-    @GetMapping("/adminreminder")
+    @GetMapping("/admin/adminreminder")
     public String adminReminder(Model model) {
 
-        return "adminreminder";
+        return "admin/adminreminder";
     }
 
-    @PostMapping("/adminreminder")
+    @PostMapping("/admin/adminreminder")
     public String deleteUser(@RequestParam(value = "sendEmail") String sendEmail,
                              Model model) {
         if (sendEmail.equals("1")) {
             appointmentService.sendEmailReminder();
         }
-        return "redirect:/adminreminder";
+        return "admin/adminreminder";
     }
 
     //newdoctor
@@ -75,7 +72,7 @@ public class AdminController {
                                 Model model) {
 
         doctorService.createrDoctor(doctorfio, speciality);
-        return "redirect:/admin";
+        return "admin/newdoctor";
     }
 
     //

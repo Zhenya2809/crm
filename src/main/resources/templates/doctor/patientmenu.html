@@ -9,6 +9,13 @@
         <header th:insert="blocks/header :: header"></header>
 
         <div class="container mt-5">
+            <input type="checkbox" class="read-more-checker" id="read-more-checker"/>
+            <div class="limiter">
+
+
+
+
+
             <div th:each="el: ${patient}" sec:authorize="hasRole('DOCTOR')" class="alert alert-info mt-2"
                  style="align-content: center; color: white">
 
@@ -22,6 +29,10 @@
                 <h5 style="text-align: center" th:text="${el.getEmail()}"></h5>
 
             </div>
+
+                <div class="bottom"></div>
+            </div>
+            <label for="read-more-checker" class="read-more-button"></label>
         </div>
         <div class="container mt-5">
 

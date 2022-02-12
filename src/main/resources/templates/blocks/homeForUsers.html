@@ -1,0 +1,16 @@
+<div th:fragment="homeForUsers" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <div th:each="el: ${userAppointmentToDoctor}"  class="alert alert-info mt-2"
+         style="align-content: center; color: white">
+        <h3 style="text-align: center" th:text="${el.getDoctorsappointmentsID()}"></h3>
+        <p style="text-align: center" th:text="${el.getDoctor().getFio()}"></p>
+        <h3 style="text-align: center" th:text="${el.getDoctor().getSpeciality()}"></h3>
+        <h3 style="text-align: center" th:text="${el.getDate()}"></h3>
+        <p style="text-align: center" th:text="${el.getTime()}"></p>
+
+
+
+        <a th:href="'/user/appointment/'+ ${el.getDoctorsappointmentsID()} +'/edit'" class="btn btn-warning">Изменить запись </a>
+        <a th:href="'/user/appointment/'+ ${el.getDoctorsappointmentsID()} +'/delete'" class="btn btn-warning">Отменить</a>
+    </div>
+</div>
+/user/appointment/{id}/delete

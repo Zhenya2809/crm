@@ -4,7 +4,6 @@ import com.evgeniy.email.SendEmailTLS;
 import com.evgeniy.entity.AppointmentToDoctors;
 import com.evgeniy.entity.Doctor;
 import com.evgeniy.entity.Patient;
-import com.evgeniy.entity.User;
 import com.evgeniy.repository.AppointmentRepository;
 import com.evgeniy.repository.DoctorRepository;
 import com.evgeniy.repository.PatientRepository;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AppointmentService {
@@ -26,7 +24,6 @@ public class AppointmentService {
     private PatientRepository patientRepository;
     @Autowired
     private DoctorRepository doctorRepository;
-
 
 
     public void CreateAppointmentToDoctors(String date, String time, String doctorID) {
@@ -87,9 +84,23 @@ public class AppointmentService {
         return appointmentRepository.findAllByPatientId(id);
     }
 
-    public void deleteAppointment(Long id) {
+    public void deleteAppointmentByDoctorId(Long id) {
         AppointmentToDoctors appointmentToDoctorsByDoctorsappointmentsID = appointmentRepository.findAppointmentToDoctorsByDoctorsappointmentsID(id);
         appointmentRepository.delete(appointmentToDoctorsByDoctorsappointmentsID);
     }
+
+    public AppointmentToDoctors findAppointmentById(Long id) {
+        return appointmentRepository.findAppointmentToDoctorsByDoctorsappointmentsID(id);
+    }
+
+    public void saveAppointments(Long id, String date, String time, String doctorID) {
+        AppointmentToDoctors appointment = appointmentRepository.findAppointmentToDoctorsByDoctorsappointmentsID(id);
+        appointment.setDate(date);
+        appointment.setTime(time);
+        Doctor doctor = doctorRepository.findDoctorById(Long.valueOf(doctorID));
+        appointment.setDoctor(doctor);
+        appointmentRepository.save(appointment);
+    }
+
 }
 

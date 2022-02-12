@@ -1,10 +1,18 @@
-<div th:fragment="clinic" xmlns:sec="http://www.w3.org/1999/xhtml">
-    <form action="/clinic" method="post">
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="auth">
+
+<title> appointment patient edit</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<link rel="stylesheet" th:href="@{/static/css/bootstrap.css}">
+<div class="container py-3">
+    <header th:insert="blocks/header :: header"></header>
+
+    <form method="post">
 
         <div class="mb-3">
             <label id="clientlabel" style="text-align: center; width:350px"> &nbsp; </label>
 
-            <div sec:authorize="isAuthenticated()" name="username"></div>
+            <div sec:authorize="isAuthenticated()"></div>
 
         </div>
         <div class="mb-3">
@@ -39,4 +47,10 @@
         <div> &nbsp</div>
         <button type="submit" class="btn btn-warning">Записаться</button>
     </form>
+
+
+
+    <div th:insert="blocks/footer :: footer"></div>
 </div>
+</div>
+</html>

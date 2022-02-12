@@ -49,4 +49,7 @@ public class PatientService {
     public Patient findPatientByFioContains(String fio) {
         return patientRepository.findPatientByFioContains(fio);
     }
+    public Patient findPatienByAuthEmail(){
+        return patientRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+    }
 }

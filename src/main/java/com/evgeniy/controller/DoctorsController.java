@@ -4,7 +4,6 @@ import com.evgeniy.entity.*;
 import com.evgeniy.repository.*;
 import com.evgeniy.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -14,9 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.function.Consumer;
 
 
 @Controller
@@ -155,7 +152,7 @@ public class DoctorsController {
     public String getAppointmentPatientDelete(@PathVariable(value = "id") long id,
                                               Model mode) {
 
-        appointmentService.deleteAppointment(id);
+        appointmentService.deleteAppointmentByDoctorId(id);
         return "redirect:/doctor/patientAppointment";
 
     }
