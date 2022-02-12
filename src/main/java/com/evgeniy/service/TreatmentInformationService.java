@@ -38,8 +38,11 @@ public class TreatmentInformationService {
         Doctor doctor = userRepository.findByUsername(auth.getName()).getDoctor();
         Patient patient = patientRepository.findPatientById(id);
 
-        PatientCard patientCard = patientCardRepository.findPatientCardByPatient(patient);
+        PatientCard patientCard = new PatientCard();
+        patientCard.setPatient(patient);
         patientCardRepository.save(patientCard);
+
+
         TreatmentInformation treatmentInformation = new TreatmentInformation();
         treatmentInformation.setDoctor(doctor);
         treatmentInformation.setDiagnosis(diagnosis);
@@ -49,10 +52,7 @@ public class TreatmentInformationService {
         treatmentInformation.setRecommendations(recommendations);
         treatmentInformation.setSymptoms(symptoms);
         treatmentInformation.setTreatment(treatment);
-        treatmentInformation.setPatientCard(patientCard);
         treatmentInformationRepository.save(treatmentInformation);
-
-
 
     }
 
