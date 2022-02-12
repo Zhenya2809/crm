@@ -158,9 +158,12 @@ public class DoctorsController {
     @GetMapping("/doctor/patientAppointment")
     public String getPatientAppointment(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("получив юзера--->>"+auth.getName()+"<<--- 100% \"doctor1\" я не еблан...");
         Iterable<AppointmentToDoctors> appointmentToDoctors = appointmentService.findAllByDoctor_Id(((User) auth.getPrincipal()).getDoctor().getId());
-        appointmentToDoctors.forEach(e -> e.getPatient().getId());
+        System.out.println("получив айди доктора--->>"+((User) auth.getPrincipal()).getDoctor().getId()+"<<--- 100% тут \"id1\"");
+
         model.addAttribute("appointmentToDoctors", appointmentToDoctors);
+        System.out.println("инфа ушла на страничку");
         return "doctor/patientAppointment";
     }
 
