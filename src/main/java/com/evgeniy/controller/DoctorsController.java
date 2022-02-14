@@ -29,6 +29,7 @@ public class DoctorsController {
     @Autowired
     private TreatmentInformationRepository treatmentInformationRepository;
 
+
     @PostMapping("/profileEdit")
 
     public String postProfileEdit(@RequestParam(value = "fio") String fio,
@@ -36,9 +37,10 @@ public class DoctorsController {
                                   @RequestParam(value = "birthday") String birthday,
                                   @RequestParam(value = "placeOfResidence") String placeOfResidence,
                                   @RequestParam(value = "insurancePolicy") String insurancePolicy,
+                                  @RequestParam(value = "phoneNumber") String phoneNumber,
                                   Model model) {
 
-        patientService.CreatePatient(fio, birthday, sex, placeOfResidence, insurancePolicy);
+        patientService.CreatePatient(fio, birthday, sex, placeOfResidence, insurancePolicy, phoneNumber);
         return "patient/profileEdit";
     }
 
@@ -55,6 +57,7 @@ public class DoctorsController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Iterable<Patient> patientCards = patientService.findAllByEmail(auth.getName());
         model.addAttribute("patientCard", patientCards);
+
         return "patient/myProfile";
     }
 
@@ -143,8 +146,9 @@ public class DoctorsController {
                                       @RequestParam(value = "birthday") String birthday,
                                       @RequestParam(value = "placeOfResidence") String placeOfResidence,
                                       @RequestParam(value = "insurancePolicy") String insurancePolicy,
+                                      @RequestParam(value = "phoneNumber") String phoneNumber,
                                       Model mode) {
-        patientService.editPatient(id, birthday, insurancePolicy, placeOfResidence, sex, fio);
+        patientService.editPatient(id, birthday, insurancePolicy, placeOfResidence, sex, fio, phoneNumber);
         return "redirect:/profile";
 
     }
@@ -158,9 +162,9 @@ public class DoctorsController {
     @GetMapping("/doctor/patientAppointment")
     public String getPatientAppointment(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("получив юзера--->>"+auth.getName()+"<<--- 100% \"doctor1\" я не еблан...");
+        System.out.println("получив юзера--->>" + auth.getName() + "<<--- 100% \"doctor1\" я не еблан...");
         Iterable<AppointmentToDoctors> appointmentToDoctors = appointmentService.findAllByDoctor_Id(((User) auth.getPrincipal()).getDoctor().getId());
-        System.out.println("получив айди доктора--->>"+((User) auth.getPrincipal()).getDoctor().getId()+"<<--- 100% тут \"id1\"");
+        System.out.println("получив айди доктора--->>" + ((User) auth.getPrincipal()).getDoctor().getId() + "<<--- 100% тут \"id1\"");
 
         model.addAttribute("appointmentToDoctors", appointmentToDoctors);
         System.out.println("инфа ушла на страничку");
@@ -201,13 +205,14 @@ public class DoctorsController {
     @GetMapping("/doctor/patientTreatment/{id}/check")
     public String getPatientTreatmentCheck(@PathVariable(value = "id") long id,
                                            Model model) {
+        Optional<Patient> patientOptional = patientService.findById(id);
+        if (patientOptional.isPresent()) {
+            Patient patient = patientOptional.get();
 
-//        Patient patient = patientService.findPatientById(id);
-//        Optional<TreatmentInformation> treatment = treatmentInformationRepository.findTreatmentInformationByPatient(patient);
-//        if (treatment.isPresent()) {
-//            TreatmentInformation treatmentInformation = treatment.get();
-//            model.addAttribute("treatmentInformation", treatmentInformation);
-//        }
+            PatientCard patientCard = patientService.findPatientCardByPatient(patient);
+            Set<TreatmentInformation> treatmentInformation = patientCard.getTreatmentInformation();
+            model.addAttribute("treatmentInformation", treatmentInformation);
+        }
         return "doctor/patientTreatment";
 
     }

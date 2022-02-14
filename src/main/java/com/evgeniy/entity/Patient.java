@@ -29,6 +29,8 @@ public class Patient {
     private String insurancePolicy;
     @Column(name = "email")
     private String email;
+    @Column(name = "phoneNumber")
+    private String phoneNumber;
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "patient")
     private List<AppointmentToDoctors> appointmentToDoctors;
 

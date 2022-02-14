@@ -2,11 +2,15 @@ package com.evgeniy.controller;
 
 import com.evgeniy.entity.AppointmentToDoctors;
 import com.evgeniy.entity.Patient;
+import com.evgeniy.entity.PatientCard;
+import com.evgeniy.entity.TreatmentInformation;
 import com.evgeniy.service.AppointmentService;
 import com.evgeniy.service.DoctorService;
 import com.evgeniy.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +19,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Controller
 public class MainController {
@@ -128,6 +134,17 @@ public class MainController {
 
 
         return "redirect:/";
+
+    }
+
+    @GetMapping("/profile/history")
+    public String getPatientTreatmentHistory(Model model) {
+        Patient patient = patientService.findPatienByAuthEmail();
+        PatientCard patientCard = patientService.findPatientCardByPatient(patient);
+        Set<TreatmentInformation> treatmentInformation = patientCard.getTreatmentInformation();
+        model.addAttribute("treatmentInformation", treatmentInformation);
+
+        return "patient/patientTreatment";
 
     }
 

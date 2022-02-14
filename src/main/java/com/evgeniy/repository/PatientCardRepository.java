@@ -9,4 +9,6 @@ public interface PatientCardRepository extends JpaRepository<PatientCard, Long> 
 
     PatientCard findPatientCardById(Long id);
     PatientCard findPatientCardByPatient(Patient patient);
+    PatientCard findPatientCardByPatientId(Long id);
+
 }

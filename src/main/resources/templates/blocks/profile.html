@@ -5,10 +5,10 @@
 
         <div th:each="el: ${patientCard}" class="alert alert-info mt-2 "
              style="align-content: center; color: white">
-            <h3 style="text-align: center" th:text="${el.id}"></h3>
             <h3 style="text-align: center" th:text="${el.fio}"></h3>
             <p style="text-align: center" th:text="${el.email}"></p>
             <p style="text-align: center" th:text="${el.sex}"></p>
+            <p style="text-align: center" th:text="${el.getPhoneNumber()}"></p>
             <p style="text-align: center" th:text="${el.insurancePolicy}"></p>
             <p style="text-align: center" th:text="${el.placeOfResidence}"></p>
 

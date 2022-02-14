@@ -9,4 +9,5 @@ import java.util.Optional;
 
 public interface TreatmentInformationRepository extends JpaRepository<TreatmentInformation, Long> {
 //    Optional<TreatmentInformation> findTreatmentInformationByPatient(Patient patient);
+    TreatmentInformation findTreatmentInformationByPatientCardId(Long id);
 }

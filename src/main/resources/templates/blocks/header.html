@@ -8,6 +8,7 @@
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li><a href="/" class="nav-link px-2 text-secondary">Home</a></li>
                     <li><a sec:authorize="hasRole('USER')" href="/profile" class="nav-link px-2 text-white">Profile</a></li>
+                    <li><a sec:authorize="hasRole('USER')" href=" /profile/history" class="nav-link px-2 text-white">History</a></li>
                     <li><a sec:authorize="hasRole('DOCTOR')" href="/doctor" class="nav-link px-2 text-white">Doctor menu</a></li>
                     <li><a sec:authorize="hasRole('DOCTOR')" href="/doctor/patientmenu" class="nav-link px-2 text-white">Все пациенты</a></li>
                     <li><a sec:authorize="hasRole('DOCTOR')" href="/doctor/patientAppointment" class="nav-link px-2 text-white">запись на СЕГОДНЯ</a></li>
@@ -29,7 +30,7 @@
                 <div class="text-end">
 
                     <form  action="/login" method="post">
-                    <button sec:authorize="!isAuthenticated()" type="submit" class="btn btn-warning">Sign-up</button>
+                    <button sec:authorize="!isAuthenticated()" type="submit" class="btn btn-warning">Sign-in</button>
                     </form>
 
 
