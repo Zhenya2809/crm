@@ -55,11 +55,12 @@ public class AppointmentService {
             System.out.println("Текущая дата " + formatForDateNow.format(todayDate));
 
 
-            System.out.println("today date: " + formatForDateNow.format(todayDate) + " withDB date= " + date);
+
 
             if (formatForDateNow.format(todayDate).equals(date)) {
                 System.out.println(todayDate + " equals " + date);
                 sendEmailTLS.SendEmail("Clinic appointment reminder", email, "We remind you that you have an appointment with a clinic at " + time);
+                System.out.println("email=" + email + " apointment to time=" + time );
             }
         });
 
