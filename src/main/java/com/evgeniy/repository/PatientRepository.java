@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PatientRepository extends JpaRepository<Patient, Long> {
-    Patient findByEmail(String email);
+    Optional<Patient> findByEmail(String email);
 
     Iterable<Patient> findAllByEmail(String email);
 

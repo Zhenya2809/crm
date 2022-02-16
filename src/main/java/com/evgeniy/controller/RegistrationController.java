@@ -2,6 +2,7 @@ package com.evgeniy.controller;
 
 import com.evgeniy.entity.User;
 import com.evgeniy.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +13,7 @@ import javax.validation.Valid;
 
 
 @Controller
+@Slf4j
 public class RegistrationController {
 
     @Autowired
@@ -26,13 +28,10 @@ public class RegistrationController {
 
     @GetMapping("/account-registred")
     public String accountRegistred(Model model) {
+        log.info("accountRegistred");
         return "account-registred";
     }
 
-    @GetMapping("/error")
-    public String error(Model model) {
-        return "error";
-    }
 
     @RequestMapping("/login")
     public String getLogin(@RequestParam(value = "error", required = false) String error,
@@ -51,19 +50,22 @@ public class RegistrationController {
                           @ModelAttribute("userForm") @Valid User userForm, BindingResult bindingResult, Model model) {
 
         User user = userService.createUser(username, password, passwordConfirm);
-
+        log.info("Registration user with name " + username);
         if (bindingResult.hasErrors()) {
-            return "error";
+            log.error("bindingResult has error");
+            return "error/error";
         }
         if (!user.getPassword().equals(user.getPasswordConfirm())) {
             model.addAttribute("passwordError", "Пароли не совпадают");
-            return "passwordIncorect";
+            log.error("Passwords do not match");
+            return "error/passwordIncorect";
         }
         if (!userService.saveUser(user)) {
-
             model.addAttribute("usernameError", "Пользователь с таким именем уже существует");
-            return "usernameAlready";
+            log.error("A user with the same name already exists");
+            return "error/usernameAlready";
         }
+        log.info("user "+user+"successfully created");
         userService.saveUser(user);
         return "redirect:/";
     }

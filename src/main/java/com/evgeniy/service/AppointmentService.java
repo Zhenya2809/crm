@@ -7,7 +7,9 @@ import com.evgeniy.entity.Patient;
 import com.evgeniy.repository.AppointmentRepository;
 import com.evgeniy.repository.DoctorRepository;
 import com.evgeniy.repository.PatientRepository;
+import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AppointmentService {
@@ -26,20 +29,29 @@ public class AppointmentService {
     private DoctorRepository doctorRepository;
 
 
-    public void createAppointmentToDoctors(String date, String time, String doctorID) {
+    public String createAppointmentToDoctors(String date, String time, String doctorID) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        Patient patient = patientRepository.findByEmail(auth.getName());
-        Doctor doctor = doctorRepository.findDoctorById(Long.valueOf(doctorID));
+        Optional<Patient> patientOptional = patientRepository.findByEmail(auth.getName());
 
-        AppointmentToDoctors incoming = new AppointmentToDoctors();
-        incoming.setDate(date);
-        incoming.setTime(time);
-        incoming.setDoctor(doctor);
-        incoming.setPatient(patient);
+        if (patientOptional.isPresent()) {
+            try {
+                Patient patient = patientOptional.get();
+                Doctor doctor = doctorRepository.findDoctorById(Long.valueOf(doctorID));
+                AppointmentToDoctors incoming = new AppointmentToDoctors();
+                incoming.setDate(date);
+                incoming.setTime(time);
+                incoming.setDoctor(doctor);
+                incoming.setPatient(patient);
 
-        appointmentRepository.save(incoming);
+                appointmentRepository.save(incoming);
+            } catch (DataIntegrityViolationException e) {
+                System.out.println(" ERROR ---->  this date/time/doctor already exists  <----");
+            }
+            return "redirect:/";
+        }
+        return "patientIDisNullError";
     }
 
     public void sendEmailReminder() {
@@ -55,12 +67,10 @@ public class AppointmentService {
             System.out.println("Текущая дата " + formatForDateNow.format(todayDate));
 
 
-
-
             if (formatForDateNow.format(todayDate).equals(date)) {
                 System.out.println(todayDate + " equals " + date);
                 sendEmailTLS.SendEmail("Clinic appointment reminder", email, "We remind you that you have an appointment with a clinic at " + time);
-                System.out.println("email=" + email + " apointment to time=" + time );
+                System.out.println("email=" + email + " apointment to time=" + time);
             }
         });
 

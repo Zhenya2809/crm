@@ -47,15 +47,15 @@ public class AdminController {
     @GetMapping("/admin/adminreminder")
     public String getSendReminder(Model model) {
 
-        return "admin/adminreminder";
+        return "admin/adminReminder";
     }
 
     @PostMapping("/admin/adminreminder")
     public String postSendReminder(Model model) {
 
-            appointmentService.sendEmailReminder();
+        appointmentService.sendEmailReminder();
 
-        return "admin/adminreminder";
+        return "admin/adminReminder";
     }
 
     //newdoctor
@@ -63,7 +63,7 @@ public class AdminController {
     public String getNewDoctor(Model model) {
         Iterator<Doctor> allDoctors = doctorRepository.findAll().iterator();
         model.addAttribute("allDoctors", allDoctors);
-        return "admin/newdoctor";
+        return "admin/newDoctor";
     }
 
     @PostMapping("/admin/newdoctor")
@@ -74,6 +74,7 @@ public class AdminController {
         doctorService.createrDoctor(doctorfio, speciality);
         return "redirect:/admin/newdoctor";
     }
+
     @GetMapping("admin/doctor/{id}/delete")
     public String getDoctorDelete(@PathVariable(value = "id") long id,
                                   Model mode) {
@@ -82,6 +83,7 @@ public class AdminController {
         return "redirect:/admin/newdoctor";
 
     }
+
     //
 //    @GetMapping("/admin/gt/{userId}")
 //    public String gtUser(@PathVariable("userId") Long userId, Model model) {

@@ -3,6 +3,7 @@ package com.evgeniy.controller;
 import com.evgeniy.entity.*;
 import com.evgeniy.repository.*;
 import com.evgeniy.service.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,6 +18,7 @@ import java.util.*;
 
 
 @Controller
+@Slf4j
 public class DoctorsController {
     @Autowired
     private PatientService patientService;
@@ -209,9 +211,12 @@ public class DoctorsController {
         if (patientOptional.isPresent()) {
             Patient patient = patientOptional.get();
 
-            PatientCard patientCard = patientService.findPatientCardByPatient(patient);
-            Set<TreatmentInformation> treatmentInformation = patientCard.getTreatmentInformation();
-            model.addAttribute("treatmentInformation", treatmentInformation);
+            Optional<PatientCard> patientCardOptional = patientService.findPatientCardByPatient(patient);
+            if (patientCardOptional.isPresent()) {
+                PatientCard patientCard = patientCardOptional.get();
+                Set<TreatmentInformation> treatmentInformation = patientCard.getTreatmentInformation();
+                model.addAttribute("treatmentInformation", treatmentInformation);
+            }
         }
         return "doctor/patientTreatment";
 
