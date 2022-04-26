@@ -7,17 +7,15 @@ import com.evgeniy.entity.Patient;
 import com.evgeniy.repository.AppointmentRepository;
 import com.evgeniy.repository.DoctorRepository;
 import com.evgeniy.repository.PatientRepository;
-import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.sql.Time;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class AppointmentService {
@@ -89,6 +87,28 @@ public class AppointmentService {
         Date date = new Date();
         SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy-MM-dd");
         return appointmentRepository.findAllByDoctor_Id(id).stream().filter(e -> e.getDate().equals(formatForDateNow.format(date))).toList();
+    }
+
+    public HashMap<String, List<String>> findAllAvailableTimeByDoctorId(Long id) {
+        List<AppointmentToDoctors> allByDoctor_id = appointmentRepository.findAllByDoctor_Id(id);
+
+
+        return listToMap(allByDoctor_id);
+    }
+
+    public static HashMap<String, List<String>> listToMap(List<AppointmentToDoctors> list) {
+        HashMap<String, List<String>> map = new HashMap<>();
+        for (AppointmentToDoctors appointment : list) {
+            if (map.containsKey(appointment.getDate())) {
+                List<String> timeList = map.get(appointment.getDate());
+                timeList.add(appointment.getTime());
+            } else {
+                ArrayList<String> timeList = new ArrayList<>();
+                timeList.add(appointment.getTime());
+                map.put(appointment.getDate(), timeList);
+            }
+        }
+        return map;
     }
 
     public List<AppointmentToDoctors> findAllByPatientId(Long id) {

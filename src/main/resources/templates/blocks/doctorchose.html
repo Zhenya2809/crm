@@ -1,0 +1,11 @@
+<div th:fragment="doctorchose" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+    <h3>Выберите доктора</h3>
+
+    <h3><a rel="stylesheet" type="text/css" media="all" method="post"
+           sec:authorize="hasRole('USER')"
+           th:each="el: ${doctorList}"
+           th:href="${el.getId()}"
+           th:text="${el.getSpeciality()}+'___'"> </a></h3>
+
+</div>

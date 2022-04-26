@@ -22,7 +22,7 @@ public class FilterConfig {
         registrationBean.addUrlPatterns("/error/*");
         registrationBean.addUrlPatterns("/doctor/*");
         registrationBean.addUrlPatterns("/patient/*");
-        registrationBean.addUrlPatterns("/clinic/*");
+        registrationBean.addUrlPatterns("/templates/clinic/*");
         registrationBean.addUrlPatterns("/user/*");
 
         registrationBean.setOrder(1);

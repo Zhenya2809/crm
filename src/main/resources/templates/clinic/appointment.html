@@ -1,25 +1,19 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+
     <title> Мейн сайта</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" th:href="@{/static/css/bootstrap.css}">
     <html lang="en">
-
     <div class="p-3 bg-dark text-white">
         <header th:insert="blocks/header :: header"></header>
-
         <div class="container mt-5">
-            <!--      <div th:each="el: ${date}" class="alert alert-info mt-2">-->
-            <!--        <h3 th:text="${el.day}"></h3>-->
-            <!--        <p th:text="${el.month}"></p>-->
-            <!--        <p th:text="${el.time}"></p>-->
-            <!--        <a th:href="'/users/' + ${el.id}">Детальнее</a>-->
-            <!--      </div>-->
-            <div th:insert="blocks/clinic :: clinic"></div>
+
+<!--            <div th:insert="blocks/clinic :: clinic"></div>-->
+            <div th:insert="blocks/schedule :: schedule"></div>
             <div th:insert="blocks/footer :: footer"></div>
         </div>
     </div>
     </html>
-
 </html>

@@ -1,0 +1,17 @@
+<div th:fragment="schedule" xmlns:sec="http://www.w3.org/1999/xhtml">
+<h1>Выберите свободное время:</h1>
+    <table bgcolor="#90ee90">
+        <tr >
+            <th  th:each="el: ${schedule}" th:text="${el.date}" style="color: black"></th>
+        </tr>
+        <tr th:each="elements: ${time}" style="color: black">
+            <td th:each="elem: ${schedule}" style="color: black">
+                <div th:if="${elem.available.contains(elements)}" style="color: black">reserved</div>
+
+                <a action="/add_appointment" method="post" th:unless="${elem.available.contains(elements)}" th:text="${elements}" th:href="@{${doctor_id}+'/'+${elem.date}+'/'+${elements}} "style="color: black"></a>
+
+
+            </td>
+        </tr>
+    </table>
+</div>

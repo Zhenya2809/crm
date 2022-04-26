@@ -14,7 +14,11 @@
                     <li><a sec:authorize="hasRole('DOCTOR')" href="/doctor/patientAppointment" class="nav-link px-2 text-white">запись на СЕГОДНЯ</a></li>
 <!--                    <li><a sec:authorize="hasRole('ADMIN')" href="/function" class="nav-link px-2 text-white">Function</a></li>-->
                     <li><a sec:authorize="!isAuthenticated()" href="/registration" class="nav-link px-2 text-white">Registration</a></li>
-                    <li><a sec:authorize="hasRole('USER')" href="/clinic" class="nav-link px-2 text-white">Clinic</a></li>
+
+                    <li><a sec:authorize="hasRole('USER')" href="/clinic/chose_doctor" class="nav-link px-2 text-white">Clinic</a></li>
+
+
+
                     <li><a sec:authorize="hasRole('ADMIN')" href="/admin" class="nav-link px-2 text-white">Users menu</a></li>
                     <li><a sec:authorize="hasRole('ADMIN')" href="/admin/newdoctor" class="nav-link px-2 text-white">Doctors menu</a></li>
                     <li><a sec:authorize="hasRole('ADMIN')" href="/admin/adminreminder" class="nav-link px-2 text-white">Reminder</a></li>

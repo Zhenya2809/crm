@@ -5,6 +5,8 @@ import com.evgeniy.repository.DoctorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class DoctorService {
     @Autowired
@@ -21,5 +23,8 @@ public class DoctorService {
     }
     public Doctor getDoctorById(Long id){
        return doctorRepository.findDoctorById(id);
+    }
+    public List<Doctor> findAll(){
+        return doctorRepository.findAll();
     }
 }
