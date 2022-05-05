@@ -148,6 +148,22 @@ public class MainController {
         return "clinic/doctor";
     }
 
+    @GetMapping("/profile/history")
+    public String getPatientTreatmentHistory(Model model) {
+        Optional<Patient> patientOptional = patientService.findPatienByAuthEmail();
+        if (patientOptional.isPresent()) {
+            Patient patient = patientOptional.get();
+            Optional<PatientCard> patientCardOptional = patientService.findPatientCardByPatient(patient);
+            if (patientCardOptional.isPresent()) {
+                PatientCard patientCard = patientCardOptional.get();
+                Set<TreatmentInformation> treatmentInformation = patientCard.getTreatmentInformation();
+                model.addAttribute("treatmentInformation", treatmentInformation);
+            }
+        }
+        return "patient/patientTreatment";
+
+    }
+
     @PostMapping("/user/appointment/{id}/edit")
     public String postAppointmentPatientEdit(@PathVariable(value = "id") long id,
                                              @RequestParam(value = "date") String date,
@@ -163,22 +179,6 @@ public class MainController {
 
 
         return "redirect:/";
-
-    }
-
-    @GetMapping("/profile/history")
-    public String getPatientTreatmentHistory(Model model) {
-        Optional<Patient> patientOptional = patientService.findPatienByAuthEmail();
-        if (patientOptional.isPresent()) {
-            Patient patient = patientOptional.get();
-            Optional<PatientCard> patientCardOptional = patientService.findPatientCardByPatient(patient);
-            if (patientCardOptional.isPresent()) {
-                PatientCard patientCard = patientCardOptional.get();
-                Set<TreatmentInformation> treatmentInformation = patientCard.getTreatmentInformation();
-                model.addAttribute("treatmentInformation", treatmentInformation);
-            }
-        }
-        return "patient/patientTreatment";
 
     }
 
