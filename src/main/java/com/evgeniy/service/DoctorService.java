@@ -18,6 +18,7 @@ public class DoctorService {
         doctor.setSpeciality(speciality);
         return doctorRepository.save(doctor);
     }
+
     public void deleteDoctor(Long id){
         doctorRepository.deleteById(id);
     }

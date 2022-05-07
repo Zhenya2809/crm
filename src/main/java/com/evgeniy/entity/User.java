@@ -17,6 +17,8 @@ public class User implements UserDetails {
     private Long id;
     @Size(min = 2, message = "Не меньше 5 знаков")
     private String username;
+//    @Size(min = 13, max = 13, message = "в формате +380123456789")
+//    private String phone;
     @Size(min = 2, message = "Не меньше 5 знаков")
     private String password;
     @Transient
@@ -27,6 +29,8 @@ public class User implements UserDetails {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "doctorID")
     private Doctor doctor;
+
+
     public User() {
     }
 
@@ -75,6 +79,14 @@ public class User implements UserDetails {
     public Doctor getDoctor() {
         return doctor;
     }
+
+//    public void setPhone(String phone) {
+//        this.phone = phone;
+//    }
+//
+//    public String getPhone() {
+//        return phone;
+//    }
 
     @Override
     public String getPassword() {

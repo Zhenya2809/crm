@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 @Entity
 @Getter
@@ -25,6 +26,9 @@ public class DataUserTg {
     private String LocaleState;
     @Column(name = "globalState")
     public botstate GlobalState;
+//    @Column(name = "phone")
+//    @Size(min = 13, max = 13, message = "в формате +380123456789")
+//    private String phone;
 
 
     public DataUserTg(Long chatId, String firstName, String lastName) {

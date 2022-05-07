@@ -10,5 +10,6 @@ public interface Command {
 
     void doCommand(ExecutionContext context) throws TelegramApiException, IOException, Exception;
     boolean shouldRunOnText(String text);
+
     DataUserTg.botstate getGlobalState();
 }

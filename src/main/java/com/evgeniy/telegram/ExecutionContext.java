@@ -5,24 +5,34 @@ import com.evgeniy.service.DataUserService;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.TelegramBotsApi;
+import org.telegram.telegrambots.meta.api.methods.AnswerInlineQuery;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.inlinequery.InlineQuery;
+import org.telegram.telegrambots.meta.api.objects.inlinequery.result.*;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ForceReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.io.IOException;
+import java.net.SocketTimeoutException;
+import java.util.*;
 
 @Getter
 @Setter
 @Slf4j
 @Component
 public class ExecutionContext {
+
     private MyAppBot myAppBot;
     public DataUserTg.botstate GlobalState;
     private Long chatId;
@@ -60,6 +70,7 @@ public class ExecutionContext {
         return newState;
     }
 
+
     public void sendKeyboardMainMenu() {
         MyAppBot myAppBot = new MyAppBot();
         SendMessage message = new SendMessage();
@@ -78,18 +89,9 @@ public class ExecutionContext {
         KeyboardRow row7 = new KeyboardRow();
         KeyboardRow row8 = new KeyboardRow();
 
-        row1.add(new KeyboardButton("КУДА СООБЩАТЬ, ЕСЛИ ЗАМЕТИЛИ РОССИЙСКИХ ОККУПАНТОВ ИЛИ ИХ ТЕХНИКУ \uD83C\uDDFA\uD83C\uDDE6"));
-        row2.add(new KeyboardButton("Техника русни \uD83C\uDFF3"));
-        row3.add(new KeyboardButton("Список полезных ботов"));
-        row4.add(new KeyboardButton("Информация"));
-        row4.add(new KeyboardButton("Помощь военным"));
-        row5.add(new KeyboardButton("Статут ЗСУ"));
-        row5.add(new KeyboardButton("Огнестрельное оружие"));
-
-//        row3.add(new KeyboardButton("тест2"));
-//        row3.add(new KeyboardButton("тест3"));
+        row1.add(new KeyboardButton("Тест"));
+        row2.add(new KeyboardButton("Тест"));
         row6.add(new KeyboardButton("Главное меню"));
-//        row5.add(new KeyboardButton("тест5"));
 
 
         keyboard.add(row1);
@@ -121,7 +123,7 @@ public class ExecutionContext {
         this.myAppBot = myAppBot;
     }
 
-    public void PrintDateAndState() {
+    public void printDateAndState() {
         Date date = new Date();
         // Вывод текущей даты и cостояний
         System.out.println(date + ":      GlobalState:  " + getGlobalState() + "   LocalState:  " + getLocalState());
