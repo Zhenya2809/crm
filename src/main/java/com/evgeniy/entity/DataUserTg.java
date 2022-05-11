@@ -39,6 +39,18 @@ public class DataUserTg {
 
     public enum botstate {
         START,
+        MENU,
+        YES,
+        NO,
+        SPECIALISTS,
+        ABOUT,
+        COSMETICS,
+        SERVICES,
+        ADDRESS,
+        PERSONAL,
+        MAIN_MENU,
+        START_BOT_CHATTING,
+        NEW_OR_OLD_USER,
         SEND_ALL_MESSAGE
     }
 

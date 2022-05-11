@@ -1,10 +1,10 @@
 package com.evgeniy.telegram;
 
-import com.evgeniy.commands.Command;
-import com.evgeniy.commands.Start;
-import com.evgeniy.entity.AnswerQuery;
+import com.evgeniy.commands.*;
+import com.evgeniy.entity.Kozelec;
 import com.evgeniy.entity.DataUserTg;
-import com.evgeniy.service.AnswerQueryService;
+
+import com.evgeniy.repository.KozelecRepository;
 import com.evgeniy.service.DataUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
@@ -23,26 +23,34 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 @Slf4j
 @Component
 public class MyAppBot extends TelegramLongPollingBot {
     @Autowired
-    private AnswerQueryService answerQueryService;
-    @Autowired
     private DataUserService dataUserService;
+    @Autowired
+    private KozelecRepository kozelecRepository;
 
-    private static final Integer CACHETIME = -1;
-
+    private static final Integer CACHETIME = 1;
+    private static final String THUMB_URL = "https://anga.ua/files/anga/reg_images/kozeleth5.jpg";
     public static final List<Command> commands = new ArrayList<>();
 
     static {
         commands.add(new Start());
+        commands.add(new StartChattingWithBot());
+        commands.add(new Yes());
+        commands.add(new No());
+        commands.add(new MainMenu());
+        commands.add(new Specialists());
+        commands.add(new About());
+        commands.add(new Services());
+        commands.add(new Cosmetics());
+        commands.add(new Address());
+        commands.add(new Personal());
+
     }
 
     public HashMap<Long, DataUserTg> user = new HashMap<>();
@@ -120,44 +128,69 @@ public class MyAppBot extends TelegramLongPollingBot {
         String query = inlineQuery.getQuery();
         System.out.println("Searching: " + query);
         try {
-                execute(convertResultsToResponse(inlineQuery));
+            execute(convertResultsToResponse(inlineQuery));
         } catch (Throwable e) {
             log.error(e.getLocalizedMessage(), e);
             e.printStackTrace();
         }
     }
 
-    private  AnswerInlineQuery convertResultsToResponse(InlineQuery inlineQuery) {
+    private AnswerInlineQuery convertResultsToResponse(InlineQuery inlineQuery) {
         AnswerInlineQuery answerInlineQuery = new AnswerInlineQuery();
         answerInlineQuery.setInlineQueryId(inlineQuery.getId());
-        System.out.println("answerID="+inlineQuery.getId());
+        System.out.println("answerID=" + inlineQuery.getId());
         answerInlineQuery.setCacheTime(CACHETIME);
         answerInlineQuery.setIsPersonal(true);
         answerInlineQuery.setResults(convertResults(inlineQuery.getQuery()));
         return answerInlineQuery;
     }
 
-    private  List<InlineQueryResult> convertResults(String query) {
-        List<AnswerQuery> answerQueryList = answerQueryService.findByTitleContains(query);
+    private List<InlineQueryResult> convertResults(String query) {
 
+        String[] array = query.split(",");
+        String region = query;
+        String city = "";
+        String street = "";
+        String number = "";
 
-        List<InlineQueryResult> results = new ArrayList<>();
-        for (int i = 0; i < answerQueryList.size(); i++) {
-            InlineQueryResultArticle article = new InlineQueryResultArticle();
-            InputTextMessageContent messageContent  = new InputTextMessageContent();
-            messageContent.setDisableWebPagePreview(true);
-            messageContent.setParseMode(ParseMode.MARKDOWN);
-            messageContent.setMessageText(answerQueryList.get(i).getDescription());
-            article.setInputMessageContent(messageContent);
-            article.setId(answerQueryList.get(i).getId().toString());
-            System.out.println("articleID="+answerQueryList.get(i).getId().toString());
-            article.setTitle(answerQueryList.get(i).getTitle());
-            article.setDescription(answerQueryList.get(i).getDescription());
-            article.setThumbUrl(answerQueryList.get(i).getThumbUrl());
-            results.add(article);
+        if (array.length == 2) {
+            region = array[0];
+            city = array[1];
+        }
+        if (array.length == 3) {
+            region = array[0];
+            city = array[1];
+            street = array[2];
+        }
+        if (array.length == 4) {
+            region = array[0];
+            city = array[1];
+            street = array[2];
+            number = array[3];
         }
 
-       return results;
+        List<Kozelec> kozeletsDistrictsList = kozelecRepository.searchAddress(region.toLowerCase(Locale.ROOT), city.toLowerCase(Locale.ROOT), street.toLowerCase(Locale.ROOT), number.toLowerCase(Locale.ROOT)).stream().toList();
+
+        List<InlineQueryResult> results = new ArrayList<>();
+
+        for (Kozelec kozelec : kozeletsDistrictsList) {
+
+            InlineQueryResultArticle article = new InlineQueryResultArticle();
+            InputTextMessageContent messageContent = new InputTextMessageContent();
+
+            messageContent.setDisableWebPagePreview(true);
+            messageContent.setParseMode(ParseMode.MARKDOWN);
+            messageContent.setMessageText(kozelec.getStreet() + kozelec.getNumber());
+            article.setInputMessageContent(messageContent);
+            article.setId(kozelec.getId().toString());
+            article.setTitle(kozelec.getRegion() + " обл.  " + kozelec.getTitle());
+            article.setDescription(kozelec.getStreet() + " , " + kozelec.getNumber());
+            article.setThumbUrl(THUMB_URL);
+            results.add(article);
+
+        }
+
+        return results;
     }
 
     @PostConstruct

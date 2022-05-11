@@ -12,18 +12,30 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
-@Table(name = "t_answerQuerry")
-public class AnswerQuery {
+@Table(name = "ukrposhta_houses")
+public class Kozelec {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+    @Column(name = "region")
+    private String region;
+
+    @Column(name = "district")
+    private String district;
+
     @Column(name = "title")
     private String title;
-    @Column(name = "description")
-    private String description;
-    @Column(name = "thumbUrl")
-    private String thumbUrl;
+
+    @Column(name = "zip")
+    private String zip;
+
+    @Column(name = "street")
+    private String street;
+
+    @Column(name = "number")
+    private String number;
 
 
 }
