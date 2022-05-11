@@ -2,7 +2,9 @@ package com.evgeniy.commands;
 
 import com.evgeniy.entity.DataUserTg;
 import com.evgeniy.telegram.ExecutionContext;
+import org.springframework.stereotype.Component;
 
+@Component
 public class Specialists implements Command {
     @Override
     public void doCommand(ExecutionContext executionContext)  {

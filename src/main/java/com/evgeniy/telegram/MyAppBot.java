@@ -6,6 +6,7 @@ import com.evgeniy.entity.DataUserTg;
 
 import com.evgeniy.repository.KozelecRepository;
 import com.evgeniy.service.DataUserService;
+import com.evgeniy.service.DoctorService;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,25 +34,29 @@ public class MyAppBot extends TelegramLongPollingBot {
     private DataUserService dataUserService;
     @Autowired
     private KozelecRepository kozelecRepository;
+    @Autowired
+    private DoctorService doctorService;
 
     private static final Integer CACHETIME = 1;
     private static final String THUMB_URL = "https://anga.ua/files/anga/reg_images/kozeleth5.jpg";
-    public static final List<Command> commands = new ArrayList<>();
+    @Autowired
+    public  List<Command> commands;
 
-    static {
-        commands.add(new Start());
-        commands.add(new StartChattingWithBot());
-        commands.add(new Yes());
-        commands.add(new No());
-        commands.add(new MainMenu());
-        commands.add(new Specialists());
-        commands.add(new About());
-        commands.add(new Services());
-        commands.add(new Cosmetics());
-        commands.add(new Address());
-        commands.add(new Personal());
+//    static {
+//        commands.add(new Start());
+//        commands.add(new StartChattingWithBot());
+//        commands.add(new Yes());
+//        commands.add(new No());
+//        commands.add(new MainMenu());
+//        commands.add(new Specialists());
+//        commands.add(new About());
+//        commands.add(new Services());
+//        commands.add(new Cosmetics());
+//        commands.add(new Address());
+//        commands.add(new Personal());
+//
+//    }
 
-    }
 
     public HashMap<Long, DataUserTg> user = new HashMap<>();
 
@@ -102,6 +107,7 @@ public class MyAppBot extends TelegramLongPollingBot {
                 context.setMyAppBot(this);
                 context.setUpdate(update);
                 context.setDataUserService(dataUserService);
+                context.setDoctorService(doctorService);
 
                 if (command != null) {
                     log.info("start command: " + command.getClass().getSimpleName());

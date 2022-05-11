@@ -22,7 +22,7 @@ import java.util.*;
 @Getter
 @Setter
 @Slf4j
-@Component
+
 public class ExecutionContext {
 
     private MyAppBot myAppBot;
@@ -44,13 +44,15 @@ public class ExecutionContext {
         }
     }
 
-    public void sendDoctors() {
-        doctorService.findAll().forEach(e -> {
-            String speciality = e.getSpeciality();
-            String fio = e.getFio();
-            replyMessage(speciality + "\n" + fio);
-        });
-    }
+
+
+//    public void sendDoctors() {
+//        doctorService.findAll().forEach(e -> {
+//            String speciality = e.getSpeciality();
+//            String fio = e.getFio();
+//            replyMessage(speciality + "\n" + fio);
+//        });
+//    }
 
     //LOCAL STATE
     public String getLocalState() {
@@ -133,8 +135,8 @@ public class ExecutionContext {
         List<KeyboardRow> keyboard = new ArrayList<>();
         KeyboardRow row1 = new KeyboardRow();
         KeyboardRow row2 = new KeyboardRow();
-        row1.add(new KeyboardButton("ДА"));
-        row2.add(new KeyboardButton("НЕТ"));
+        row1.add(new KeyboardButton("Да"));
+        row2.add(new KeyboardButton("Нет"));
         keyboard.add(row1);
         keyboard.add(row2);
         replyKeyboardMarkup.setSelective(true);

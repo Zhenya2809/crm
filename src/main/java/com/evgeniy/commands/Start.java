@@ -2,12 +2,13 @@ package com.evgeniy.commands;
 
 import com.evgeniy.entity.DataUserTg;
 import com.evgeniy.telegram.ExecutionContext;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Location;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-
+@Component
 public class Start implements Command {
     @Override
     public void doCommand(ExecutionContext executionContext)  {

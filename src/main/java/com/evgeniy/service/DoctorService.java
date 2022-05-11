@@ -3,11 +3,13 @@ package com.evgeniy.service;
 import com.evgeniy.entity.Doctor;
 import com.evgeniy.repository.DoctorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Configurable
 public class DoctorService {
     @Autowired
     private DoctorRepository doctorRepository;

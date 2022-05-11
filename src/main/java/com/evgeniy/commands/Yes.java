@@ -2,7 +2,9 @@ package com.evgeniy.commands;
 
 import com.evgeniy.entity.DataUserTg;
 import com.evgeniy.telegram.ExecutionContext;
+import org.springframework.stereotype.Component;
 
+@Component
 public class Yes implements Command {
     @Override
     public void doCommand(ExecutionContext executionContext) {
@@ -17,7 +19,7 @@ public class Yes implements Command {
 
     @Override
     public boolean shouldRunOnText(String text) {
-        return text.equals("ДА");
+        return text.equals("Да");
     }
 
     @Override
