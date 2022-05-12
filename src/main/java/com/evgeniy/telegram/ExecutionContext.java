@@ -6,8 +6,6 @@ import com.evgeniy.service.DoctorService;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -44,15 +42,13 @@ public class ExecutionContext {
         }
     }
 
-
-
-//    public void sendDoctors() {
-//        doctorService.findAll().forEach(e -> {
-//            String speciality = e.getSpeciality();
-//            String fio = e.getFio();
-//            replyMessage(speciality + "\n" + fio);
-//        });
-//    }
+    public void sendMessage(SendMessage message) {
+        try {
+            myAppBot.execute(message);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     //LOCAL STATE
     public String getLocalState() {
@@ -74,58 +70,10 @@ public class ExecutionContext {
     }
 
 
-    public void sendKeyboardMainStart() {
-        MyAppBot myAppBot = new MyAppBot();
-        SendMessage message = new SendMessage();
-        message.setChatId(String.valueOf(chatId));
-        message.setText("Привет " + getFirstName() + "\n" +
-                "Я виртуальный помощник современного медицинского центра красоты и здоровья CLINIC_NAME\n" +
-                "Чем могу вам помочь?");
 
-        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
-
-        List<KeyboardRow> keyboard = new ArrayList<>();
-        KeyboardRow row1 = new KeyboardRow();
-        KeyboardRow row2 = new KeyboardRow();
-        KeyboardRow row3 = new KeyboardRow();
-        KeyboardRow row4 = new KeyboardRow();
-        KeyboardRow row5 = new KeyboardRow();
-        KeyboardRow row6 = new KeyboardRow();
-        KeyboardRow row7 = new KeyboardRow();
-        KeyboardRow row8 = new KeyboardRow();
-
-        row1.add(new KeyboardButton("Начнем \uD83D\uDE09"));
-        row2.add(new KeyboardButton("Покажи свой сайт \uD83C\uDF10"));
-        row6.add(new KeyboardButton("Информация"));
-
-
-        keyboard.add(row1);
-        keyboard.add(row2);
-        keyboard.add(row3);
-        keyboard.add(row4);
-        keyboard.add(row5);
-        keyboard.add(row6);
-        keyboard.add(row7);
-        keyboard.add(row8);
-
-        replyKeyboardMarkup.setSelective(true);
-        replyKeyboardMarkup.setResizeKeyboard(true);
-        replyKeyboardMarkup.setOneTimeKeyboard(false);
-        replyKeyboardMarkup.setKeyboard(keyboard);
-        // Add it to the message
-        message.setReplyMarkup(replyKeyboardMarkup);
-
-        try {
-            // Send the message
-            myAppBot.execute(message);
-        } catch (TelegramApiException e) {
-            log.error("error", e);
-            e.printStackTrace();
-        }
-    }
 
     public void sendKeyboardChoseYesOrNo() {
-        MyAppBot myAppBot = new MyAppBot();
+
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
         message.setText("Вы были у нас раньше?");
@@ -146,13 +94,7 @@ public class ExecutionContext {
         // Add it to the message
         message.setReplyMarkup(replyKeyboardMarkup);
 
-        try {
-            // Send the message
-            myAppBot.execute(message);
-        } catch (TelegramApiException e) {
-            log.error("error", e);
-            e.printStackTrace();
-        }
+        sendMessage(message);
     }
 
     public void sendKeyboardIfChoseYes() {
@@ -177,13 +119,7 @@ public class ExecutionContext {
         // Add it to the message
         message.setReplyMarkup(replyKeyboardMarkup);
 
-        try {
-            // Send the message
-            myAppBot.execute(message);
-        } catch (TelegramApiException e) {
-            log.error("error", e);
-            e.printStackTrace();
-        }
+        sendMessage(message);
     }
 
     public void sendKeyboardAbout() {
@@ -208,13 +144,7 @@ public class ExecutionContext {
         // Add it to the message
         message.setReplyMarkup(replyKeyboardMarkup);
 
-        try {
-            // Send the message
-            myAppBot.execute(message);
-        } catch (TelegramApiException e) {
-            log.error("error", e);
-            e.printStackTrace();
-        }
+        sendMessage(message);
     }
 
     public void sendKeyboardSpecialists() {
@@ -245,13 +175,7 @@ public class ExecutionContext {
         // Add it to the message
         message.setReplyMarkup(replyKeyboardMarkup);
 
-        try {
-            // Send the message
-            myAppBot.execute(message);
-        } catch (TelegramApiException e) {
-            log.error("error", e);
-            e.printStackTrace();
-        }
+        sendMessage(message);
     }
 
     public void sendInlineKeyboardAbout() {
@@ -267,13 +191,13 @@ public class ExecutionContext {
         // Инициализируем кнопку и текст к кнопке
         InlineKeyboardButton news = new InlineKeyboardButton("Instagram");
         // Нужно выбрать одно из опциональных полей и можна добавить его с помощью set method
-        news.setUrl("https://www.president.gov.ua/ru/news/last");
+        news.setUrl("https://instagram.com");
         // Добавляем кнопку в лист
         Buttons.add(news);
         // Инициализируем кнопку и текст к кнопке
         InlineKeyboardButton decrees = new InlineKeyboardButton("Facebook");
         // Нужно выбрать одно из опциональных полей и можна добавить его с помощью set method
-        decrees.setUrl("https://www.president.gov.ua/documents/decrees");
+        decrees.setUrl("https://facebook.com");
         // Добавляем кнопку в лист
         Buttons.add(decrees);
         // Инициализируем кнопку и текст к кнопке
@@ -282,13 +206,32 @@ public class ExecutionContext {
         // Add it to the message
         message.setReplyMarkup(inlineKeyboardMarkup);
 
-        try {
-            // Send the message
-            myAppBot.execute(message);
-        } catch (TelegramApiException e) {
-            log.error("error", e);
-            e.printStackTrace();
-        }
+        sendMessage(message);
+    }
+
+    public void sendInlineKeyboardShowSite() {
+        SendMessage message = new SendMessage();
+        message.setChatId(String.valueOf(chatId));
+        message.setText("Перейдите на наш сайт");
+        // Create InlineKeyboardMarkup object
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        //Создаём клавиатуру (list of InlineKeyboardButton list)
+        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
+        // Создаём лист для кнопок
+        List<InlineKeyboardButton> Buttons = new ArrayList<InlineKeyboardButton>();
+        // Инициализируем кнопку и текст к кнопке
+        InlineKeyboardButton news = new InlineKeyboardButton("Наш сайт");
+        // Нужно выбрать одно из опциональных полей и можна добавить его с помощью set method
+        news.setUrl("http://95.216.146.138:8080/");
+        // Добавляем кнопку в лист
+        Buttons.add(news);
+        // Инициализируем кнопку и текст к кнопке
+        keyboard.add(Buttons);
+        inlineKeyboardMarkup.setKeyboard(keyboard);
+        // Add it to the message
+        message.setReplyMarkup(inlineKeyboardMarkup);
+
+        sendMessage(message);
     }
 
     public void sendKeyboardMainMenu() {
@@ -326,17 +269,7 @@ public class ExecutionContext {
         // Add it to the message
         message.setReplyMarkup(replyKeyboardMarkup);
 
-        try {
-            // Send the message
-            myAppBot.execute(message);
-        } catch (TelegramApiException e) {
-            log.error("error", e);
-            e.printStackTrace();
-        }
-    }
-
-    public void setMyWorkBot(MyAppBot myAppBot) {
-        this.myAppBot = myAppBot;
+        sendMessage(message);
     }
 
     public void printDateAndState() {
@@ -349,13 +282,7 @@ public class ExecutionContext {
         SendMessage message = new SendMessage();
         message.setChatId(chatId.toString());
         message.setText(sendTEXT);
-        try {
-            myAppBot.execute(message);
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-            log.error("error", e);
-        }
-
+        sendMessage(message);
     }
 
     public void sendAll(String sendTEXT) {
@@ -364,15 +291,36 @@ public class ExecutionContext {
         for (Long chatId : chatIdList) {
             message.setChatId(chatId.toString());
             message.setText(sendTEXT);
-            try {
-                myAppBot.execute(message);
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
-                log.error("error", e);
-            }
-
+            sendMessage(message);
         }
     }
+
+
+    public void keyboad(String responseMassage, List<String> buttonNames) {
+        SendMessage message = new SendMessage();
+        message.setChatId(String.valueOf(chatId));
+        message.setText(responseMassage);
+
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+        List<KeyboardRow> keyboardRowList = new ArrayList<>();
+
+        buttonNames.forEach(e -> {
+            KeyboardRow row = new KeyboardRow();
+            row.add(new KeyboardButton(e));
+            keyboardRowList.add(row);
+
+        });
+
+        replyKeyboardMarkup.setSelective(true);
+        replyKeyboardMarkup.setResizeKeyboard(true);
+        replyKeyboardMarkup.setOneTimeKeyboard(false);
+        replyKeyboardMarkup.setKeyboard(keyboardRowList);
+        // Add it to the message
+        message.setReplyMarkup(replyKeyboardMarkup);
+        sendMessage(message);
+    }
+
+
 }
 
 //

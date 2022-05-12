@@ -4,13 +4,17 @@ import com.evgeniy.entity.DataUserTg;
 import com.evgeniy.telegram.ExecutionContext;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class Services implements Command {
     @Override
-    public void doCommand(ExecutionContext executionContext)  {
+    public void doCommand(ExecutionContext executionContext) {
         executionContext.setGlobalState(DataUserTg.botstate.SERVICES);
 
+        List<String> keyboardRowList = List.of("text1", "text2", "text3");
 
+        executionContext.keyboad("TextToKeyboard", keyboardRowList);
         executionContext.setLocalState(null);
         executionContext.setGlobalState(null);
 
@@ -19,7 +23,7 @@ public class Services implements Command {
 
     @Override
     public boolean shouldRunOnText(String text) {
-        return text.equals("НЕТ");
+        return text.equals("Услуги");
     }
 
     @Override

@@ -9,12 +9,9 @@ public class Specialists implements Command {
     @Override
     public void doCommand(ExecutionContext executionContext)  {
         executionContext.setGlobalState(DataUserTg.botstate.SPECIALISTS);
-
         executionContext.sendKeyboardSpecialists();
         executionContext.setLocalState(null);
         executionContext.setGlobalState(null);
-
-
     }
 
     @Override

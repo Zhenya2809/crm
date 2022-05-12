@@ -5,24 +5,24 @@ import com.evgeniy.telegram.ExecutionContext;
 import org.springframework.stereotype.Component;
 
 @Component
-public class No implements Command {
+public class ShowSite implements Command {
+
     @Override
     public void doCommand(ExecutionContext executionContext) {
-        executionContext.setGlobalState(DataUserTg.botstate.NO);
-
+        executionContext.setGlobalState(DataUserTg.botstate.SHOW_SITE);
+        executionContext.sendInlineKeyboardShowSite();
         executionContext.sendKeyboardMainMenu();
         executionContext.setLocalState(null);
         executionContext.setGlobalState(null);
-
     }
 
     @Override
     public boolean shouldRunOnText(String text) {
-        return text.equals("Нет");
+        return text.equals("Покажи свой сайт \uD83C\uDF10");
     }
 
     @Override
     public DataUserTg.botstate getGlobalState() {
-        return DataUserTg.botstate.NO;
+        return DataUserTg.botstate.SHOW_SITE;
     }
 }

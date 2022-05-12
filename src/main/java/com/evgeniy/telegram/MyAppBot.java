@@ -42,22 +42,6 @@ public class MyAppBot extends TelegramLongPollingBot {
     @Autowired
     public  List<Command> commands;
 
-//    static {
-//        commands.add(new Start());
-//        commands.add(new StartChattingWithBot());
-//        commands.add(new Yes());
-//        commands.add(new No());
-//        commands.add(new MainMenu());
-//        commands.add(new Specialists());
-//        commands.add(new About());
-//        commands.add(new Services());
-//        commands.add(new Cosmetics());
-//        commands.add(new Address());
-//        commands.add(new Personal());
-//
-//    }
-
-
     public HashMap<Long, DataUserTg> user = new HashMap<>();
 
     @Override
