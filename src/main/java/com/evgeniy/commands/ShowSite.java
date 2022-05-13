@@ -1,8 +1,13 @@
 package com.evgeniy.commands;
 
 import com.evgeniy.entity.DataUserTg;
+import com.evgeniy.entity.InlineButton;
 import com.evgeniy.telegram.ExecutionContext;
 import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 @Component
 public class ShowSite implements Command {
@@ -10,8 +15,8 @@ public class ShowSite implements Command {
     @Override
     public void doCommand(ExecutionContext executionContext) {
         executionContext.setGlobalState(DataUserTg.botstate.SHOW_SITE);
-        executionContext.sendInlineKeyboardShowSite();
-        executionContext.sendKeyboardMainMenu();
+        List<InlineButton>  inlineButtons= List.of(new InlineButton("Наш сайт","http://95.216.146.138:8080/"));
+        executionContext.buildInlineKeyboard("Перейдите на наш сайт",inlineButtons);
         executionContext.setLocalState(null);
         executionContext.setGlobalState(null);
     }

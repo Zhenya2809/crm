@@ -1,11 +1,14 @@
 package com.evgeniy.telegram;
 
 import com.evgeniy.entity.DataUserTg;
+import com.evgeniy.entity.InlineButton;
+import com.evgeniy.entity.ReplyButton;
 import com.evgeniy.service.DataUserService;
 import com.evgeniy.service.DoctorService;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.telegram.telegrambots.meta.api.methods.send.SendLocation;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -50,6 +53,14 @@ public class ExecutionContext {
         }
     }
 
+    public void sendLocation(SendLocation location) {
+        try {
+            myAppBot.execute(location);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     //LOCAL STATE
     public String getLocalState() {
         Optional<DataUserTg> dataUserByChatId = dataUserService.findDataUserByChatId(chatId);
@@ -67,209 +78,6 @@ public class ExecutionContext {
             dataUserService.save(dataUserTg);
         }
         return newState;
-    }
-
-
-
-
-    public void sendKeyboardChoseYesOrNo() {
-
-        SendMessage message = new SendMessage();
-        message.setChatId(String.valueOf(chatId));
-        message.setText("Вы были у нас раньше?");
-
-        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
-
-        List<KeyboardRow> keyboard = new ArrayList<>();
-        KeyboardRow row1 = new KeyboardRow();
-        KeyboardRow row2 = new KeyboardRow();
-        row1.add(new KeyboardButton("Да"));
-        row2.add(new KeyboardButton("Нет"));
-        keyboard.add(row1);
-        keyboard.add(row2);
-        replyKeyboardMarkup.setSelective(true);
-        replyKeyboardMarkup.setResizeKeyboard(true);
-        replyKeyboardMarkup.setOneTimeKeyboard(false);
-        replyKeyboardMarkup.setKeyboard(keyboard);
-        // Add it to the message
-        message.setReplyMarkup(replyKeyboardMarkup);
-
-        sendMessage(message);
-    }
-
-    public void sendKeyboardIfChoseYes() {
-        MyAppBot myAppBot = new MyAppBot();
-        SendMessage message = new SendMessage();
-        message.setChatId(String.valueOf(chatId));
-        message.setText("Какая услуга тебя интересует?");
-
-        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
-
-        List<KeyboardRow> keyboard = new ArrayList<>();
-        KeyboardRow row1 = new KeyboardRow();
-        KeyboardRow row2 = new KeyboardRow();
-        row1.add(new KeyboardButton("Специалисты"));
-        row2.add(new KeyboardButton("Главное меню"));
-        keyboard.add(row1);
-        keyboard.add(row2);
-        replyKeyboardMarkup.setSelective(true);
-        replyKeyboardMarkup.setResizeKeyboard(true);
-        replyKeyboardMarkup.setOneTimeKeyboard(false);
-        replyKeyboardMarkup.setKeyboard(keyboard);
-        // Add it to the message
-        message.setReplyMarkup(replyKeyboardMarkup);
-
-        sendMessage(message);
-    }
-
-    public void sendKeyboardAbout() {
-        MyAppBot myAppBot = new MyAppBot();
-        SendMessage message = new SendMessage();
-        message.setChatId(String.valueOf(chatId));
-        message.setText("Так хочеться рассказать тебе о нас");
-
-        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
-
-        List<KeyboardRow> keyboard = new ArrayList<>();
-        KeyboardRow row1 = new KeyboardRow();
-        KeyboardRow row2 = new KeyboardRow();
-        row1.add(new KeyboardButton("Персонал"));
-        row2.add(new KeyboardButton("Главное меню"));
-        keyboard.add(row1);
-        keyboard.add(row2);
-        replyKeyboardMarkup.setSelective(true);
-        replyKeyboardMarkup.setResizeKeyboard(true);
-        replyKeyboardMarkup.setOneTimeKeyboard(false);
-        replyKeyboardMarkup.setKeyboard(keyboard);
-        // Add it to the message
-        message.setReplyMarkup(replyKeyboardMarkup);
-
-        sendMessage(message);
-    }
-
-    public void sendKeyboardSpecialists() {
-        MyAppBot myAppBot = new MyAppBot();
-        SendMessage message = new SendMessage();
-        message.setChatId(String.valueOf(chatId));
-        message.setText("Какой наш специалист тебя интересует?");
-
-        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
-
-        List<KeyboardRow> keyboard = new ArrayList<>();
-        KeyboardRow row1 = new KeyboardRow();
-        KeyboardRow row2 = new KeyboardRow();
-        KeyboardRow row3 = new KeyboardRow();
-        KeyboardRow row4 = new KeyboardRow();
-        row1.add(new KeyboardButton("Доктора"));
-        row2.add(new KeyboardButton("Косметологи"));
-        row3.add(new KeyboardButton("Доктора"));
-        row4.add(new KeyboardButton("Косметологи"));
-        keyboard.add(row1);
-        keyboard.add(row2);
-        keyboard.add(row3);
-        keyboard.add(row4);
-        replyKeyboardMarkup.setSelective(true);
-        replyKeyboardMarkup.setResizeKeyboard(true);
-        replyKeyboardMarkup.setOneTimeKeyboard(false);
-        replyKeyboardMarkup.setKeyboard(keyboard);
-        // Add it to the message
-        message.setReplyMarkup(replyKeyboardMarkup);
-
-        sendMessage(message);
-    }
-
-    public void sendInlineKeyboardAbout() {
-        SendMessage message = new SendMessage();
-        message.setChatId(String.valueOf(chatId));
-        message.setText("Возможно тебя заинтересует одна из наших соц. сетей?");
-        // Create InlineKeyboardMarkup object
-        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-        //Создаём клавиатуру (list of InlineKeyboardButton list)
-        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
-        // Создаём лист для кнопок
-        List<InlineKeyboardButton> Buttons = new ArrayList<InlineKeyboardButton>();
-        // Инициализируем кнопку и текст к кнопке
-        InlineKeyboardButton news = new InlineKeyboardButton("Instagram");
-        // Нужно выбрать одно из опциональных полей и можна добавить его с помощью set method
-        news.setUrl("https://instagram.com");
-        // Добавляем кнопку в лист
-        Buttons.add(news);
-        // Инициализируем кнопку и текст к кнопке
-        InlineKeyboardButton decrees = new InlineKeyboardButton("Facebook");
-        // Нужно выбрать одно из опциональных полей и можна добавить его с помощью set method
-        decrees.setUrl("https://facebook.com");
-        // Добавляем кнопку в лист
-        Buttons.add(decrees);
-        // Инициализируем кнопку и текст к кнопке
-        keyboard.add(Buttons);
-        inlineKeyboardMarkup.setKeyboard(keyboard);
-        // Add it to the message
-        message.setReplyMarkup(inlineKeyboardMarkup);
-
-        sendMessage(message);
-    }
-
-    public void sendInlineKeyboardShowSite() {
-        SendMessage message = new SendMessage();
-        message.setChatId(String.valueOf(chatId));
-        message.setText("Перейдите на наш сайт");
-        // Create InlineKeyboardMarkup object
-        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-        //Создаём клавиатуру (list of InlineKeyboardButton list)
-        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
-        // Создаём лист для кнопок
-        List<InlineKeyboardButton> Buttons = new ArrayList<InlineKeyboardButton>();
-        // Инициализируем кнопку и текст к кнопке
-        InlineKeyboardButton news = new InlineKeyboardButton("Наш сайт");
-        // Нужно выбрать одно из опциональных полей и можна добавить его с помощью set method
-        news.setUrl("http://95.216.146.138:8080/");
-        // Добавляем кнопку в лист
-        Buttons.add(news);
-        // Инициализируем кнопку и текст к кнопке
-        keyboard.add(Buttons);
-        inlineKeyboardMarkup.setKeyboard(keyboard);
-        // Add it to the message
-        message.setReplyMarkup(inlineKeyboardMarkup);
-
-        sendMessage(message);
-    }
-
-    public void sendKeyboardMainMenu() {
-        MyAppBot myAppBot = new MyAppBot();
-        SendMessage message = new SendMessage();
-        message.setChatId(String.valueOf(chatId));
-        message.setText("О, как так? Тогда нам есть о чем поговорить! \n" +
-                "так хочеться рассказать тебе о нас");
-
-        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
-
-        List<KeyboardRow> keyboard = new ArrayList<>();
-        KeyboardRow row1 = new KeyboardRow();
-        KeyboardRow row2 = new KeyboardRow();
-        KeyboardRow row3 = new KeyboardRow();
-        KeyboardRow row4 = new KeyboardRow();
-//        KeyboardRow row5 = new KeyboardRow();
-
-        row1.add(new KeyboardButton("О нас"));
-        row2.add(new KeyboardButton("Специалисты"));
-        row3.add(new KeyboardButton("Услуги"));
-        row4.add(new KeyboardButton("Наш адрес"));
-//        row5.add(new KeyboardButton("Главное меню"));
-
-        keyboard.add(row1);
-        keyboard.add(row2);
-        keyboard.add(row3);
-        keyboard.add(row4);
-//        keyboard.add(row5);
-
-        replyKeyboardMarkup.setSelective(true);
-        replyKeyboardMarkup.setResizeKeyboard(true);
-        replyKeyboardMarkup.setOneTimeKeyboard(false);
-        replyKeyboardMarkup.setKeyboard(keyboard);
-        // Add it to the message
-        message.setReplyMarkup(replyKeyboardMarkup);
-
-        sendMessage(message);
     }
 
     public void printDateAndState() {
@@ -296,17 +104,26 @@ public class ExecutionContext {
     }
 
 
-    public void keyboad(String responseMassage, List<String> buttonNames) {
+    public void sendAddress(double longitude,double latitude)  {
+        SendLocation sendLocation = new SendLocation();
+        sendLocation.setChatId(String.valueOf(chatId));
+        sendLocation.setLongitude(longitude);
+        sendLocation.setLatitude(latitude);
+        sendLocation(sendLocation);
+    }
+
+    public void buildReplyKeyboard(String responseMessage, List<ReplyButton> buttonNames) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
-        message.setText(responseMassage);
+        message.setText(responseMessage);
 
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         List<KeyboardRow> keyboardRowList = new ArrayList<>();
 
         buttonNames.forEach(e -> {
             KeyboardRow row = new KeyboardRow();
-            row.add(new KeyboardButton(e));
+
+            row.add(new KeyboardButton(e.getReplyMesasge()));
             keyboardRowList.add(row);
 
         });
@@ -320,6 +137,32 @@ public class ExecutionContext {
         sendMessage(message);
     }
 
+    public void buildInlineKeyboard(String replyMessage, List<InlineButton> inlineButtons) {
+        SendMessage message = new SendMessage();
+        message.setChatId(String.valueOf(getChatId()));
+        message.setText(replyMessage);
+        // Create InlineKeyboardMarkup object
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        //Создаём клавиатуру (list of InlineKeyboardButton list)
+        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
+        // Создаём лист для кнопок
+        List<InlineKeyboardButton> buttons = new ArrayList<InlineKeyboardButton>();
+
+
+        inlineButtons.forEach((e) -> {
+            InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
+            inlineKeyboardButton.setUrl(e.getUrl());
+            inlineKeyboardButton.setText(e.getText());
+            buttons.add(inlineKeyboardButton);
+        });
+
+        keyboard.add(buttons);
+        inlineKeyboardMarkup.setKeyboard(keyboard);
+        // Add it to the message
+        message.setReplyMarkup(inlineKeyboardMarkup);
+        sendMessage(message);
+
+    }
 
 }
 

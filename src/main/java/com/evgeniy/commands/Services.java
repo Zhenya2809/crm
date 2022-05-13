@@ -1,6 +1,7 @@
 package com.evgeniy.commands;
 
 import com.evgeniy.entity.DataUserTg;
+import com.evgeniy.entity.ReplyButton;
 import com.evgeniy.telegram.ExecutionContext;
 import org.springframework.stereotype.Component;
 
@@ -11,10 +12,8 @@ public class Services implements Command {
     @Override
     public void doCommand(ExecutionContext executionContext) {
         executionContext.setGlobalState(DataUserTg.botstate.SERVICES);
-
-        List<String> keyboardRowList = List.of("text1", "text2", "text3");
-
-        executionContext.keyboad("TextToKeyboard", keyboardRowList);
+        List<ReplyButton> replyButtonList = List.of(new ReplyButton("текст1"),new ReplyButton("Главное меню"));
+        executionContext.buildReplyKeyboard("TextToKeyboard", replyButtonList);
         executionContext.setLocalState(null);
         executionContext.setGlobalState(null);
 

@@ -1,15 +1,17 @@
 package com.evgeniy.commands;
 
 import com.evgeniy.entity.DataUserTg;
+import com.evgeniy.entity.ReplyButton;
 import com.evgeniy.service.DoctorService;
 import com.evgeniy.telegram.ExecutionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 
 
 @Component
-public class Personal implements Command {
+public class Doctors implements Command {
     @Autowired
     public DoctorService doctorService;
 
@@ -22,7 +24,11 @@ public class Personal implements Command {
             String fio = e.getFio();
             executionContext.replyMessage(speciality + " " + fio);
         });
-        executionContext.sendKeyboardMainMenu();
+        List<ReplyButton> replyButtonList = List.of(new ReplyButton("Записаться к доктору"),
+                                                    new ReplyButton("Специалисты"),
+                                                    new ReplyButton("Услуги"),
+                                                    new ReplyButton("Наш адрес"));
+        executionContext.buildReplyKeyboard("Наши доктора", replyButtonList);
         executionContext.setLocalState(null);
         executionContext.setGlobalState(null);
 
