@@ -52,6 +52,24 @@ public class AppointmentService {
         return "patientIDisNullError";
     }
 
+    public void createAppointmentTDoctors(String email, String date, String time, String doctorID) {
+
+
+        Optional<Patient> patientOptional = patientRepository.findByEmail(email);
+
+        if (patientOptional.isPresent()) {
+
+                Patient patient = patientOptional.get();
+                Doctor doctor = doctorRepository.findDoctorById(Long.valueOf(doctorID));
+                AppointmentToDoctors incoming = new AppointmentToDoctors();
+                incoming.setDate(date);
+                incoming.setTime(time);
+                incoming.setDoctor(doctor);
+                incoming.setPatient(patient);
+                appointmentRepository.save(incoming);
+        }
+    }
+
     public void sendEmailReminder() {
 
         SendEmailTLS sendEmailTLS = new SendEmailTLS();

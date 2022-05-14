@@ -14,20 +14,24 @@ public class DoctorService {
     @Autowired
     private DoctorRepository doctorRepository;
 
-    public Doctor createrDoctor(String doctorFio,String speciality){
+    public void createrDoctor(String doctorFio, String speciality, String about,String photo) {
         Doctor doctor = new Doctor();
         doctor.setFio(doctorFio);
         doctor.setSpeciality(speciality);
-        return doctorRepository.save(doctor);
+        doctor.setAbout(about);
+        doctor.setPhoto(photo);
+        doctorRepository.save(doctor);
     }
 
-    public void deleteDoctor(Long id){
+    public void deleteDoctor(Long id) {
         doctorRepository.deleteById(id);
     }
-    public Doctor getDoctorById(Long id){
-       return doctorRepository.findDoctorById(id);
+
+    public Doctor getDoctorById(Long id) {
+        return doctorRepository.findDoctorById(id);
     }
-    public List<Doctor> findAll(){
+
+    public List<Doctor> findAll() {
         return doctorRepository.findAll();
     }
 }

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -26,9 +27,10 @@ public class DataUserTg {
     private String LocaleState;
     @Column(name = "globalState")
     public botstate GlobalState;
-//    @Column(name = "phone")
-//    @Size(min = 13, max = 13, message = "в формате +380123456789")
-//    private String phone;
+    @Column(name = "email")
+    public String email;
+    @Column(name = "phone")
+    private String phone;
 
 
     public DataUserTg(Long chatId, String firstName, String lastName) {
@@ -44,6 +46,7 @@ public class DataUserTg {
         NO,
         SPECIALISTS,
         ABOUT,
+        ABOUT_CLINIC_TEXT,
         COSMETICS,
         SERVICES,
         ADDRESS,
@@ -54,12 +57,24 @@ public class DataUserTg {
         MAIN_MENU,
         START_BOT_CHATTING,
         NEW_OR_OLD_USER,
-        SEND_ALL_MESSAGE
+        SEND_ALL_MESSAGE,
+        APPOINTMENT_TO_DOCTOR,
+        THERAPIST,
+        SURGEON,
+        OPHTHALMOLOGIST,
+        PSYCHOLOGIST
     }
 
     @Override
     public String toString() {
-        return String.format("chatID:: ,%s, firstName:: ,%s,  lastName: ,%s,", this.chatId, this.firstName, this.lastName);
+        return "DataUserTg{" +
+                "chatId=" + chatId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", LocaleState='" + LocaleState + '\'' +
+                ", GlobalState=" + GlobalState +
+                ", email=" + email +
+                '}';
     }
 }
 

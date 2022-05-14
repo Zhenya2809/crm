@@ -69,9 +69,11 @@ public class AdminController {
     @PostMapping("/admin/newdoctor")
     public String postNewDoctor(@RequestParam(value = "doctorfio") String doctorfio,
                                 @RequestParam(value = "speciality") String speciality,
+                                @RequestParam(value = "about") String about,
+                                @RequestParam(value = "photo") String photo,
                                 Model model) {
 
-        doctorService.createrDoctor(doctorfio, speciality);
+        doctorService.createrDoctor(doctorfio, speciality,about,photo);
         return "redirect:/admin/newdoctor";
     }
 

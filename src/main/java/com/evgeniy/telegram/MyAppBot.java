@@ -5,6 +5,7 @@ import com.evgeniy.entity.Kozelec;
 import com.evgeniy.entity.DataUserTg;
 
 import com.evgeniy.repository.KozelecRepository;
+import com.evgeniy.service.AppointmentService;
 import com.evgeniy.service.DataUserService;
 import com.evgeniy.service.DoctorService;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +37,8 @@ public class MyAppBot extends TelegramLongPollingBot {
     private KozelecRepository kozelecRepository;
     @Autowired
     private DoctorService doctorService;
+    @Autowired
+    private AppointmentService appointmentService;
 
     private static final Integer CACHETIME = 1;
     private static final String THUMB_URL = "https://anga.ua/files/anga/reg_images/kozeleth5.jpg";
@@ -92,6 +95,7 @@ public class MyAppBot extends TelegramLongPollingBot {
                 context.setUpdate(update);
                 context.setDataUserService(dataUserService);
                 context.setDoctorService(doctorService);
+                context.setAppointmentService(appointmentService);
 
                 if (command != null) {
                     log.info("start command: " + command.getClass().getSimpleName());

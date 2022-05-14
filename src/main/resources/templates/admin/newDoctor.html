@@ -17,6 +17,10 @@
                     <input type="text" name="speciality" aria-label="speciality" placeholder="speciality"
                            class="form-control" style="color: white">
                 </div>
+                <div>
+                    <input type="text" name="about" aria-label="about" placeholder="about"
+                           class="form-control" style="color: white">
+                </div>
                 <div> &nbsp</div>
                 <button type="submit" class="btn btn-warning"> Добавить доктора</button>
             </form>
@@ -32,6 +36,8 @@
                     <div class="col" th:text="${el.fio}">
                     </div>
                     <div class="col" th:text="${el.speciality}">
+                    </div>
+                    <div class="col" th:text="${el.about}">
                     </div>
 
                 </div>

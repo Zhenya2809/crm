@@ -10,6 +10,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
+@ToString
 @Table(name = "t_doctor")
 public class Doctor {
     @Id
@@ -20,17 +21,13 @@ public class Doctor {
     private String fio;
     @Column(name = "speciality")
     private String speciality;
+    @Column(name = "about")
+    private String about;
+    @Column(name="photo")
+    private String photo;
 
     @OneToMany(fetch = FetchType.LAZY)
     private Set<AppointmentToDoctors> appointmentToDoctors;
 
-    @Override
-    public String toString() {
-        return "Doctor{" +
-                "id=" + id +
-                ", fio='" + fio + '\'' +
-                ", speciality='" + speciality + '\'' +
-                ", appointmentToDoctors=" + appointmentToDoctors +
-                '}';
-    }
+
 }

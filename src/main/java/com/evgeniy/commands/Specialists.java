@@ -12,12 +12,13 @@ public class Specialists implements Command {
     @Override
     public void doCommand(ExecutionContext executionContext)  {
         executionContext.setGlobalState(DataUserTg.botstate.SPECIALISTS);
-        List<ReplyButton> replyButtonList = List.of(new ReplyButton("Доктора"),
-                new ReplyButton("Косметологи"),
-                new ReplyButton("ще якісь хуї"),
-                new ReplyButton("і тут ще хтось"));
+        List<ReplyButton> replyButtonList = List.of(new ReplyButton("Косметологи"),
+                                                    new ReplyButton("Доктора"),
+                                                    new ReplyButton("Администраторы"),
+                                                    new ReplyButton("і тут ще хтось"));
 
-        executionContext.buildReplyKeyboard("Какой наш специалист тебя интересует?", replyButtonList);
+        executionContext.buildReplyKeyboard(executionContext.getFirstName()+", рада представить тебе нашу команду профессионалов. \n" +
+                "Качественный подбор персонала, \n помог собрать лучших врачей - специалистов.", replyButtonList);
 
 
         executionContext.setLocalState(null);

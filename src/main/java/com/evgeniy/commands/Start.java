@@ -11,9 +11,6 @@ import java.util.List;
 public class Start implements Command {
     @Override
     public void doCommand(ExecutionContext executionContext) {
-        executionContext.setGlobalState(DataUserTg.botstate.START);
-        executionContext.setLocalState(null);
-        executionContext.setGlobalState(null);
         List<ReplyButton> replyButtonList = List.of(new ReplyButton("Начнем \uD83D\uDE09"),
                                                     new ReplyButton("Покажи свой сайт \uD83C\uDF10"),
                                                     new ReplyButton("О нас"));

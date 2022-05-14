@@ -12,7 +12,11 @@ public class Yes implements Command {
     @Override
     public void doCommand(ExecutionContext executionContext) {
         executionContext.setGlobalState(DataUserTg.botstate.YES);
-        List<ReplyButton> replyButtonList = List.of(new ReplyButton("Специалисты"),
+        List<ReplyButton> replyButtonList = List.of(new ReplyButton("Услуги"),
+                                                    new ReplyButton("Специалисты"),
+                                                    new ReplyButton("Записаться"),
+                                                    new ReplyButton("Контакты"),
+                                                    new ReplyButton("Оставить отзыв"),
                                                     new ReplyButton("Главное меню"));
 
         executionContext.buildReplyKeyboard("Какая услуга тебя интересует?", replyButtonList);

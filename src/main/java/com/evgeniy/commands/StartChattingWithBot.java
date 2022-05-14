@@ -14,10 +14,10 @@ public class StartChattingWithBot implements Command {
         executionContext.setGlobalState(DataUserTg.botstate.START_BOT_CHATTING);
         List<ReplyButton> replyButtonList = List.of(new ReplyButton("Да"),
                                                     new ReplyButton("Нет"));
-        List<String> keyboardRowList = List.of("Да", "Нет");
+
         executionContext.buildReplyKeyboard("Вы были у нас раньше?", replyButtonList);
-        executionContext.setLocalState(null);
         executionContext.setGlobalState(null);
+        executionContext.setLocalState(null);
 
 
     }
