@@ -14,7 +14,7 @@ public class DoctorService {
     @Autowired
     private DoctorRepository doctorRepository;
 
-    public void createrDoctor(String doctorFio, String speciality, String about,String photo) {
+    public void createrDoctor(String doctorFio, String speciality, String about, String photo) {
         Doctor doctor = new Doctor();
         doctor.setFio(doctorFio);
         doctor.setSpeciality(speciality);
@@ -33,5 +33,13 @@ public class DoctorService {
 
     public List<Doctor> findAll() {
         return doctorRepository.findAll();
+    }
+
+    public List<Doctor> findDoctorsBySperiality(String speciality) {
+        return doctorRepository.findDoctorsBySpeciality(speciality);
+    }
+
+    public Doctor findDoctorByFio(String fio) {
+        return doctorRepository.findDoctorsByFio(fio);
     }
 }

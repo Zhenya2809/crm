@@ -4,10 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 
 @Entity
 @Getter
@@ -24,9 +22,9 @@ public class DataUserTg {
     @Column(name = "lastName")
     private String lastName;
     @Column(name = "localState")
-    private String LocaleState;
+    private String localeState;
     @Column(name = "globalState")
-    public botstate GlobalState;
+    public botstate globalState;
     @Column(name = "email")
     public String email;
     @Column(name = "phone")
@@ -71,8 +69,8 @@ public class DataUserTg {
                 "chatId=" + chatId +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", LocaleState='" + LocaleState + '\'' +
-                ", GlobalState=" + GlobalState +
+                ", LocaleState='" + localeState + '\'' +
+                ", GlobalState=" + globalState +
                 ", email=" + email +
                 '}';
     }

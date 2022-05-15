@@ -70,10 +70,10 @@ public class AdminController {
     public String postNewDoctor(@RequestParam(value = "doctorfio") String doctorfio,
                                 @RequestParam(value = "speciality") String speciality,
                                 @RequestParam(value = "about") String about,
-                                @RequestParam(value = "photo") String photo,
+//                                @RequestParam(value = "photo") String photo,
                                 Model model) {
 
-        doctorService.createrDoctor(doctorfio, speciality,about,photo);
+        doctorService.createrDoctor(doctorfio, speciality,about,null);
         return "redirect:/admin/newdoctor";
     }
 

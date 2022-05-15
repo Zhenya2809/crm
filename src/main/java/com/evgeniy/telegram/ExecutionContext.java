@@ -1,12 +1,10 @@
 package com.evgeniy.telegram;
 
-import com.evgeniy.entity.DataUserTg;
-import com.evgeniy.entity.DaySchedule;
-import com.evgeniy.entity.InlineButton;
-import com.evgeniy.entity.ReplyButton;
+import com.evgeniy.entity.*;
 import com.evgeniy.service.AppointmentService;
 import com.evgeniy.service.DataUserService;
 import com.evgeniy.service.DoctorService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +16,6 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -201,7 +198,9 @@ public class ExecutionContext {
 
     }
 
-    public List<String> freeTimeToAppointmentForDay(LocalDate day,Long docId) {
+
+
+    public List<String> freeTimeToAppointmentForDay(LocalDate day, Long docId) {
 
         List<String> timeList = new ArrayList<>();
         timeList.add("9:00");
@@ -244,12 +243,12 @@ public class ExecutionContext {
         return timeList;
     }
 
-    public void createAppointmentToDoctor(LocalDate day,String time,String docId){
+    public void createAppointmentToDoctor(LocalDate day, String time, String docId) {
 
         String email = dataUserService.findDataUserByChatId(getChatId()).get().getEmail();
-        appointmentService.createAppointmentTDoctors(email, day.toString(),time,docId);
+        appointmentService.createAppointmentTDoctors(email, day.toString(), time, docId);
         replyMessage(getFirstName() + " ты записан " + day + " на " + time + "\n с нетерпение ждём тебя");
-        List<String> butonsNameList = List.of("Наш адрес","Услуги","Специалисты","Контакты","Главное меню");
+        List<String> butonsNameList = List.of("Наш адрес", "Услуги", "Специалисты", "Контакты", "Главное меню");
         buildReplyKeyboardWithStringList("Возможно я готов помочь тебе ещё?", butonsNameList);
     }
 

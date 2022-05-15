@@ -81,9 +81,9 @@ public class MyAppBot extends TelegramLongPollingBot {
                 Command command = null;
                 for (Command choseCommand : commands) {
                     if (choseCommand.shouldRunOnText(inputText) || (choseCommand.getGlobalState()
-                            != null && user.get(chatId).GlobalState == choseCommand.getGlobalState())) {
+                            != null && user.get(chatId).globalState == choseCommand.getGlobalState())) {
                         command = choseCommand;
-                        user.get(chatId).GlobalState = choseCommand.getGlobalState();
+                        user.get(chatId).globalState = choseCommand.getGlobalState();
                     }
                 }
                 ExecutionContext context = new ExecutionContext();
@@ -101,7 +101,6 @@ public class MyAppBot extends TelegramLongPollingBot {
                     log.info("start command: " + command.getClass().getSimpleName());
                     command.doCommand(context);
                 }
-
             }
         } catch (Exception e) {
             log.error("error", e);

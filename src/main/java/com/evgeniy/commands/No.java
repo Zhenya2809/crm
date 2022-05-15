@@ -64,7 +64,7 @@ public class No implements Command {
             case "TypePhone":
                 System.out.println("telephone= " + inputMessage);
 
-                if (inputMessage.matches("([0-9-]+)$") || inputMessage.equals("*")) {
+                if (inputMessage.matches("([0-9]{9,11})")) {
                     user = executionContext.getDataUserService().findDataUserByChatId(executionContext.getChatId()).get();
                     user.setPhone(inputMessage);
                     executionContext.getDataUserService().save(user);

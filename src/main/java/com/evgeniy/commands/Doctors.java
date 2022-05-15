@@ -28,7 +28,7 @@ public class Doctors implements Command {
                                                     new ReplyButton("Специалисты"),
                                                     new ReplyButton("Услуги"),
                                                     new ReplyButton("Наш адрес"));
-        executionContext.buildReplyKeyboard("Наши доктора", replyButtonList);
+        executionContext.buildReplyKeyboard("Наши доктора лучше всех", replyButtonList);
         executionContext.setLocalState(null);
         executionContext.setGlobalState(null);
 
