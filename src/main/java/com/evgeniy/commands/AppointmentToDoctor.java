@@ -23,10 +23,10 @@ public class AppointmentToDoctor implements Command {
                 LocalStateForAppointment localStateForAppointment = new LocalStateForAppointment(null, "sendDoctorSpeciality");
                 executionContext.setLocalState(objectMapper.writeValueAsString(localStateForAppointment));
             }
-            LocalStateForAppointment localStateForAppointment1 = objectMapper.readValue(executionContext.getLocalState(), LocalStateForAppointment.class);
-            String step = localStateForAppointment1.getStep();
+            LocalStateForAppointment localStateForAppointment = objectMapper.readValue(executionContext.getLocalState(), LocalStateForAppointment.class);
+            String step = localStateForAppointment.getStep();
             System.out.println("step=" + step);
-            Long docId = localStateForAppointment1.getDoctorId();
+            Long docId = localStateForAppointment.getDoctorId();
 
             switch (step) {
                 case "sendDoctorSpeciality":
@@ -39,55 +39,54 @@ public class AppointmentToDoctor implements Command {
                     List<ReplyButton> replyButtons = all.stream().map(e -> new ReplyButton(e.getSpeciality())).toList();
                     executionContext.buildInlineKeyboard("перейти на сайт для записи", inlineButtons);
                     executionContext.buildReplyKeyboard("Продолжить через телеграмм", replyButtons);
-                    localStateForAppointment1.setStep("chose_doctor");
-                    executionContext.setLocalState(objectMapper.writeValueAsString(localStateForAppointment1));
+                    localStateForAppointment.setStep("chose_doctor");
+                    executionContext.setLocalState(objectMapper.writeValueAsString(localStateForAppointment));
 
                     break;
                 case "chose_doctor":
-                    List<Doctor> doctorsBySperiality = executionContext.getDoctorService().findDoctorsBySperiality(inputMessage);
-                    List<ReplyButton> replyButtons1 = doctorsBySperiality.stream().map(e -> new ReplyButton(e.getFio())).toList();
+                    List<Doctor> doctorsBySpeсiality = executionContext.getDoctorService().findDoctorsBySperiality(inputMessage);
+                    List<ReplyButton> replyButtons1 = doctorsBySpeсiality.stream().map(e -> new ReplyButton(e.getFio())).toList();
                     executionContext.buildReplyKeyboard("Выберите доктора", replyButtons1);
-                    localStateForAppointment1.setStep("chose_id");
-                    executionContext.setLocalState(objectMapper.writeValueAsString(localStateForAppointment1));
+                    localStateForAppointment.setStep("chose_id");
+                    executionContext.setLocalState(objectMapper.writeValueAsString(localStateForAppointment));
                     break;
                 case "chose_id":
-                    localStateForAppointment1.setDoctorId(executionContext.getDoctorService().findDoctorByFio(inputMessage).getId());
+                    localStateForAppointment.setDoctorId(executionContext.getDoctorService().findDoctorByFio(inputMessage).getId());
                     replyButtons = List.of(new ReplyButton(today.toString()),
                             new ReplyButton(today.plusDays(1).toString()),
                             new ReplyButton(today.plusDays(2).toString()),
                             new ReplyButton(today.plusDays(3).toString()),
                             new ReplyButton(today.plusDays(4).toString()));
                     executionContext.buildReplyKeyboard("На какое число вы хотите записаться?", replyButtons);
-                    localStateForAppointment1.setStep("chose_data_to_appointment");
-                    executionContext.setLocalState(objectMapper.writeValueAsString(localStateForAppointment1));
+                    localStateForAppointment.setStep("chose_data_to_appointment");
+                    executionContext.setLocalState(objectMapper.writeValueAsString(localStateForAppointment));
                     break;
 
                 case "chose_data_to_appointment":
                     if (inputMessage.equals(today.toString())) {
                         extracted(executionContext, today, docId);
-                        localStateForAppointment1.setStep("today");
-                        executionContext.setLocalState(objectMapper.writeValueAsString(localStateForAppointment1));
+                        localStateForAppointment.setStep("today");
+                        executionContext.setLocalState(objectMapper.writeValueAsString(localStateForAppointment));
                     }
                     if (inputMessage.equals(today.plusDays(1).toString())) {
                         extracted(executionContext, today, docId);
-                        localStateForAppointment1.setStep("todayPlusDay");
-                        executionContext.setLocalState(objectMapper.writeValueAsString(localStateForAppointment1));
+                        localStateForAppointment.setStep("todayPlusDay");
+                        executionContext.setLocalState(objectMapper.writeValueAsString(localStateForAppointment));
                     }
                     if (inputMessage.equals(today.plusDays(2).toString())) {
                         extracted(executionContext, today, docId);
-                        localStateForAppointment1.setStep("todayPlus2Day");
-                        executionContext.setLocalState(objectMapper.writeValueAsString(localStateForAppointment1));
-
+                        localStateForAppointment.setStep("todayPlus2Day");
+                        executionContext.setLocalState(objectMapper.writeValueAsString(localStateForAppointment));
                     }
                     if (inputMessage.equals(today.plusDays(3).toString())) {
                         extracted(executionContext, today, docId);
-                        localStateForAppointment1.setStep("todayPlus3Day");
-                        executionContext.setLocalState(objectMapper.writeValueAsString(localStateForAppointment1));
+                        localStateForAppointment.setStep("todayPlus3Day");
+                        executionContext.setLocalState(objectMapper.writeValueAsString(localStateForAppointment));
                     }
                     if (inputMessage.equals(today.plusDays(4).toString())) {
                         extracted(executionContext, today, docId);
-                        localStateForAppointment1.setStep("todayPlus4Day");
-                        executionContext.setLocalState(objectMapper.writeValueAsString(localStateForAppointment1));
+                        localStateForAppointment.setStep("todayPlus4Day");
+                        executionContext.setLocalState(objectMapper.writeValueAsString(localStateForAppointment));
                     }
                     break;
                 case "today":
