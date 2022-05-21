@@ -22,12 +22,14 @@ public class Doctors implements Command {
         doctorService.findAll().forEach(e -> {
             String speciality = e.getSpeciality();
             String fio = e.getFio();
+            executionContext.replyImage(e.getPhoto());
+            executionContext.replyMessage(e.getAbout());
             executionContext.replyMessage(speciality + " " + fio);
         });
         List<ReplyButton> replyButtonList = List.of(new ReplyButton("Записаться к доктору"),
-                                                    new ReplyButton("Специалисты"),
-                                                    new ReplyButton("Услуги"),
-                                                    new ReplyButton("Наш адрес"));
+                new ReplyButton("Специалисты"),
+                new ReplyButton("Услуги"),
+                new ReplyButton("Наш адрес"));
         executionContext.buildReplyKeyboard("Наши доктора лучше всех", replyButtonList);
         executionContext.setLocalState(null);
         executionContext.setGlobalState(null);

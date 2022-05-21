@@ -1,4 +1,4 @@
-package com.evgeniy.entity;
+package com.evgeniy.commands.localState;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

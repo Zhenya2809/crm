@@ -1,5 +1,6 @@
 package com.evgeniy.commands;
 
+import com.evgeniy.commands.localState.LocalStateForAppointment;
 import com.evgeniy.entity.*;
 import com.evgeniy.telegram.ExecutionContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -45,8 +46,8 @@ public class AppointmentToDoctor implements Command {
                     break;
                 case "chose_doctor":
                     List<Doctor> doctorsBySpeсiality = executionContext.getDoctorService().findDoctorsBySperiality(inputMessage);
-                    List<ReplyButton> replyButtons1 = doctorsBySpeсiality.stream().map(e -> new ReplyButton(e.getFio())).toList();
-                    executionContext.buildReplyKeyboard("Выберите доктора", replyButtons1);
+                    List<ReplyButton> doctorsFIOListForButton = doctorsBySpeсiality.stream().map(e -> new ReplyButton(e.getFio())).toList();
+                    executionContext.buildReplyKeyboard("Выберите доктора", doctorsFIOListForButton);
                     localStateForAppointment.setStep("chose_id");
                     executionContext.setLocalState(objectMapper.writeValueAsString(localStateForAppointment));
                     break;
@@ -63,6 +64,7 @@ public class AppointmentToDoctor implements Command {
                     break;
 
                 case "chose_data_to_appointment":
+                    
                     if (inputMessage.equals(today.toString())) {
                         extracted(executionContext, today, docId);
                         localStateForAppointment.setStep("today");
@@ -92,28 +94,23 @@ public class AppointmentToDoctor implements Command {
                 case "today":
 
                     executionContext.createAppointmentToDoctor(today, inputMessage, String.valueOf(docId));
-                    executionContext.setLocalState(null);
-                    executionContext.setGlobalState(null);
+
                     break;
                 case "todayPlusDay":
                     executionContext.createAppointmentToDoctor(today.plusDays(1), inputMessage, String.valueOf(docId));
-                    executionContext.setLocalState(null);
-                    executionContext.setGlobalState(null);
+
                     break;
                 case "todayPlus2Day":
                     executionContext.createAppointmentToDoctor(today.plusDays(2), inputMessage, String.valueOf(docId));
-                    executionContext.setLocalState(null);
-                    executionContext.setGlobalState(null);
+
                     break;
                 case "todayPlus3Day":
                     executionContext.createAppointmentToDoctor(today.plusDays(3), inputMessage, String.valueOf(docId));
-                    executionContext.setLocalState(null);
-                    executionContext.setGlobalState(null);
+
                     break;
                 case "todayPlus4Day":
                     executionContext.createAppointmentToDoctor(today.plusDays(4), inputMessage, String.valueOf(docId));
-                    executionContext.setLocalState(null);
-                    executionContext.setGlobalState(null);
+
                     break;
             }
         } catch (Exception e) {

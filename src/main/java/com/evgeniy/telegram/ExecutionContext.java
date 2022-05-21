@@ -10,6 +10,8 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.methods.send.SendLocation;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -59,6 +61,13 @@ public class ExecutionContext {
             myAppBot.execute(location);
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+    public void sendPhoto(SendPhoto sendPhoto){
+        try{
+            myAppBot.execute(sendPhoto);
+        }catch (Exception e){
+            throw new RuntimeException();
         }
     }
 
@@ -198,7 +207,15 @@ public class ExecutionContext {
 
     }
 
+public void replyImage(String photoLink){
 
+    SendPhoto sendPhoto = new SendPhoto();
+    sendPhoto.setChatId(chatId.toString());
+    InputFile inputFile = new InputFile();
+    inputFile.setMedia(photoLink);
+    sendPhoto.setPhoto(inputFile);
+    sendPhoto(sendPhoto);
+}
 
     public List<String> freeTimeToAppointmentForDay(LocalDate day, Long docId) {
 
@@ -250,6 +267,8 @@ public class ExecutionContext {
         replyMessage(getFirstName() + " ты записан " + day + " на " + time + "\n с нетерпение ждём тебя");
         List<String> butonsNameList = List.of("Наш адрес", "Услуги", "Специалисты", "Контакты", "Главное меню");
         buildReplyKeyboardWithStringList("Возможно я готов помочь тебе ещё?", butonsNameList);
+        setGlobalState(null);
+        setLocalState(null);
     }
 
 }
