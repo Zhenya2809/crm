@@ -16,11 +16,15 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.AnswerInlineQuery;
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.inlinequery.InlineQuery;
 import org.telegram.telegrambots.meta.api.objects.inlinequery.inputmessagecontent.InputTextMessageContent;
 import org.telegram.telegrambots.meta.api.objects.inlinequery.result.InlineQueryResult;
 import org.telegram.telegrambots.meta.api.objects.inlinequery.result.InlineQueryResultArticle;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
@@ -43,7 +47,7 @@ public class MyAppBot extends TelegramLongPollingBot {
     private static final Integer CACHETIME = 1;
     private static final String THUMB_URL = "https://anga.ua/files/anga/reg_images/kozeleth5.jpg";
     @Autowired
-    public  List<Command> commands;
+    public List<Command> commands;
 
     public HashMap<Long, DataUserTg> user = new HashMap<>();
 
@@ -60,6 +64,11 @@ public class MyAppBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         try {
+
+            if (update.getMessage().hasContact()) {
+                String phoneNumber = update.getMessage().getContact().getPhoneNumber();
+                registerContactNumber(update,phoneNumber);
+            }
             if (update.hasInlineQuery()) {
                 handleIncomingInlineQuery(update.getInlineQuery());
                 System.out.println(" update query= " + update.getInlineQuery().getQuery());
@@ -80,10 +89,12 @@ public class MyAppBot extends TelegramLongPollingBot {
                 user.computeIfAbsent(chatId, a -> new DataUserTg(chatId, firstName, lastName));
                 Command command = null;
                 for (Command choseCommand : commands) {
-                    if (choseCommand.shouldRunOnText(inputText) || (choseCommand.getGlobalState()
-                            != null && user.get(chatId).globalState == choseCommand.getGlobalState())) {
-                        command = choseCommand;
-                        user.get(chatId).globalState = choseCommand.getGlobalState();
+                    if (inputText != null) {
+                        if (choseCommand.shouldRunOnText(inputText) || (choseCommand.getGlobalState()
+                                != null && user.get(chatId).globalState == choseCommand.getGlobalState())) {
+                            command = choseCommand;
+                            user.get(chatId).globalState = choseCommand.getGlobalState();
+                        }
                     }
                 }
                 ExecutionContext context = new ExecutionContext();
@@ -186,7 +197,36 @@ public class MyAppBot extends TelegramLongPollingBot {
         return results;
     }
 
+    public void registerContactNumber(Update update, String phoneNumber) {
+        try {
+            System.out.println(phoneNumber);
+            DataUserTg user = dataUserService.findDataUserByChatId(update.getMessage().getChatId()).get();
+            user.setPhone(phoneNumber);
+            dataUserService.save(user);
+
+            SendMessage message = new SendMessage();
+            message.setChatId(String.valueOf(update.getMessage().getChatId()));
+            message.setText("Регистрация успешна! Спасибо!");
+            ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+            List<KeyboardRow> keyboardRowList = new ArrayList<>();
+            KeyboardRow row = new KeyboardRow();
+            KeyboardButton keyboardButton = new KeyboardButton();
+            keyboardButton.setText("Главное меню");
+            row.add(keyboardButton);
+            keyboardRowList.add(row);
+            replyKeyboardMarkup.setSelective(true);
+            replyKeyboardMarkup.setResizeKeyboard(true);
+            replyKeyboardMarkup.setOneTimeKeyboard(false);
+            replyKeyboardMarkup.setKeyboard(keyboardRowList);
+            message.setReplyMarkup(replyKeyboardMarkup);
+            execute(message);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @PostConstruct
+
     public void register() throws TelegramApiException {
         TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
         botsApi.registerBot(this);

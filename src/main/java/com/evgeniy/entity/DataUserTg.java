@@ -23,6 +23,7 @@ public class DataUserTg {
     private String lastName;
     @Column(name = "localState")
     private String localeState;
+    @Enumerated(EnumType.STRING)
     @Column(name = "globalState")
     public botstate globalState;
     @Column(name = "email")
@@ -39,7 +40,6 @@ public class DataUserTg {
 
     public enum botstate {
         START,
-        MENU,
         YES,
         NO,
         SPECIALISTS,
@@ -48,19 +48,11 @@ public class DataUserTg {
         COSMETICS,
         SERVICES,
         ADDRESS,
-        PERSONAL,
         DOCTORS,
         SHOW_SITE,
-        COSMETOLOG,
         MAIN_MENU,
         START_BOT_CHATTING,
-        NEW_OR_OLD_USER,
-        SEND_ALL_MESSAGE,
         APPOINTMENT_TO_DOCTOR,
-        THERAPIST,
-        SURGEON,
-        OPHTHALMOLOGIST,
-        PSYCHOLOGIST
     }
 
     @Override

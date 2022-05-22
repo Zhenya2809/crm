@@ -18,7 +18,10 @@ public class Start implements Command {
         executionContext.buildReplyKeyboard("Привет " + executionContext.getFirstName() + "\n" +
                 "Я виртуальный помощник современного медицинского центра красоты и здоровья CLINIC_NAME\n" +
                 "Чем могу вам помочь?", replyButtonList);
+    executionContext.setLocalState(null);
     }
+
+
 
     @Override
     public boolean shouldRunOnText(String text) {

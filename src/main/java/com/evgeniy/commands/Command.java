@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public interface Command {
 
-    void doCommand(ExecutionContext context) throws TelegramApiException, IOException, Exception;
+    void doCommand(ExecutionContext context) throws Exception;
     boolean shouldRunOnText(String text);
 
     DataUserTg.botstate getGlobalState();

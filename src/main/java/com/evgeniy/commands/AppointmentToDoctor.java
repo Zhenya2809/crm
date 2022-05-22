@@ -19,9 +19,10 @@ public class AppointmentToDoctor implements Command {
             String inputMessage = executionContext.getInputText();
             String localState = executionContext.getLocalState();
             ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.findAndRegisterModules();
 
             if (localState == null) {
-                LocalStateForAppointment localStateForAppointment = new LocalStateForAppointment(null, "sendDoctorSpeciality");
+                LocalStateForAppointment localStateForAppointment = new LocalStateForAppointment(null, "sendDoctorSpeciality",null);
                 executionContext.setLocalState(objectMapper.writeValueAsString(localStateForAppointment));
             }
             LocalStateForAppointment localStateForAppointment = objectMapper.readValue(executionContext.getLocalState(), LocalStateForAppointment.class);
@@ -64,53 +65,13 @@ public class AppointmentToDoctor implements Command {
                     break;
 
                 case "chose_data_to_appointment":
-                    
-                    if (inputMessage.equals(today.toString())) {
-                        extracted(executionContext, today, docId);
-                        localStateForAppointment.setStep("today");
-                        executionContext.setLocalState(objectMapper.writeValueAsString(localStateForAppointment));
-                    }
-                    if (inputMessage.equals(today.plusDays(1).toString())) {
-                        extracted(executionContext, today, docId);
-                        localStateForAppointment.setStep("todayPlusDay");
-                        executionContext.setLocalState(objectMapper.writeValueAsString(localStateForAppointment));
-                    }
-                    if (inputMessage.equals(today.plusDays(2).toString())) {
-                        extracted(executionContext, today, docId);
-                        localStateForAppointment.setStep("todayPlus2Day");
-                        executionContext.setLocalState(objectMapper.writeValueAsString(localStateForAppointment));
-                    }
-                    if (inputMessage.equals(today.plusDays(3).toString())) {
-                        extracted(executionContext, today, docId);
-                        localStateForAppointment.setStep("todayPlus3Day");
-                        executionContext.setLocalState(objectMapper.writeValueAsString(localStateForAppointment));
-                    }
-                    if (inputMessage.equals(today.plusDays(4).toString())) {
-                        extracted(executionContext, today, docId);
-                        localStateForAppointment.setStep("todayPlus4Day");
-                        executionContext.setLocalState(objectMapper.writeValueAsString(localStateForAppointment));
-                    }
+                    localStateForAppointment.setDate(LocalDate.parse(inputMessage));
+                    extracted(executionContext, today, docId);
+                    localStateForAppointment.setStep("choseTime");
+                    executionContext.setLocalState(objectMapper.writeValueAsString(localStateForAppointment));
                     break;
-                case "today":
-
-                    executionContext.createAppointmentToDoctor(today, inputMessage, String.valueOf(docId));
-
-                    break;
-                case "todayPlusDay":
-                    executionContext.createAppointmentToDoctor(today.plusDays(1), inputMessage, String.valueOf(docId));
-
-                    break;
-                case "todayPlus2Day":
-                    executionContext.createAppointmentToDoctor(today.plusDays(2), inputMessage, String.valueOf(docId));
-
-                    break;
-                case "todayPlus3Day":
-                    executionContext.createAppointmentToDoctor(today.plusDays(3), inputMessage, String.valueOf(docId));
-
-                    break;
-                case "todayPlus4Day":
-                    executionContext.createAppointmentToDoctor(today.plusDays(4), inputMessage, String.valueOf(docId));
-
+                case "choseTime":
+                    executionContext.createAppointmentToDoctor(localStateForAppointment.getDate(), inputMessage, String.valueOf(docId));
                     break;
             }
         } catch (Exception e) {

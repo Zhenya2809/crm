@@ -4,7 +4,6 @@ import com.evgeniy.entity.*;
 import com.evgeniy.service.AppointmentService;
 import com.evgeniy.service.DataUserService;
 import com.evgeniy.service.DoctorService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -48,7 +47,7 @@ public class ExecutionContext {
         }
     }
 
-    public void sendMessage(SendMessage message) {
+    public void execute(SendMessage message) {
         try {
             myAppBot.execute(message);
         } catch (Exception e) {
@@ -56,17 +55,18 @@ public class ExecutionContext {
         }
     }
 
-    public void sendLocation(SendLocation location) {
+    public void execute(SendLocation location) {
         try {
             myAppBot.execute(location);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
-    public void sendPhoto(SendPhoto sendPhoto){
-        try{
+
+    public void execute(SendPhoto sendPhoto) {
+        try {
             myAppBot.execute(sendPhoto);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException();
         }
     }
@@ -100,7 +100,7 @@ public class ExecutionContext {
         SendMessage message = new SendMessage();
         message.setChatId(chatId.toString());
         message.setText(sendTEXT);
-        sendMessage(message);
+        execute(message);
     }
 
     public void sendAll(String sendTEXT) {
@@ -109,7 +109,7 @@ public class ExecutionContext {
         for (Long chatId : chatIdList) {
             message.setChatId(chatId.toString());
             message.setText(sendTEXT);
-            sendMessage(message);
+            execute(message);
         }
     }
 
@@ -119,7 +119,7 @@ public class ExecutionContext {
         sendLocation.setChatId(String.valueOf(chatId));
         sendLocation.setLongitude(longitude);
         sendLocation.setLatitude(latitude);
-        sendLocation(sendLocation);
+        execute(sendLocation);
     }
 
     public void buildReplyKeyboard(String responseMessage, List<ReplyButton> buttonNames) {
@@ -144,7 +144,7 @@ public class ExecutionContext {
         replyKeyboardMarkup.setKeyboard(keyboardRowList);
         // Add it to the message
         message.setReplyMarkup(replyKeyboardMarkup);
-        sendMessage(message);
+        execute(message);
     }
 
     public void buildReplyKeyboardWithStringList(String responseMessage, List<String> buttonNames) {
@@ -168,16 +168,34 @@ public class ExecutionContext {
         replyKeyboardMarkup.setKeyboard(keyboardRowList);
         // Add it to the message
         message.setReplyMarkup(replyKeyboardMarkup);
-        sendMessage(message);
+        execute(message);
     }
-
-    public void sendErrorMessage(String errorMessage) {
-
-
+    public void getContactKeyboard() {
         SendMessage message = new SendMessage();
-        message.setChatId(chatId.toString());
-        message.setText("ввод ошибочный " + errorMessage);
-        sendMessage(message);
+        message.setChatId(String.valueOf(chatId));
+        message.setText("Поделись своим номером телефона:");
+
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+        List<KeyboardRow> keyboardRowList = new ArrayList<>();
+
+
+            KeyboardRow row = new KeyboardRow();
+            KeyboardButton keyboardButton=new KeyboardButton();
+            keyboardButton.setText("поделиться номером телефона");
+            keyboardButton.setRequestContact(true);
+//            keyboardButton.setRequestLocation(true);
+            row.add(keyboardButton);
+            keyboardRowList.add(row);
+
+
+        replyKeyboardMarkup.setSelective(true);
+        replyKeyboardMarkup.setResizeKeyboard(true);
+        replyKeyboardMarkup.setOneTimeKeyboard(false);
+        replyKeyboardMarkup.setKeyboard(keyboardRowList);
+        // Add it to the message
+        message.setReplyMarkup(replyKeyboardMarkup);
+        execute(message);
+
     }
 
     public void buildInlineKeyboard(String replyMessage, List<InlineButton> inlineButtons) {
@@ -191,7 +209,6 @@ public class ExecutionContext {
         // Создаём лист для кнопок
         List<InlineKeyboardButton> buttons = new ArrayList<InlineKeyboardButton>();
 
-
         inlineButtons.forEach((e) -> {
             InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
             inlineKeyboardButton.setUrl(e.getUrl());
@@ -203,22 +220,22 @@ public class ExecutionContext {
         inlineKeyboardMarkup.setKeyboard(keyboard);
         // Add it to the message
         message.setReplyMarkup(inlineKeyboardMarkup);
-        sendMessage(message);
+        execute(message);
 
     }
 
-public void replyImage(String photoLink){
+    public void replyImage(String photoLink) {
 
-    SendPhoto sendPhoto = new SendPhoto();
-    sendPhoto.setChatId(chatId.toString());
-    InputFile inputFile = new InputFile();
-    inputFile.setMedia(photoLink);
-    sendPhoto.setPhoto(inputFile);
-    sendPhoto(sendPhoto);
-}
+        SendPhoto sendPhoto = new SendPhoto();
+        sendPhoto.setChatId(chatId.toString());
+        InputFile inputFile = new InputFile();
+        inputFile.setMedia(photoLink);
+        sendPhoto.setPhoto(inputFile);
+        sendPhoto.setParseMode("*bold \\*text*");
+        execute(sendPhoto);
+    }
 
     public List<String> freeTimeToAppointmentForDay(LocalDate day, Long docId) {
-
         List<String> timeList = new ArrayList<>();
         timeList.add("9:00");
         timeList.add("10:00");

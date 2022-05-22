@@ -24,6 +24,7 @@ public class About implements Command {
 
         executionContext.buildReplyKeyboard("Так хочеться рассказать тебе о нас", replyButtonList);
 
+
     }
 
     @Override
