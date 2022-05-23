@@ -9,7 +9,12 @@ import org.springframework.stereotype.Service;
 public class PatientCardService {
     @Autowired
     private PatientCardRepository patientCardRepository;
-    public PatientCard findPatientCardById(Long id){
+
+    public PatientCard findPatientCardById(Long id) {
         return patientCardRepository.findPatientCardById(id);
+    }
+
+    public void save(PatientCard patientCard) {
+        patientCardRepository.save(patientCard);
     }
 }

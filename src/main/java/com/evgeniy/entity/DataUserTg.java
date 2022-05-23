@@ -51,6 +51,7 @@ public class DataUserTg {
         DOCTORS,
         SHOW_SITE,
         MAIN_MENU,
+        MY_APPOINTMENTS,
         START_BOT_CHATTING,
         APPOINTMENT_TO_DOCTOR,
     }

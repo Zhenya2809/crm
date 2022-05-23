@@ -60,13 +60,14 @@ public class RegistrationController {
             log.error("Passwords do not match");
             return "error/passwordIncorect";
         }
-        if (!userService.saveUser(user)) {
+        try {
+            log.info("user " + user + "successfully created");
+            userService.saveUser(user);
+            return "redirect:/";
+        }catch (Exception e){
             model.addAttribute("usernameError", "Пользователь с таким именем уже существует");
             log.error("A user with the same name already exists");
             return "error/usernameAlready";
         }
-        log.info("user "+user+"successfully created");
-        userService.saveUser(user);
-        return "redirect:/";
     }
 }

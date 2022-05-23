@@ -1,27 +1,21 @@
 package com.evgeniy.telegram;
 
 import com.evgeniy.commands.*;
-import com.evgeniy.entity.Kozelec;
 import com.evgeniy.entity.DataUserTg;
 
-import com.evgeniy.repository.KozelecRepository;
 import com.evgeniy.service.AppointmentService;
 import com.evgeniy.service.DataUserService;
 import com.evgeniy.service.DoctorService;
+import com.evgeniy.service.UserService;
+import com.evgeniy.telegram.inline.InlineTelegramBot;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
-import org.telegram.telegrambots.meta.api.methods.AnswerInlineQuery;
-import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.inlinequery.InlineQuery;
-import org.telegram.telegrambots.meta.api.objects.inlinequery.inputmessagecontent.InputTextMessageContent;
-import org.telegram.telegrambots.meta.api.objects.inlinequery.result.InlineQueryResult;
-import org.telegram.telegrambots.meta.api.objects.inlinequery.result.InlineQueryResultArticle;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
@@ -38,14 +32,15 @@ public class MyAppBot extends TelegramLongPollingBot {
     @Autowired
     private DataUserService dataUserService;
     @Autowired
-    private KozelecRepository kozelecRepository;
-    @Autowired
     private DoctorService doctorService;
     @Autowired
     private AppointmentService appointmentService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private InlineTelegramBot inlineTelegramBot;
 
-    private static final Integer CACHETIME = 1;
-    private static final String THUMB_URL = "https://anga.ua/files/anga/reg_images/kozeleth5.jpg";
+
     @Autowired
     public List<Command> commands;
 
@@ -64,14 +59,13 @@ public class MyAppBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         try {
-
-            if (update.getMessage().hasContact()) {
-                String phoneNumber = update.getMessage().getContact().getPhoneNumber();
-                registerContactNumber(update,phoneNumber);
-            }
             if (update.hasInlineQuery()) {
-                handleIncomingInlineQuery(update.getInlineQuery());
+                inlineTelegramBot.handleIncomingInlineQuery(update.getInlineQuery(),this);
                 System.out.println(" update query= " + update.getInlineQuery().getQuery());
+            }
+            if ((update.hasMessage()) && (update.getMessage().hasContact())) {
+                String phoneNumber = update.getMessage().getContact().getPhoneNumber();
+                registerContactNumber(update, phoneNumber);
             } else if (update.hasMessage()) {
 
                 Long chatId = update.getMessage().getChatId();
@@ -90,13 +84,13 @@ public class MyAppBot extends TelegramLongPollingBot {
                 Command command = null;
                 for (Command choseCommand : commands) {
                     if (inputText != null) {
-                        if (choseCommand.shouldRunOnText(inputText) || (choseCommand.getGlobalState()
-                                != null && user.get(chatId).globalState == choseCommand.getGlobalState())) {
+                        if (choseCommand.shouldRunOnText(inputText) || (choseCommand.getGlobalState() != null && user.get(chatId).globalState == choseCommand.getGlobalState())) {
                             command = choseCommand;
                             user.get(chatId).globalState = choseCommand.getGlobalState();
                         }
                     }
                 }
+
                 ExecutionContext context = new ExecutionContext();
                 context.setFirstName(firstName);
                 context.setLastName(lastName);
@@ -107,7 +101,9 @@ public class MyAppBot extends TelegramLongPollingBot {
                 context.setDataUserService(dataUserService);
                 context.setDoctorService(doctorService);
                 context.setAppointmentService(appointmentService);
+                context.setUserService(userService);
 
+                log.info(context.printDateAndState());
                 if (command != null) {
                     log.info("start command: " + command.getClass().getSimpleName());
                     command.doCommand(context);
@@ -115,7 +111,6 @@ public class MyAppBot extends TelegramLongPollingBot {
             }
         } catch (Exception e) {
             log.error("error", e);
-
             e.printStackTrace();
 
         } finally {
@@ -128,74 +123,7 @@ public class MyAppBot extends TelegramLongPollingBot {
         return dataUserByChatId.isPresent();
     }
 
-    private void handleIncomingInlineQuery(InlineQuery inlineQuery) {
-        String query = inlineQuery.getQuery();
-        System.out.println("Searching: " + query);
-        try {
-            execute(convertResultsToResponse(inlineQuery));
-        } catch (Throwable e) {
-            log.error(e.getLocalizedMessage(), e);
-            e.printStackTrace();
-        }
-    }
 
-    private AnswerInlineQuery convertResultsToResponse(InlineQuery inlineQuery) {
-        AnswerInlineQuery answerInlineQuery = new AnswerInlineQuery();
-        answerInlineQuery.setInlineQueryId(inlineQuery.getId());
-        System.out.println("answerID=" + inlineQuery.getId());
-        answerInlineQuery.setCacheTime(CACHETIME);
-        answerInlineQuery.setIsPersonal(true);
-        answerInlineQuery.setResults(convertResults(inlineQuery.getQuery()));
-        return answerInlineQuery;
-    }
-
-    private List<InlineQueryResult> convertResults(String query) {
-
-        String[] array = query.split(",");
-        String region = query;
-        String city = "";
-        String street = "";
-        String number = "";
-
-        if (array.length == 2) {
-            region = array[0];
-            city = array[1];
-        }
-        if (array.length == 3) {
-            region = array[0];
-            city = array[1];
-            street = array[2];
-        }
-        if (array.length == 4) {
-            region = array[0];
-            city = array[1];
-            street = array[2];
-            number = array[3];
-        }
-
-        List<Kozelec> kozeletsDistrictsList = kozelecRepository.searchAddress(region.toLowerCase(Locale.ROOT), city.toLowerCase(Locale.ROOT), street.toLowerCase(Locale.ROOT), number.toLowerCase(Locale.ROOT)).stream().toList();
-
-        List<InlineQueryResult> results = new ArrayList<>();
-
-        for (Kozelec kozelec : kozeletsDistrictsList) {
-
-            InlineQueryResultArticle article = new InlineQueryResultArticle();
-            InputTextMessageContent messageContent = new InputTextMessageContent();
-
-            messageContent.setDisableWebPagePreview(true);
-            messageContent.setParseMode(ParseMode.MARKDOWN);
-            messageContent.setMessageText(kozelec.getStreet() + kozelec.getNumber());
-            article.setInputMessageContent(messageContent);
-            article.setId(kozelec.getId().toString());
-            article.setTitle(kozelec.getRegion() + " обл.  " + kozelec.getTitle());
-            article.setDescription(kozelec.getStreet() + " , " + kozelec.getNumber());
-            article.setThumbUrl(THUMB_URL);
-            results.add(article);
-
-        }
-
-        return results;
-    }
 
     public void registerContactNumber(Update update, String phoneNumber) {
         try {

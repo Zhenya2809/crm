@@ -1,10 +1,13 @@
 package com.evgeniy.service;
 
+import com.evgeniy.entity.Doctor;
 import com.evgeniy.entity.Role;
 import com.evgeniy.entity.User;
 import com.evgeniy.repository.RoleRepository;
 import com.evgeniy.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,6 +19,7 @@ import javax.persistence.PersistenceContext;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -30,13 +34,9 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
-        }
-
-        return user;
     }
 
     public User findUserById(Long userId) {
@@ -48,32 +48,47 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    public boolean saveUser(User user) {
-        User userFromDB = userRepository.findByUsername(user.getUsername());
+    public void saveUser(User user) {
 
-        if (userFromDB != null) {
-            return false;
+        Optional<User> byUsername = userRepository.findByUsername(user.getUsername());
+        if (byUsername.isEmpty()) {
+            user.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            userRepository.save(user);
+        } else {
+            throw new RuntimeException("A user with the same name already exists");
         }
-
-        user.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
-        return true;
     }
 
-    public boolean deleteUser(Long userId) {
+    public Doctor findDoctorByLogin() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Optional<User> byUsername = userRepository.findByUsername(authentication.getName());
+        if (byUsername.isPresent()) {
+            return byUsername.get().getDoctor();
+        } else {
+            throw new RuntimeException("Doctor is not found");
+        }
+    }
+
+    public void deleteUser(Long userId) {
         if (userRepository.findById(userId).isPresent()) {
             userRepository.deleteById(userId);
-            return true;
+        } else {
+            throw new RuntimeException("User is not found");
         }
-        return false;
+
     }
 
     public List<User> usergtList(Long idMin) {
         return em.createQuery("SELECT u FROM User u WHERE u.id > :paramId", User.class)
                 .setParameter("paramId", idMin).getResultList();
     }
-    public User createUser(String username, String password, String passwordConfirm){
+
+    public User findUserByUsername(String userName) {
+        return userRepository.findByUsername(userName).orElseThrow();
+    }
+
+    public User createUser(String username, String password, String passwordConfirm) {
         User user = new User();
         user.setUsername(username);
         user.setPassword(password);

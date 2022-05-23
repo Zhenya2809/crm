@@ -4,6 +4,7 @@ import com.evgeniy.entity.*;
 import com.evgeniy.service.AppointmentService;
 import com.evgeniy.service.DataUserService;
 import com.evgeniy.service.DoctorService;
+import com.evgeniy.service.UserService;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +38,7 @@ public class ExecutionContext {
     private DataUserService dataUserService;
     private DoctorService doctorService;
     private AppointmentService appointmentService;
+    private UserService userService;
 
     public void setGlobalState(DataUserTg.botstate newState) {
         Optional<DataUserTg> dataUserByChatId = dataUserService.findDataUserByChatId(chatId);
@@ -90,10 +92,10 @@ public class ExecutionContext {
         return newState;
     }
 
-    public void printDateAndState() {
+    public String printDateAndState() {
         Date date = new Date();
         // Вывод текущей даты и cостояний
-        System.out.println(date + ":      GlobalState:  " + getGlobalState() + "   LocalState:  " + getLocalState());
+        return date + ":      GlobalState:  " + getGlobalState() + "   LocalState:  " + getLocalState();
     }
 
     public void replyMessage(String sendTEXT) {

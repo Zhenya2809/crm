@@ -15,7 +15,9 @@ public class MainMenu implements Command {
         List<ReplyButton> replyButtonList = List.of(new ReplyButton("О нас"),
                 new ReplyButton("Специалисты"),
                 new ReplyButton("Услуги"),
-                new ReplyButton("Наш адрес"));
+                new ReplyButton("Наш адрес"),
+                new ReplyButton("Мои записи"));
+
 
         executionContext.buildReplyKeyboard("О, как так? Тогда нам есть о чем поговорить! \n" +
                 "так хочеться рассказать тебе о нас", replyButtonList);

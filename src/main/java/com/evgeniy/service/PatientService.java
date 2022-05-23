@@ -4,7 +4,6 @@ import com.evgeniy.entity.Patient;
 import com.evgeniy.entity.PatientCard;
 import com.evgeniy.repository.PatientCardRepository;
 import com.evgeniy.repository.PatientRepository;
-import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -61,6 +60,7 @@ public class PatientService {
     }
 
 
+
     public void editPatient(Long id, String birthday, String insurancePolicy, String placeOfResidence, String sex, String fio, String phoneNumber) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Patient patient = patientRepository.findPatientById(id);
@@ -75,7 +75,6 @@ public class PatientService {
         patientRepository.save(patient);
 
     }
-
     public PatientCard findPatientCardByPatientId(Long id) {
         return patientCardRepository.findPatientCardByPatientId(id);
     }
