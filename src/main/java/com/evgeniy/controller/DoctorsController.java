@@ -48,17 +48,15 @@ public class DoctorsController {
 
     @GetMapping("/profileEdit")
     public String getProfileEdit(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Iterable<Patient> patientCards = patientService.findAllByEmail(auth.getName());
-        model.addAttribute("patientCard", patientCards);
+        Optional<Patient> patient = patientService.findPatienByAuthEmail();
+        patient.ifPresent(e -> model.addAttribute("patient", patient.get()));
         return "patient/profileEdit";
     }
 
     @GetMapping("/profile")
     public String getMyProfile(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Iterable<Patient> patientCards = patientService.findAllByEmail(auth.getName());
-        model.addAttribute("patientCard", patientCards);
+        Optional<Patient> patient = patientService.findPatienByAuthEmail();
+        patient.ifPresent(e -> model.addAttribute("patient", patient.get()));
 
         return "patient/myProfile";
     }

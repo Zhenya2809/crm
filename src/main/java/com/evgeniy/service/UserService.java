@@ -19,7 +19,6 @@ import javax.persistence.PersistenceContext;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Supplier;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -84,7 +83,7 @@ public class UserService implements UserDetailsService {
                 .setParameter("paramId", idMin).getResultList();
     }
 
-    public User findUserByUsername(String userName) {
+    public User findUserByLogin(String userName) {
         return userRepository.findByUsername(userName).orElseThrow();
     }
 

@@ -10,7 +10,6 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
-@ToString
 @Table(name = "t_doctor")
 public class Doctor {
     @Id
@@ -27,6 +26,7 @@ public class Doctor {
     private String photo;
 
     @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "clientID")
     private Set<AppointmentToDoctors> appointmentToDoctors;
 
 

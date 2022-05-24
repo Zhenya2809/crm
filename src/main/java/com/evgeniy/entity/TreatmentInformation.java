@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import javax.persistence.*;
 
 @Entity
@@ -43,6 +42,5 @@ public class TreatmentInformation {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Patient_card_id")
     private PatientCard patientCard;
-
 
 }

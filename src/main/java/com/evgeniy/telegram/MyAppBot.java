@@ -3,10 +3,7 @@ package com.evgeniy.telegram;
 import com.evgeniy.commands.*;
 import com.evgeniy.entity.DataUserTg;
 
-import com.evgeniy.service.AppointmentService;
-import com.evgeniy.service.DataUserService;
-import com.evgeniy.service.DoctorService;
-import com.evgeniy.service.UserService;
+import com.evgeniy.service.*;
 import com.evgeniy.telegram.inline.InlineTelegramBot;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
@@ -39,7 +36,8 @@ public class MyAppBot extends TelegramLongPollingBot {
     private UserService userService;
     @Autowired
     private InlineTelegramBot inlineTelegramBot;
-
+    @Autowired
+    private PatientService patientService;
 
     @Autowired
     public List<Command> commands;
@@ -60,7 +58,7 @@ public class MyAppBot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         try {
             if (update.hasInlineQuery()) {
-                inlineTelegramBot.handleIncomingInlineQuery(update.getInlineQuery(),this);
+                inlineTelegramBot.handleIncomingInlineQuery(update.getInlineQuery(), this);
                 System.out.println(" update query= " + update.getInlineQuery().getQuery());
             }
             if ((update.hasMessage()) && (update.getMessage().hasContact())) {
@@ -102,10 +100,11 @@ public class MyAppBot extends TelegramLongPollingBot {
                 context.setDoctorService(doctorService);
                 context.setAppointmentService(appointmentService);
                 context.setUserService(userService);
+                context.setPatientService(patientService);
 
-                log.info(context.printDateAndState());
+
                 if (command != null) {
-                    log.info("start command: " + command.getClass().getSimpleName());
+                    log.info(context.printDateAndState()+" start command: " + command.getClass().getSimpleName());
                     command.doCommand(context);
                 }
             }
@@ -122,7 +121,6 @@ public class MyAppBot extends TelegramLongPollingBot {
         Optional<DataUserTg> dataUserByChatId = dataUserService.findDataUserByChatId(chatId);
         return dataUserByChatId.isPresent();
     }
-
 
 
     public void registerContactNumber(Update update, String phoneNumber) {

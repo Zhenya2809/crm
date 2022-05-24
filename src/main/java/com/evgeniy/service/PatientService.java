@@ -2,7 +2,6 @@ package com.evgeniy.service;
 
 import com.evgeniy.entity.Patient;
 import com.evgeniy.entity.PatientCard;
-import com.evgeniy.repository.PatientCardRepository;
 import com.evgeniy.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -15,8 +14,9 @@ import java.util.Optional;
 public class PatientService {
     @Autowired
     private PatientRepository patientRepository;
+
     @Autowired
-    private PatientCardRepository patientCardRepository;
+    private PatientCardService patientCardService;
 
     public void CreatePatient(String fio, String birthday, String sex, String placeOfResidence, String insurancePolicy, String phoneNumber) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -31,8 +31,8 @@ public class PatientService {
         patientRepository.save(patient);
     }
 
-    public Iterable<Patient> findAllByEmail(String email) {
-        return patientRepository.findAllByEmail(email);
+    public Patient findPatientByEmail(String email) {
+       return patientRepository.findByEmail(email).orElseThrow();
     }
 
     public Iterable<Patient> findAll() {
@@ -75,12 +75,9 @@ public class PatientService {
         patientRepository.save(patient);
 
     }
-    public PatientCard findPatientCardByPatientId(Long id) {
-        return patientCardRepository.findPatientCardByPatientId(id);
-    }
 
     public Optional<PatientCard> findPatientCardByPatient(Patient patient) {
-        return patientCardRepository.findPatientCardByPatient(patient);
+        return patientCardService.findPatientCardByPatient(patient);
     }
 
 }

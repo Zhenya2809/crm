@@ -20,7 +20,7 @@ public class AppointmentToDoctors {
     @Column(name = "time")
     private String time;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "doctorID")
     private Doctor doctor;
 

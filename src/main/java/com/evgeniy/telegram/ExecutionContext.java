@@ -1,10 +1,7 @@
 package com.evgeniy.telegram;
 
 import com.evgeniy.entity.*;
-import com.evgeniy.service.AppointmentService;
-import com.evgeniy.service.DataUserService;
-import com.evgeniy.service.DoctorService;
-import com.evgeniy.service.UserService;
+import com.evgeniy.service.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +36,7 @@ public class ExecutionContext {
     private DoctorService doctorService;
     private AppointmentService appointmentService;
     private UserService userService;
+    private PatientService patientService;
 
     public void setGlobalState(DataUserTg.botstate newState) {
         Optional<DataUserTg> dataUserByChatId = dataUserService.findDataUserByChatId(chatId);
@@ -98,10 +96,10 @@ public class ExecutionContext {
         return date + ":      GlobalState:  " + getGlobalState() + "   LocalState:  " + getLocalState();
     }
 
-    public void replyMessage(String sendTEXT) {
+    public void replyMessage(String messageText) {
         SendMessage message = new SendMessage();
         message.setChatId(chatId.toString());
-        message.setText(sendTEXT);
+        message.setText(messageText);
         execute(message);
     }
 

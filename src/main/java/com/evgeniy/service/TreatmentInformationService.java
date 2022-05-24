@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 public class TreatmentInformationService {
@@ -30,20 +31,20 @@ public class TreatmentInformationService {
         Doctor doctor = userService.findDoctorByLogin();
         Patient patient = patientService.findPatientById(id);
 
-        PatientCard patientCard = new PatientCard();
-        patientCard.setPatient(patient);
-        patientCardService.save(patientCard);
 
-        TreatmentInformation treatmentInformation = new TreatmentInformation();
-        treatmentInformation.setDoctor(doctor);
-        treatmentInformation.setDiagnosis(diagnosis);
-        treatmentInformation.setDate(formatForDate.format(todayDate));
-        treatmentInformation.setTime(formatForTime.format(todayDate));
-        treatmentInformation.setPatientCard(patientCard);
-        treatmentInformation.setRecommendations(recommendations);
-        treatmentInformation.setSymptoms(symptoms);
-        treatmentInformation.setTreatment(treatment);
-        treatmentInformationRepository.save(treatmentInformation);
+        Optional<PatientCard> patientCardByPatient = patientCardService.findPatientCardByPatient(patient);
+        if (patientCardByPatient.isPresent()) {
 
+            TreatmentInformation treatmentInformation = new TreatmentInformation();
+            treatmentInformation.setDoctor(doctor);
+            treatmentInformation.setDiagnosis(diagnosis);
+            treatmentInformation.setDate(formatForDate.format(todayDate));
+            treatmentInformation.setTime(formatForTime.format(todayDate));
+            treatmentInformation.setPatientCard(patientCardByPatient.get());
+            treatmentInformation.setRecommendations(recommendations);
+            treatmentInformation.setSymptoms(symptoms);
+            treatmentInformation.setTreatment(treatment);
+            treatmentInformationRepository.save(treatmentInformation);
+        }
     }
 }
