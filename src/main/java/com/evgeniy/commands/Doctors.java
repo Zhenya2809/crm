@@ -17,20 +17,21 @@ public class Doctors implements Command {
 
     @Override
     public void doCommand(ExecutionContext executionContext) {
-        executionContext.setGlobalState(DataUserTg.botstate.DOCTORS);
 
-        doctorService.findAll().forEach(e -> {
-            String speciality = e.getSpeciality();
-            String fio = e.getFio();
-            executionContext.replyImage(e.getPhoto());
-            executionContext.replyMessage(e.getAbout());
-            executionContext.replyMessage(speciality + " " + fio);
-        });
+
+//        doctorService.findAll().forEach(e -> {
+//            String speciality = e.getSpeciality();
+//            String fio = e.getFio();
+//            executionContext.replyImage(e.getPhoto());
+//            executionContext.replyMessage(e.getAbout());
+//            executionContext.replyMessage(speciality + " " + fio);
+//        });
         List<ReplyButton> replyButtonList = List.of(new ReplyButton("Записаться к доктору"),
                 new ReplyButton("Специалисты"),
                 new ReplyButton("Услуги"),
-                new ReplyButton("Наш адрес"));
-        executionContext.buildReplyKeyboard("Наши доктора лучше всех", replyButtonList);
+                new ReplyButton("Наш адрес"),
+                new ReplyButton("Главное меню"));
+        executionContext.buildReplyKeyboard("Хотите записаться на прием?", replyButtonList);
         executionContext.setLocalState(null);
         executionContext.setGlobalState(null);
 

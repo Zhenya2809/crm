@@ -3,6 +3,7 @@ package com.evgeniy.service;
 import com.evgeniy.entity.Patient;
 import com.evgeniy.entity.PatientCard;
 import com.evgeniy.repository.PatientRepository;
+import com.evgeniy.telegram.ExecutionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,8 +32,18 @@ public class PatientService {
         patientRepository.save(patient);
     }
 
-    public Patient findPatientByEmail(String email) {
-       return patientRepository.findByEmail(email).orElseThrow();
+    public void save(Patient patient) {
+        patientRepository.save(patient);
+    }
+
+    public Patient findPatientByEmail(String email, ExecutionContext executionContext) {
+        Optional<Patient> byEmail = patientRepository.findByEmail(email);
+        if (byEmail.isPresent()) {
+            return byEmail.get();
+        }
+        return new Patient(executionContext.getChatId(), executionContext.getFirstName() + " " + executionContext.getLastName(), null, null, null, null, null, null, null);
+
+
     }
 
     public Iterable<Patient> findAll() {
@@ -58,7 +69,6 @@ public class PatientService {
     public Optional<Patient> findPatienByAuthEmail() {
         return patientRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
     }
-
 
 
     public void editPatient(Long id, String birthday, String insurancePolicy, String placeOfResidence, String sex, String fio, String phoneNumber) {

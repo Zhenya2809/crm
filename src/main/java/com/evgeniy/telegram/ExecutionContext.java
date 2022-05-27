@@ -16,6 +16,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
+import java.sql.Time;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -46,6 +47,7 @@ public class ExecutionContext {
             dataUserService.save(userTg);
         }
     }
+
 
     public void execute(SendMessage message) {
         try {
@@ -99,6 +101,13 @@ public class ExecutionContext {
     public void replyMessage(String messageText) {
         SendMessage message = new SendMessage();
         message.setChatId(chatId.toString());
+        message.setText(messageText);
+        execute(message);
+    }
+
+    public void sendMessageToUserWithId(String messageText, String chatId) {
+        SendMessage message = new SendMessage();
+        message.setChatId(chatId);
         message.setText(messageText);
         execute(message);
     }
@@ -170,6 +179,7 @@ public class ExecutionContext {
         message.setReplyMarkup(replyKeyboardMarkup);
         execute(message);
     }
+
     public void getContactKeyboard() {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
@@ -179,13 +189,13 @@ public class ExecutionContext {
         List<KeyboardRow> keyboardRowList = new ArrayList<>();
 
 
-            KeyboardRow row = new KeyboardRow();
-            KeyboardButton keyboardButton=new KeyboardButton();
-            keyboardButton.setText("поделиться номером телефона");
-            keyboardButton.setRequestContact(true);
+        KeyboardRow row = new KeyboardRow();
+        KeyboardButton keyboardButton = new KeyboardButton();
+        keyboardButton.setText("поделиться номером телефона");
+        keyboardButton.setRequestContact(true);
 //            keyboardButton.setRequestLocation(true);
-            row.add(keyboardButton);
-            keyboardRowList.add(row);
+        row.add(keyboardButton);
+        keyboardRowList.add(row);
 
 
         replyKeyboardMarkup.setSelective(true);
@@ -237,7 +247,8 @@ public class ExecutionContext {
 
     public List<String> freeTimeToAppointmentForDay(LocalDate day, Long docId) {
         List<String> timeList = new ArrayList<>();
-        timeList.add("9:00");
+        timeList.add("08:00");
+        timeList.add("09:00");
         timeList.add("10:00");
         timeList.add("11:00");
         timeList.add("12:00");
@@ -247,7 +258,8 @@ public class ExecutionContext {
         timeList.add("16:00");
         timeList.add("17:00");
         timeList.add("18:00");
-        HashMap<String, List<String>> dateAndTimeMap = appointmentService.findAllAvailableTimeByDoctorId(docId);
+        timeList.add("19:00");
+        HashMap<Date, List<String>> dateAndTimeMap = appointmentService.findAllAvailableTimeByDoctorId(docId);
         LocalDate today = LocalDate.now();
         ArrayList<DaySchedule> daySchedules = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
@@ -255,8 +267,8 @@ public class ExecutionContext {
             DaySchedule daySchedule = new DaySchedule();
             String key = localDate.toString();
             daySchedule.setDate(key);
-            if (dateAndTimeMap.get(key) != null) {
-                daySchedule.setAvailable(new HashSet<>(dateAndTimeMap.get(key)));
+            if (dateAndTimeMap.get(java.sql.Date.valueOf(key)) != null) {
+                daySchedule.setAvailable(new HashSet<>(dateAndTimeMap.get(java.sql.Date.valueOf(key))));
             } else {
                 daySchedule.setAvailable(new HashSet<>());
             }
@@ -272,18 +284,22 @@ public class ExecutionContext {
                 listToday.addAll(available);
             }
         });
+        List<String> list = listToday.stream().map(e -> {
+            String[] split = e.split(":");
+            return split[0] + ":" + split[1];
+        }).toList();
 
-        timeList.removeAll(listToday);
+        timeList.removeAll(list);
         return timeList;
     }
 
-    public void createAppointmentToDoctor(LocalDate day, String time, String docId) {
+    public void createAppointmentToDoctor(LocalDate day, Time time, String docId,ExecutionContext executionContext) {
 
         String email = dataUserService.findDataUserByChatId(getChatId()).get().getEmail();
-        appointmentService.createAppointmentTDoctors(email, day.toString(), time, docId);
+        appointmentService.createAppointmentTDoctors(email, day.toString(), time, docId,executionContext);
         replyMessage(getFirstName() + " ты записан " + day + " на " + time + "\n с нетерпение ждём тебя");
-        List<String> butonsNameList = List.of("Наш адрес", "Услуги", "Специалисты", "Контакты", "Главное меню");
-        buildReplyKeyboardWithStringList("Возможно я готов помочь тебе ещё?", butonsNameList);
+        List<String> buttonsNameList = List.of("Наш адрес", "Услуги", "Специалисты", "Контакты", "Главное меню");
+        buildReplyKeyboardWithStringList("Возможно я готов помочь тебе ещё?", buttonsNameList);
         setGlobalState(null);
         setLocalState(null);
     }

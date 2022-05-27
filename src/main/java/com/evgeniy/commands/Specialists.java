@@ -10,15 +10,15 @@ import java.util.List;
 @Component
 public class Specialists implements Command {
     @Override
-    public void doCommand(ExecutionContext executionContext)  {
+    public void doCommand(ExecutionContext executionContext) {
         executionContext.setGlobalState(DataUserTg.botstate.SPECIALISTS);
-        List<ReplyButton> replyButtonList = List.of(new ReplyButton("Косметологи"),
-                                                    new ReplyButton("Доктора"),
+        List<ReplyButton> replyButtonList = List.of(new ReplyButton("Доктора"),
                                                     new ReplyButton("Администраторы"),
-                                                    new ReplyButton("і тут ще хтось"));
+                                                    new ReplyButton("і тут ще хтось"),
+                                                    new ReplyButton("Главное меню"));
 
-        executionContext.buildReplyKeyboard(executionContext.getFirstName()+", рада представить тебе нашу команду профессионалов. \n" +
-                "Качественный подбор персонала, \n помог собрать лучших врачей - специалистов.", replyButtonList);
+        executionContext.buildReplyKeyboard(executionContext.getFirstName() + ", рада представить тебе нашу команду профессионалов. \n" +
+                "Качественный подбор персонала, помог собрать лучших врачей - специалистов.", replyButtonList);
 
 
         executionContext.setLocalState(null);

@@ -3,6 +3,8 @@ package com.evgeniy.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.sql.Date;
+import java.sql.Time;
 
 @Entity
 @Getter
@@ -16,9 +18,9 @@ public class AppointmentToDoctors {
     @Column(name = "id_doctorsappointments")
     private Long doctorsappointmentsID;
     @Column(name = "date")
-    private String date;
+    private Date date;
     @Column(name = "time")
-    private String time;
+    private Time time;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "doctorID")

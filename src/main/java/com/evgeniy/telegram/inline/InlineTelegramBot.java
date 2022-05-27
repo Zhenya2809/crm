@@ -1,8 +1,6 @@
 package com.evgeniy.telegram.inline;
 
-import com.evgeniy.commands.Doctors;
 import com.evgeniy.entity.Doctor;
-import com.evgeniy.entity.Kozelec;
 import com.evgeniy.repository.KozelecRepository;
 import com.evgeniy.service.DoctorService;
 import com.evgeniy.telegram.MyAppBot;
@@ -67,7 +65,7 @@ public class InlineTelegramBot {
             fio = array[1];
         }
 
-        List<Doctor> doctorsList = doctorService.searchDoctor(speciality.toLowerCase(Locale.ROOT),fio.toLowerCase(Locale.ROOT)).stream().toList();
+        List<Doctor> doctorsList = doctorService.searchDoctor(speciality.toLowerCase(Locale.ROOT), fio.toLowerCase(Locale.ROOT)).stream().toList();
         List<InlineQueryResult> results = new ArrayList<>();
 
         for (Doctor doctor : doctorsList) {

@@ -2,11 +2,13 @@ package com.evgeniy.service;
 
 import com.evgeniy.email.SendEmailTLS;
 import com.evgeniy.entity.AppointmentToDoctors;
+import com.evgeniy.entity.DataUserTg;
 import com.evgeniy.entity.Doctor;
 import com.evgeniy.entity.Patient;
 import com.evgeniy.repository.AppointmentRepository;
 import com.evgeniy.repository.DoctorRepository;
 import com.evgeniy.repository.PatientRepository;
+import com.evgeniy.telegram.ExecutionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.Authentication;
@@ -27,7 +29,7 @@ public class AppointmentService {
     private DoctorRepository doctorRepository;
 
 
-    public String createAppointmentToDoctors(String date, String time, String doctorID) {
+    public String createAppointmentToDoctors(String date, Time time, String doctorID) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -38,7 +40,7 @@ public class AppointmentService {
                 Patient patient = patientOptional.get();
                 Doctor doctor = doctorRepository.findDoctorById(Long.valueOf(doctorID));
                 AppointmentToDoctors incoming = new AppointmentToDoctors();
-                incoming.setDate(date);
+                incoming.setDate(java.sql.Date.valueOf(date));
                 incoming.setTime(time);
                 incoming.setDoctor(doctor);
                 incoming.setPatient(patient);
@@ -52,21 +54,41 @@ public class AppointmentService {
         return "patientIDisNullError";
     }
 
-    public void createAppointmentTDoctors(String email, String date, String time, String doctorID) {
+    public void createAppointmentTDoctors(String email, String date, Time time, String doctorID, ExecutionContext executionContext) {
 
 
         Optional<Patient> patientOptional = patientRepository.findByEmail(email);
 
         if (patientOptional.isPresent()) {
 
-                Patient patient = patientOptional.get();
+            Patient patient = patientOptional.get();
+            Doctor doctor = doctorRepository.findDoctorById(Long.valueOf(doctorID));
+            AppointmentToDoctors incoming = new AppointmentToDoctors();
+            incoming.setDate(java.sql.Date.valueOf(date));
+            incoming.setTime(time);
+            incoming.setDoctor(doctor);
+            incoming.setPatient(patient);
+            appointmentRepository.save(incoming);
+        } else {
+            Optional<DataUserTg> dataUserByChatId = executionContext.getDataUserService().findDataUserByChatId(executionContext.getChatId());
+            if (dataUserByChatId.isPresent()) {
+                DataUserTg user = dataUserByChatId.get();
+                Patient patient = new Patient();
+                patient.setFio(user.getFirstName() + " " + user.getLastName());
+                patient.setEmail(user.getEmail());
+                patient.setPhoneNumber(user.getPhone());
+                executionContext.getPatientService().save(patient);
+
                 Doctor doctor = doctorRepository.findDoctorById(Long.valueOf(doctorID));
                 AppointmentToDoctors incoming = new AppointmentToDoctors();
-                incoming.setDate(date);
+                incoming.setDate(java.sql.Date.valueOf(date));
                 incoming.setTime(time);
                 incoming.setDoctor(doctor);
                 incoming.setPatient(patient);
                 appointmentRepository.save(incoming);
+
+
+            }
         }
     }
 
@@ -75,8 +97,8 @@ public class AppointmentService {
         SendEmailTLS sendEmailTLS = new SendEmailTLS();
 
         appointmentRepository.findAll().forEach(e -> {
-            String date = e.getDate();
-            String time = e.getTime();
+            Date date = e.getDate();
+            Time time = e.getTime();
             String email = e.getPatient().getEmail();
             Date todayDate = new Date();
             SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy-MM-dd");
@@ -107,22 +129,22 @@ public class AppointmentService {
         return appointmentRepository.findAllByDoctor_Id(id).stream().filter(e -> e.getDate().equals(formatForDateNow.format(date))).toList();
     }
 
-    public HashMap<String, List<String>> findAllAvailableTimeByDoctorId(Long id) {
+    public HashMap<Date, List<String>> findAllAvailableTimeByDoctorId(Long id) {
         List<AppointmentToDoctors> allByDoctor_id = appointmentRepository.findAllByDoctor_Id(id);
 
 
         return listToMap(allByDoctor_id);
     }
 
-    public static HashMap<String, List<String>> listToMap(List<AppointmentToDoctors> list) {
-        HashMap<String, List<String>> map = new HashMap<>();
+    public static HashMap<Date, List<String>> listToMap(List<AppointmentToDoctors> list) {
+        HashMap<Date, List<String>> map = new HashMap<>();
         for (AppointmentToDoctors appointment : list) {
             if (map.containsKey(appointment.getDate())) {
                 List<String> timeList = map.get(appointment.getDate());
-                timeList.add(appointment.getTime());
+                timeList.add(appointment.getTime().toString());
             } else {
                 ArrayList<String> timeList = new ArrayList<>();
-                timeList.add(appointment.getTime());
+                timeList.add(appointment.getTime().toString());
                 map.put(appointment.getDate(), timeList);
             }
         }
@@ -138,14 +160,10 @@ public class AppointmentService {
         appointmentRepository.delete(appointmentToDoctorsByDoctorsappointmentsID);
     }
 
-    public AppointmentToDoctors findAppointmentById(Long id) {
-        return appointmentRepository.findAppointmentToDoctorsByDoctorsappointmentsID(id);
-    }
-
     public void saveAppointments(Long id, String date, String time, String doctorID) {
         AppointmentToDoctors appointment = appointmentRepository.findAppointmentToDoctorsByDoctorsappointmentsID(id);
-        appointment.setDate(date);
-        appointment.setTime(time);
+        appointment.setDate(java.sql.Date.valueOf(date));
+        appointment.setTime(Time.valueOf(time));
         Doctor doctor = doctorRepository.findDoctorById(Long.valueOf(doctorID));
         appointment.setDoctor(doctor);
         appointmentRepository.save(appointment);

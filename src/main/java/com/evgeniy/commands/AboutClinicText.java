@@ -12,14 +12,11 @@ import java.util.List;
 public class AboutClinicText implements Command {
     @Override
     public void doCommand(ExecutionContext executionContext) {
-        executionContext.setGlobalState(DataUserTg.botstate.ABOUT_CLINIC_TEXT);
+        List<ReplyButton> replyButtonList = List.of(new ReplyButton("Главное меню"),new ReplyButton("Наш адрес"));
 
-        List<InlineButton> inlineButtons= List.of(new InlineButton("Instagram","https://instagram.com"),new InlineButton("Facebook","https://facebook.com"));
-        executionContext.buildInlineKeyboard("Возможно тебя заинтересует одна из наших соц. сетей?",inlineButtons);
-
-        List<ReplyButton> replyButtonList = List.of(new ReplyButton("Ок, расскажи о CLINIC_NAME"),new ReplyButton("Главное меню"));
-
-        executionContext.buildReplyKeyboard("Так хочеться рассказать тебе о нас", replyButtonList);
+        executionContext.buildReplyKeyboard("CLINIC_NAME — это частная клиника в Киеве для всей семьи.", replyButtonList);
+        executionContext.replyMessage("Мы позаботимся как о новорожденном ребенке, так и о людях почтенного возраста.\n" +
+                " Мы предоставляем медицинские услуги с выездом на дом, в клинике и онлайн, \n чтобы всегда держать под контролем ваше хорошее самочувствие.");
 
     }
 

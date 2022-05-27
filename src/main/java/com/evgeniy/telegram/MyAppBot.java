@@ -63,7 +63,7 @@ public class MyAppBot extends TelegramLongPollingBot {
             }
             if ((update.hasMessage()) && (update.getMessage().hasContact())) {
                 String phoneNumber = update.getMessage().getContact().getPhoneNumber();
-                registerContactNumber(update, phoneNumber);
+                registerContactNumber       (update, phoneNumber);
             } else if (update.hasMessage()) {
 
                 Long chatId = update.getMessage().getChatId();

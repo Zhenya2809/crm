@@ -1,15 +1,15 @@
 package com.evgeniy.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "b_user")
@@ -30,7 +30,8 @@ public class DataUserTg {
     public String email;
     @Column(name = "phone")
     private String phone;
-
+    @Column(name = "administrator",columnDefinition = "boolean default false")
+    private boolean isAdministrator;
 
     public DataUserTg(Long chatId, String firstName, String lastName) {
         this.chatId = chatId;
@@ -54,18 +55,9 @@ public class DataUserTg {
         MY_APPOINTMENTS,
         START_BOT_CHATTING,
         APPOINTMENT_TO_DOCTOR,
-    }
-
-    @Override
-    public String toString() {
-        return "DataUserTg{" +
-                "chatId=" + chatId +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", LocaleState='" + localeState + '\'' +
-                ", GlobalState=" + globalState +
-                ", email=" + email +
-                '}';
+        CONTACT,
+        CALL_BACK,
+        ADMINISTRATORS
     }
 }
 

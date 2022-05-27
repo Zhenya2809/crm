@@ -23,7 +23,7 @@ public class Cosmetics implements Command {
 
     @Override
     public boolean shouldRunOnText(String text) {
-        return text.equals("НЕТ");
+        return text.equals("Косметика");
     }
 
     @Override

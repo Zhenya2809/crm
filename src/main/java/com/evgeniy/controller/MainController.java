@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.sql.Time;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -94,7 +95,7 @@ public class MainController {
                                      @PathVariable(value = "date") String date,
                                      @PathVariable(value = "time") String time,
                                      Model mode) {
-        appointmentService.createAppointmentToDoctors(date, time, id);
+        appointmentService.createAppointmentToDoctors(date, Time.valueOf(time + ":00"), id);
         return "redirect:/";
 
     }
@@ -102,17 +103,27 @@ public class MainController {
     @GetMapping("/clinic/{doctor_id}")
     public String getDoctorChose(Model model,
                                  @PathVariable(value = "doctor_id") long id) {
-        HashMap<String, List<String>> dateAndTimeMap = appointmentService.findAllAvailableTimeByDoctorId(id);
+
+
+        HashMap<Date, List<String>> dateAndTimeMap = appointmentService.findAllAvailableTimeByDoctorId(id);
+        for (Map.Entry<Date, List<String>> pair : dateAndTimeMap.entrySet()) {
+            List<String> list = pair.getValue().stream().map(e -> {
+                String[] split = e.split(":");
+                return split[0] + ":" + split[1];
+            }).toList();
+            pair.setValue(list);
+        }
+
+
         LocalDate today = LocalDate.now();
         ArrayList<DaySchedule> daySchedules = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
             LocalDate localDate = today.plusDays(i);
-            System.out.println(localDate);
             DaySchedule daySchedule = new DaySchedule();
             String key = localDate.toString();
             daySchedule.setDate(key);
-            if (dateAndTimeMap.get(key) != null) {
-                daySchedule.setAvailable(new HashSet<>(dateAndTimeMap.get(key)));
+            if (dateAndTimeMap.get(java.sql.Date.valueOf(key)) != null) {
+                daySchedule.setAvailable(new HashSet<>(dateAndTimeMap.get(java.sql.Date.valueOf(key))));
             } else {
                 daySchedule.setAvailable(new HashSet<>());
             }
@@ -122,7 +133,8 @@ public class MainController {
         model.addAttribute("schedule", daySchedules);
         System.out.println("day schedules=" + daySchedules);
         List<String> timeList = new ArrayList<>();
-        timeList.add("9:00");
+        timeList.add("08:00");
+        timeList.add("09:00");
         timeList.add("10:00");
         timeList.add("11:00");
         timeList.add("12:00");
@@ -132,8 +144,9 @@ public class MainController {
         timeList.add("16:00");
         timeList.add("17:00");
         timeList.add("18:00");
+        timeList.add("19:00");
         model.addAttribute("time", timeList);
-        System.out.println("time=" + timeList);
+
 
         model.addAttribute("doctor_id", id);
         return "clinic/appointment";

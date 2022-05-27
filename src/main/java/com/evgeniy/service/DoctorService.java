@@ -37,7 +37,7 @@ public class DoctorService {
         return doctorRepository.findAll();
     }
 
-    public List<Doctor> findDoctorsBySperiality(String speciality) {
+    public List<Doctor> findDoctorsBySpeciality(String speciality) {
         return doctorRepository.findDoctorsBySpeciality(speciality);
     }
 
