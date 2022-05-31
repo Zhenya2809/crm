@@ -30,8 +30,11 @@ public class DataUserTg {
     public String email;
     @Column(name = "phone")
     private String phone;
-    @Column(name = "administrator",columnDefinition = "boolean default false")
-    private boolean isAdministrator;
+    @Column(name = "role", columnDefinition = "varchar(20) default 'USER'")
+    private String role;
+    @Column(name = "doctorId")
+    private Long doctorId;
+
 
     public DataUserTg(Long chatId, String firstName, String lastName) {
         this.chatId = chatId;
@@ -41,11 +44,8 @@ public class DataUserTg {
 
     public enum botstate {
         START,
-        YES,
-        NO,
         SPECIALISTS,
         ABOUT,
-        ABOUT_CLINIC_TEXT,
         COSMETICS,
         SERVICES,
         ADDRESS,
@@ -57,7 +57,9 @@ public class DataUserTg {
         APPOINTMENT_TO_DOCTOR,
         CONTACT,
         CALL_BACK,
-        ADMINISTRATORS
+        BEAUTICIANS,
+        LOGIN,
+        SEND_APPOINTMENT
     }
 }
 

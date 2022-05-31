@@ -1,6 +1,6 @@
 package com.evgeniy.commands.appointmenttodoctor;
 
-import com.evgeniy.commands.localState.LocalStateForAppointment;
+import com.evgeniy.commands.appointmenttodoctor.localstate.LocalStateForAppointment;
 import com.evgeniy.telegram.ExecutionContext;
 
 public interface Appointment {

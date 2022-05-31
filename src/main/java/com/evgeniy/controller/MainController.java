@@ -35,7 +35,7 @@ public class MainController {
 
 
 //ForUsers
-        Optional<Patient> patientOptional = patientService.findPatienByAuthEmail();
+        Optional<Patient> patientOptional = patientService.findPatientByAuthEmail();
         if (patientOptional.isPresent()) {
             Patient patient = patientOptional.get();
             List<AppointmentToDoctors> userAppointmentToDoctor = appointmentService.findAllByPatientId(patient.getId());
@@ -163,7 +163,7 @@ public class MainController {
 
     @GetMapping("/profile/history")
     public String getPatientTreatmentHistory(Model model) {
-        Optional<Patient> patientOptional = patientService.findPatienByAuthEmail();
+        Optional<Patient> patientOptional = patientService.findPatientByAuthEmail();
         if (patientOptional.isPresent()) {
             Patient patient = patientOptional.get();
             Optional<PatientCard> patientCardOptional = patientService.findPatientCardByPatient(patient);

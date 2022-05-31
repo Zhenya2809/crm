@@ -1,7 +1,6 @@
 package com.evgeniy.telegram.inline;
 
 import com.evgeniy.entity.Doctor;
-import com.evgeniy.repository.KozelecRepository;
 import com.evgeniy.service.DoctorService;
 import com.evgeniy.telegram.MyAppBot;
 import lombok.AllArgsConstructor;
@@ -27,8 +26,6 @@ import java.util.Locale;
 @AllArgsConstructor
 @Service
 public class InlineTelegramBot {
-    @Autowired
-    private KozelecRepository kozelecRepository;
     @Autowired
     private DoctorService doctorService;
     private static final Integer CACHETIME = 1;

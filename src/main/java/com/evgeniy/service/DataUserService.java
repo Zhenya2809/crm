@@ -1,6 +1,7 @@
 package com.evgeniy.service;
 
 import com.evgeniy.entity.DataUserTg;
+import com.evgeniy.entity.Role;
 import com.evgeniy.repository.DataUserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +21,18 @@ public class DataUserService {
         return Optional.ofNullable(dataUserRepository.findDataUserByChatId(id));
     }
 
-    public void createUser(Long chatId, String firstName, String lastName) {
+    public Long getDoctorId(Long id) {
+        DataUserTg dataUserByChatId = dataUserRepository.findDataUserByChatId(id);
+        return dataUserByChatId.getDoctorId();
+
+    }
+
+    public void createUser(Long chatId, String firstName, String lastName, String role) {
         DataUserTg user = new DataUserTg();
         user.setChatId(chatId);
         user.setFirstName(firstName);
         user.setLastName(lastName);
+        user.setRole(role);
         user.setGlobalState(DataUserTg.botstate.START);
         user.setLocaleState("Main_menu");
         dataUserRepository.save(user);
@@ -34,9 +42,10 @@ public class DataUserService {
     public void save(DataUserTg user) {
         dataUserRepository.save(user);
     }
-    public List<Long> findAll(){
-        List<Long> chatIdList=new ArrayList<>();
-        dataUserRepository.findAll().forEach(e-> {
+
+    public List<Long> findAll() {
+        List<Long> chatIdList = new ArrayList<>();
+        dataUserRepository.findAll().forEach(e -> {
             Long chatId = e.getChatId();
             chatIdList.add(chatId);
         });

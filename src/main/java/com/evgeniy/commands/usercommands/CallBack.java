@@ -1,11 +1,10 @@
-package com.evgeniy.commands;
+package com.evgeniy.commands.usercommands;
 
+import com.evgeniy.commands.Command;
 import com.evgeniy.entity.DataUserTg;
-import com.evgeniy.entity.ReplyButton;
 import com.evgeniy.telegram.ExecutionContext;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Optional;
 @Component
 public class CallBack implements Command {
@@ -15,12 +14,11 @@ public class CallBack implements Command {
         Optional<DataUserTg> dataUserByChatId = executionContext.getDataUserService().findDataUserByChatId(executionContext.getChatId());
         if(dataUserByChatId.isPresent()){
             String phone = dataUserByChatId.get().getPhone();
-            executionContext.sendMessageToUserWithId("Перезвоните мне: "+phone,"1331264383");
+            Long administratorId = executionContext.getInfoDataService().getAdministratorId();
+            executionContext.sendMessageToUserWithId("Перезвоните мне: "+phone,administratorId +executionContext.getUser().getFirstName()+" "+executionContext.getUser().getLastName());
         }
         executionContext.setLocalState(null);
         executionContext.setGlobalState(null);
-
-
     }
 
     @Override

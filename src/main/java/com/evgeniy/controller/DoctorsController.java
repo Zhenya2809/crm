@@ -42,20 +42,20 @@ public class DoctorsController {
                                   @RequestParam(value = "phoneNumber") String phoneNumber,
                                   Model model) {
 
-        patientService.CreatePatient(fio, birthday, sex, placeOfResidence, insurancePolicy, phoneNumber);
+        patientService.createPatient(fio, birthday, sex, placeOfResidence, insurancePolicy, phoneNumber);
         return "patient/profileEdit";
     }
 
     @GetMapping("/profileEdit")
     public String getProfileEdit(Model model) {
-        Optional<Patient> patient = patientService.findPatienByAuthEmail();
+        Optional<Patient> patient = patientService.findPatientByAuthEmail();
         patient.ifPresent(e -> model.addAttribute("patient", patient.get()));
         return "patient/profileEdit";
     }
 
     @GetMapping("/profile")
     public String getMyProfile(Model model) {
-        Optional<Patient> patient = patientService.findPatienByAuthEmail();
+        Optional<Patient> patient = patientService.findPatientByAuthEmail();
         patient.ifPresent(e -> model.addAttribute("patient", patient.get()));
 
         return "patient/myProfile";

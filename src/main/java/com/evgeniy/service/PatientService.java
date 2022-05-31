@@ -19,7 +19,7 @@ public class PatientService {
     @Autowired
     private PatientCardService patientCardService;
 
-    public void CreatePatient(String fio, String birthday, String sex, String placeOfResidence, String insurancePolicy, String phoneNumber) {
+    public void createPatient(String fio, String birthday, String sex, String placeOfResidence, String insurancePolicy, String phoneNumber) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Patient patient = new Patient();
         patient.setFio(fio);
@@ -41,8 +41,12 @@ public class PatientService {
         if (byEmail.isPresent()) {
             return byEmail.get();
         }
-        return new Patient(executionContext.getChatId(), executionContext.getFirstName() + " " + executionContext.getLastName(), null, null, null, null, null, null, null);
-
+        Patient patient=new Patient();
+        patient.setChatId(executionContext.getChatId());
+        patient.setEmail(email);
+        patient.setFio(executionContext.getFirstName() + " " + executionContext.getLastName());
+        patientRepository.save(patient);
+        return patient;
 
     }
 
@@ -66,7 +70,7 @@ public class PatientService {
         return patientRepository.findPatientByFioContains(fio);
     }
 
-    public Optional<Patient> findPatienByAuthEmail() {
+    public Optional<Patient> findPatientByAuthEmail() {
         return patientRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
@@ -74,7 +78,6 @@ public class PatientService {
     public void editPatient(Long id, String birthday, String insurancePolicy, String placeOfResidence, String sex, String fio, String phoneNumber) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Patient patient = patientRepository.findPatientById(id);
-
         patient.setBirthday(birthday);
         patient.setEmail(auth.getName());
         patient.setInsurancePolicy(insurancePolicy);

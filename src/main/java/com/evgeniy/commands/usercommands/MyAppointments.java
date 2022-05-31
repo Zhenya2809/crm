@@ -1,5 +1,6 @@
-package com.evgeniy.commands;
+package com.evgeniy.commands.usercommands;
 
+import com.evgeniy.commands.Command;
 import com.evgeniy.entity.*;
 import com.evgeniy.telegram.ExecutionContext;
 import org.springframework.stereotype.Component;

@@ -1,7 +1,7 @@
 package com.evgeniy.commands.appointmenttodoctor;
 
 import com.evgeniy.commands.Command;
-import com.evgeniy.commands.localState.LocalStateForAppointment;
+import com.evgeniy.commands.appointmenttodoctor.localstate.LocalStateForAppointment;
 import com.evgeniy.entity.*;
 import com.evgeniy.telegram.ExecutionContext;
 import com.fasterxml.jackson.databind.ObjectMapper;

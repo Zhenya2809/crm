@@ -1,4 +1,4 @@
-package com.evgeniy.commands.localState;
+package com.evgeniy.commands.appointmenttodoctor.localstate;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface AppointmentRepository extends JpaRepository<AppointmentToDoctors, Long> {
-    Iterable<AppointmentToDoctors> findAppointmentToDoctorsByDoctor(Doctor doctor);
+    List<AppointmentToDoctors> findAppointmentToDoctorsByDoctor(Doctor doctor);
     List<AppointmentToDoctors> findAllByDoctor_Id(Long id);
     List<AppointmentToDoctors> findAllByPatientId(Long id);
     AppointmentToDoctors findAppointmentToDoctorsByDoctorsappointmentsID(Long id);

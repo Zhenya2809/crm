@@ -3,6 +3,7 @@ package com.evgeniy.telegram;
 import com.evgeniy.commands.*;
 import com.evgeniy.entity.DataUserTg;
 
+import com.evgeniy.entity.InfoData;
 import com.evgeniy.service.*;
 import com.evgeniy.telegram.inline.InlineTelegramBot;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +39,8 @@ public class MyAppBot extends TelegramLongPollingBot {
     private InlineTelegramBot inlineTelegramBot;
     @Autowired
     private PatientService patientService;
-
+    @Autowired
+    private InfoDataService infoDataService;
     @Autowired
     public List<Command> commands;
 
@@ -46,7 +48,7 @@ public class MyAppBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return "InWarHelper";
+        return "Clinic_bot";
     }
 
     @Override
@@ -63,7 +65,7 @@ public class MyAppBot extends TelegramLongPollingBot {
             }
             if ((update.hasMessage()) && (update.getMessage().hasContact())) {
                 String phoneNumber = update.getMessage().getContact().getPhoneNumber();
-                registerContactNumber       (update, phoneNumber);
+                registerContactNumber(update, phoneNumber);
             } else if (update.hasMessage()) {
 
                 Long chatId = update.getMessage().getChatId();
@@ -75,7 +77,7 @@ public class MyAppBot extends TelegramLongPollingBot {
                 MDC.put("lastName", lastName);
 
                 if (!CheckLoggin(chatId)) {
-                    dataUserService.createUser(chatId, firstName, lastName);
+                    dataUserService.createUser(chatId, firstName, lastName, "USER");
                 }
 
                 user.computeIfAbsent(chatId, a -> new DataUserTg(chatId, firstName, lastName));
@@ -101,10 +103,10 @@ public class MyAppBot extends TelegramLongPollingBot {
                 context.setAppointmentService(appointmentService);
                 context.setUserService(userService);
                 context.setPatientService(patientService);
-
+                context.setInfoDataService(infoDataService);
 
                 if (command != null) {
-                    log.info(context.printDateAndState()+" start command: " + command.getClass().getSimpleName());
+                    log.info(context.printDateAndState() + " start command: " + command.getClass().getSimpleName());
                     command.doCommand(context);
                 }
             }

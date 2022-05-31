@@ -24,6 +24,8 @@ public class Doctor {
     private String about;
     @Column(name="photo")
     private String photo;
+    @Column(name="telegramBotID")
+    private String telegramBotID;
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "clientID")

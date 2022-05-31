@@ -29,7 +29,7 @@ public class AppointmentService {
     private DoctorRepository doctorRepository;
 
 
-    public String createAppointmentToDoctors(String date, Time time, String doctorID) {
+    public void createAppointmentToDoctors(String date, Time time, String doctorID) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -49,9 +49,8 @@ public class AppointmentService {
             } catch (DataIntegrityViolationException e) {
                 System.out.println(" ERROR ---->  this date/time/doctor already exists  <----");
             }
-            return "redirect:/";
+
         }
-        return "patientIDisNullError";
     }
 
     public void createAppointmentTDoctors(String email, String date, Time time, String doctorID, ExecutionContext executionContext) {
@@ -70,25 +69,22 @@ public class AppointmentService {
             incoming.setPatient(patient);
             appointmentRepository.save(incoming);
         } else {
-            Optional<DataUserTg> dataUserByChatId = executionContext.getDataUserService().findDataUserByChatId(executionContext.getChatId());
-            if (dataUserByChatId.isPresent()) {
-                DataUserTg user = dataUserByChatId.get();
-                Patient patient = new Patient();
-                patient.setFio(user.getFirstName() + " " + user.getLastName());
-                patient.setEmail(user.getEmail());
-                patient.setPhoneNumber(user.getPhone());
-                executionContext.getPatientService().save(patient);
+            DataUserTg user = executionContext.getAuthorizationUser();
+            Patient patient = new Patient();
+            patient.setChatId(executionContext.getChatId());
+            patient.setFio(user.getFirstName() + " " + user.getLastName());
+            patient.setEmail(user.getEmail());
+            patient.setPhoneNumber(user.getPhone());
+            executionContext.getPatientService().save(patient);
 
-                Doctor doctor = doctorRepository.findDoctorById(Long.valueOf(doctorID));
-                AppointmentToDoctors incoming = new AppointmentToDoctors();
-                incoming.setDate(java.sql.Date.valueOf(date));
-                incoming.setTime(time);
-                incoming.setDoctor(doctor);
-                incoming.setPatient(patient);
-                appointmentRepository.save(incoming);
+            Doctor doctor = doctorRepository.findDoctorById(Long.valueOf(doctorID));
+            AppointmentToDoctors incoming = new AppointmentToDoctors();
+            incoming.setDate(java.sql.Date.valueOf(date));
+            incoming.setTime(time);
+            incoming.setDoctor(doctor);
+            incoming.setPatient(patient);
+            appointmentRepository.save(incoming);
 
-
-            }
         }
     }
 
@@ -105,7 +101,7 @@ public class AppointmentService {
             System.out.println("Текущая дата " + formatForDateNow.format(todayDate));
 
 
-            if (formatForDateNow.format(todayDate).equals(date)) {
+            if (formatForDateNow.format(todayDate).equals(date.toString())) {
                 System.out.println(todayDate + " equals " + date);
                 sendEmailTLS.SendEmail("Clinic appointment reminder", email, "We remind you that you have an appointment with a clinic at " + time);
                 System.out.println("email=" + email + " apointment to time=" + time);
@@ -114,7 +110,7 @@ public class AppointmentService {
 
     }
 
-    public Iterable<AppointmentToDoctors> findAll() {
+    public List<AppointmentToDoctors> findAll() {
         return appointmentRepository.findAll();
     }
 
@@ -122,11 +118,9 @@ public class AppointmentService {
         return appointmentRepository.findAppointmentToDoctorsByDoctor(doctor);
     }
 
-    public Iterable<AppointmentToDoctors> findAllByDoctor_Id(Long id) {
+    public List<AppointmentToDoctors> findAllByDoctor_Id(Long id) {
 
-        Date date = new Date();
-        SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy-MM-dd");
-        return appointmentRepository.findAllByDoctor_Id(id).stream().filter(e -> e.getDate().equals(formatForDateNow.format(date))).toList();
+        return appointmentRepository.findAllByDoctor_Id(id);
     }
 
     public HashMap<Date, List<String>> findAllAvailableTimeByDoctorId(Long id) {

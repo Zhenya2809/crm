@@ -38,6 +38,7 @@ public class ExecutionContext {
     private AppointmentService appointmentService;
     private UserService userService;
     private PatientService patientService;
+    private InfoDataService infoDataService;
 
     public void setGlobalState(DataUserTg.botstate newState) {
         Optional<DataUserTg> dataUserByChatId = dataUserService.findDataUserByChatId(chatId);
@@ -48,6 +49,14 @@ public class ExecutionContext {
         }
     }
 
+    public DataUserTg getAuthorizationUser() {
+        Optional<DataUserTg> dataUserByChatId = dataUserService.findDataUserByChatId(chatId);
+        if (dataUserByChatId.isPresent()) {
+            return dataUserByChatId.get();
+        }
+        throw new RuntimeException("user not found");
+
+    }
 
     public void execute(SendMessage message) {
         try {
@@ -293,15 +302,23 @@ public class ExecutionContext {
         return timeList;
     }
 
-    public void createAppointmentToDoctor(LocalDate day, Time time, String docId,ExecutionContext executionContext) {
+    public void createAppointmentToDoctor(LocalDate day, Time time, String docId, ExecutionContext executionContext) {
 
         String email = dataUserService.findDataUserByChatId(getChatId()).get().getEmail();
-        appointmentService.createAppointmentTDoctors(email, day.toString(), time, docId,executionContext);
+        appointmentService.createAppointmentTDoctors(email, day.toString(), time, docId, executionContext);
         replyMessage(getFirstName() + " ты записан " + day + " на " + time + "\n с нетерпение ждём тебя");
         List<String> buttonsNameList = List.of("Наш адрес", "Услуги", "Специалисты", "Контакты", "Главное меню");
         buildReplyKeyboardWithStringList("Возможно я готов помочь тебе ещё?", buttonsNameList);
         setGlobalState(null);
         setLocalState(null);
+    }
+
+    public DataUserTg getUser() {
+        Optional<DataUserTg> dataUserByChatId = dataUserService.findDataUserByChatId(chatId);
+        if (dataUserByChatId.isPresent()) {
+            return dataUserByChatId.get();
+        }
+        throw new RuntimeException("user not found");
     }
 
 }
