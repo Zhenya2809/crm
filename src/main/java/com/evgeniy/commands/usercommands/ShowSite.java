@@ -16,7 +16,7 @@ public class ShowSite implements Command {
     @Override
     public void doCommand(ExecutionContext executionContext) {
         executionContext.setGlobalState(DataUserTg.botstate.SHOW_SITE);
-        List<InlineButton>  inlineButtons= List.of(new InlineButton("Наш сайт","http://95.216.146.138:8080/"));
+        List<InlineButton>  inlineButtons= List.of(new InlineButton("Наш сайт","https://95.216.146.138:8080/"));
         executionContext.buildInlineKeyboard("Перейдите на наш сайт",inlineButtons);
         executionContext.setLocalState(null);
         executionContext.setGlobalState(null);

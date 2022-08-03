@@ -14,7 +14,6 @@ public class Specialists implements Command {
     public void doCommand(ExecutionContext executionContext) {
         executionContext.setGlobalState(DataUserTg.botstate.SPECIALISTS);
         List<ReplyButton> replyButtonList = List.of(new ReplyButton("Доктора"),
-                                                    new ReplyButton("Администраторы"),
                                                     new ReplyButton("і тут ще хтось"),
                                                     new ReplyButton("Главное меню"));
 

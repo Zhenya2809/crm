@@ -13,7 +13,7 @@
 
             <input type="checkbox" class="read-more-checker" id="read-more-checker"/>
             <div class="limiter">
-                <div th:each="el: ${allUsers}" sec:authorize="hasRole('ADMIN')" class="alert alert-success"
+                <div th:each="el: ${allUsers}" class="alert alert-success"
                      style="align-content: center; color: white; background: black">
                     <div class="container">
                         <div class="row">

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.Iterator;
 
 @Controller
-public class AdminController {
+public class    AdminController {
     @Autowired
     private AppointmentService appointmentService;
     @Autowired

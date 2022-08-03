@@ -61,8 +61,8 @@ public class RegistrationController {
             return "error/passwordIncorect";
         }
         try {
-            log.info("user " + user + "successfully created");
             userService.saveUser(user);
+            log.info("user " + user + "successfully created");
             return "redirect:/";
         }catch (Exception e){
             model.addAttribute("usernameError", "Пользователь с таким именем уже существует");
